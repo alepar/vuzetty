@@ -14,15 +14,10 @@ public class ClientMain {
     private static final Logger log = LoggerFactory.getLogger(ClientMain.class);
 
     public static void main(String[] args) throws Exception {
-        RpcClient rpcClient = new NettyRpcClient(new InetSocketAddress(31337));
+        RpcClient rpcClient = new NettyRpcClient(new InetSocketAddress("alepar.ru", 31337));
         try {
             TorrentApi api = rpcClient.getImplementation(TorrentApi.class);
             String hash = api.addTorrent(readFile(args[0]));
-
-            while(true) {
-                System.out.println(api.getStats(hash));
-                Thread.sleep(1000L);
-            }
         } finally {
             rpcClient.shutdown();
         }

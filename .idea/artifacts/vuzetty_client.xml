@@ -1,0 +1,20 @@
+<component name="ArtifactManager">
+  <artifact build-on-make="true" name="vuzetty-client">
+    <output-path>$PROJECT_DIR$/out/artifacts/vuzetty-client</output-path>
+    <root id="root">
+      <element id="archive" name="vuzetty-client.jar">
+        <element id="directory" name="META-INF">
+          <element id="file-copy" path="$PROJECT_DIR$/client/src/java/main/META-INF/MANIFEST.MF" />
+        </element>
+        <element id="module-output" name="client" />
+      </element>
+      <element id="library" level="project" name="netty" />
+      <element id="library" level="project" name="netty-rpc" />
+      <element id="library" level="project" name="logging" />
+      <element id="archive" name="vuzetty-common.jar">
+        <element id="module-output" name="common" />
+      </element>
+      <element id="dir-copy" path="$PROJECT_DIR$/client/src/shell" />
+    </root>
+  </artifact>
+</component>
