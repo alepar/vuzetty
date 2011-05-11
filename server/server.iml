@@ -8,6 +8,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="common" />
+    <orderEntry type="library" scope="PROVIDED" name="vuze" level="project" />
   </component>
 </module>
 

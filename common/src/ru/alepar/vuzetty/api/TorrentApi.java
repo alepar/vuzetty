@@ -2,6 +2,7 @@ package ru.alepar.vuzetty.api;
 
 public interface TorrentApi {
 
-    boolean addTorrent(byte[] torrent);
+    String addTorrent(byte[] torrent);
+    DownloadStats getStats(String hash);
 
 }

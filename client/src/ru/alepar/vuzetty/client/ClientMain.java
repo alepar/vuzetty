@@ -6,6 +6,7 @@ import ru.alepar.rpc.RpcClient;
 import ru.alepar.rpc.netty.NettyRpcClient;
 import ru.alepar.vuzetty.api.TorrentApi;
 
+import java.io.*;
 import java.net.InetSocketAddress;
 
 public class ClientMain {
@@ -14,13 +15,27 @@ public class ClientMain {
 
     public static void main(String[] args) throws Exception {
         RpcClient rpcClient = new NettyRpcClient(new InetSocketAddress(31337));
-
         try {
             TorrentApi api = rpcClient.getImplementation(TorrentApi.class);
-            boolean b = api.addTorrent(new byte[102400]);
-            log.debug("" + b);
+            String hash = api.addTorrent(readFile(args[0]));
+
+            while(true) {
+                System.out.println(api.getStats(hash));
+                Thread.sleep(1000L);
+            }
         } finally {
             rpcClient.shutdown();
         }
+    }
+
+    private static byte[] readFile(String arg) throws IOException {
+        InputStream is = new FileInputStream(new File(arg));
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        byte buffer[] = new byte[10240];
+        int read;
+        while((read = is.read(buffer)) != -1) {
+            bos.write(buffer, 0, read);
+        }
+        return bos.toByteArray();
     }
 }
