@@ -22,13 +22,19 @@ public class ClientMain {
             TorrentApi api = rpcClient.getImplementation(TorrentApi.class);
             String hash = api.addTorrent(readFile(args[0]));
 
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
             DownloadStatsDisplayer displayer = new DownloadStatsDisplayer();
             JFrame frame = new JFrame();
+            frame.setTitle("vuzetty-client");
             frame.setContentPane(displayer.getRootPanel());
+            frame.pack();
             frame.setVisible(true);
 
-            while(true) {
+            while (true) {
                 displayer.updateStats(api.getStats(hash));
+                frame.pack();
+                Thread.sleep(500L);
             }
 
         } finally {
@@ -41,7 +47,7 @@ public class ClientMain {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         byte buffer[] = new byte[10240];
         int read;
-        while((read = is.read(buffer)) != -1) {
+        while ((read = is.read(buffer)) != -1) {
             bos.write(buffer, 0, read);
         }
         return bos.toByteArray();
