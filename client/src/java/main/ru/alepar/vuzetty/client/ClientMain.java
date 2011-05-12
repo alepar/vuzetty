@@ -4,8 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.alepar.rpc.RpcClient;
 import ru.alepar.rpc.netty.NettyRpcClient;
+import ru.alepar.vuzetty.api.DownloadStats;
 import ru.alepar.vuzetty.api.TorrentApi;
+import ru.alepar.vuzetty.client.gui.DownloadStatsDisplayer;
 
+import javax.swing.*;
 import java.io.*;
 import java.net.InetSocketAddress;
 
@@ -18,6 +21,16 @@ public class ClientMain {
         try {
             TorrentApi api = rpcClient.getImplementation(TorrentApi.class);
             String hash = api.addTorrent(readFile(args[0]));
+
+            DownloadStatsDisplayer displayer = new DownloadStatsDisplayer();
+            JFrame frame = new JFrame();
+            frame.setContentPane(displayer.getRootPanel());
+            frame.setVisible(true);
+
+            while(true) {
+                displayer.updateStats(api.getStats(hash));
+            }
+
         } finally {
             rpcClient.shutdown();
         }
