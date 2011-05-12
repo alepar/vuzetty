@@ -64,8 +64,13 @@ public class VuzeTorrentApi implements TorrentApi {
             result.downloadSpeed = torrent.getStats().getDownloadAverage();
             result.uploadSpeed = torrent.getStats().getUploadAverage();
 
-            result.seedsAvailable = torrent.getLastScrapeResult().getSeedCount();
-            result.leechersAvailable = torrent.getLastScrapeResult().getNonSeedCount();
+            if (torrent.getLastScrapeResult() != null) {
+                result.seedsAvailable = torrent.getLastScrapeResult().getSeedCount();
+                result.leechersAvailable = torrent.getLastScrapeResult().getNonSeedCount();
+            } else {
+                result.seedsAvailable = 0;
+                result.leechersAvailable = 0;
+            }
 
             result.availability = torrent.getStats().getAvailability();
             result.shareRatio = torrent.getStats().getShareRatio() / 1000.0;

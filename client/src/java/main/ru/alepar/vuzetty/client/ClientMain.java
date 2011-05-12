@@ -34,7 +34,7 @@ public class ClientMain {
             while (true) {
                 displayer.updateStats(api.getStats(hash));
                 frame.pack();
-                Thread.sleep(500L);
+                Thread.sleep(1000L);
             }
 
         } finally {
