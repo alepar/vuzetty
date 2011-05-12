@@ -44,11 +44,16 @@ public class VuzeTorrentApi implements TorrentApi {
             result.hash = hash;
             result.name = torrent.getName();
 
-            result.status = translate(torrent.getState()); // Download.ST_STOPPED
+            result.status = translate(torrent.getState());
             result.statusString = torrent.getStats().getStatus();
 
-            result.seedsConnected = torrent.getPeerManager().getStats().getConnectedSeeds() ;
-            result.leechersConnected = torrent.getPeerManager().getStats().getConnectedLeechers() ;
+            if (torrent.getPeerManager().getStats() != null) {
+                result.seedsConnected = torrent.getPeerManager().getStats().getConnectedSeeds();
+                result.leechersConnected = torrent.getPeerManager().getStats().getConnectedLeechers();
+            } else {
+                result.seedsConnected = 0;
+                result.leechersConnected = 0;
+            }
 
             result.downloadSize = torrent.getTorrent().getSize();
             result.percentDone = torrent.getStats().getCompleted() / 10.0;
