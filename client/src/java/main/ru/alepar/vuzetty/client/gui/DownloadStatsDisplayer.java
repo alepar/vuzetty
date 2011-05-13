@@ -11,6 +11,12 @@ import java.text.NumberFormat;
 
 public class DownloadStatsDisplayer {
 
+    private static final String[] TIME_SUFFIX = new String[] { "sec", "min", "h", "d" };
+    private static final String[] SPACE_SUFFIX = new String[] { "B", "KiB", "MiB", "GiB", "TiB" };
+    private static final String NUM_FORMAT = "#,##0.0";
+
+    private final NumberFormat format = new DecimalFormat(NUM_FORMAT);
+
     private JPanel torrentPanel;
 
     private JProgressBar progressBar;
@@ -85,13 +91,6 @@ public class DownloadStatsDisplayer {
         etaValue.setText(formatTime(stats.estimatedSecsToCompletion));
     }
 
-    private static final String NUM_FORMAT = "#,##0.0";
-
-    private static final String[] SIZE_NAMES = new String[]
-            { "B", "KiB", "MiB", "GiB", "TiB" };
-
-    private final NumberFormat format = new DecimalFormat(NUM_FORMAT);
-
     private String format(Long num) {
         Double s = (double) num;
         int c = 0;
@@ -99,7 +98,7 @@ public class DownloadStatsDisplayer {
             c++;
             s /= 1024;
         }
-        return format.format(s) + " " + SIZE_NAMES[c];
+        return format.format(s) + " " + SPACE_SUFFIX[c];
     }
 
     private String formatSize(long bytes) {
@@ -107,6 +106,21 @@ public class DownloadStatsDisplayer {
     }
 
     private static String formatTime(long secs) {
-        return "" + secs;
+        if (secs < 0) {
+            return "∞";
+        }
+        long[] times = new long[4];
+        times[0] = secs % 60;
+        times[1] = (secs/60) % 60;
+        times[2] = (secs/3600) % 24;
+        times[3] = (secs/3600/24);
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = times.length-1; i >= 0 ; i--) {
+            if (times[i] > 0) {
+                sb.append(times[i]).append(TIME_SUFFIX[i]).append(' ');
+            }
+        }
+        return sb.toString();
     }
 }
