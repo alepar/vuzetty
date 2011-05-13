@@ -50,6 +50,13 @@ public class MonitorTorrent implements MonitorTorrentMXBean {
 
     @Override
     public void monitor(String hash) {
+        log.debug("monitoring hash={}", hash);
+
+        if(hashes.containsKey(hash)) {
+            log.debug("skipping hash - already monitoring it");
+            return;
+        }
+
         DownloadStatsDisplayer displayer = new DownloadStatsDisplayer();
         contentPane.add(displayer.getRootPanel());
         hashes.put(hash, displayer);
