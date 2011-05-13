@@ -68,8 +68,8 @@ public class VuzeTorrentApi implements TorrentApi {
                 result.seedsAvailable = torrent.getLastScrapeResult().getSeedCount();
                 result.leechersAvailable = torrent.getLastScrapeResult().getNonSeedCount();
             } else {
-                result.seedsAvailable = 0;
-                result.leechersAvailable = 0;
+                result.seedsAvailable = -1;
+                result.leechersAvailable = -1;
             }
 
             result.availability = torrent.getStats().getAvailability();
