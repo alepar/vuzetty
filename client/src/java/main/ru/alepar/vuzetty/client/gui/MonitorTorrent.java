@@ -76,14 +76,16 @@ public class MonitorTorrent implements MonitorTorrentMXBean {
         public void run() {
             while (true) {
                 try {
-                    for (Map.Entry<String, DownloadStatsDisplayer> entry : hashes.entrySet()) {
-                        entry.getValue().updateStats(api.getStats(entry.getKey()));
+                    try {
+                        for (Map.Entry<String, DownloadStatsDisplayer> entry : hashes.entrySet()) {
+                            entry.getValue().updateStats(api.getStats(entry.getKey()));
+                        }
+                    } catch (Exception e) {
+                        log.error("failed to update stats", e);
                     }
                     frame.setSize(frame.getWidth(), (int)frame.getPreferredSize().getHeight());
                     Thread.sleep(1000L);
-                } catch (Exception e) {
-                    log.error("failed to update stats", e);
-                }
+                } catch (InterruptedException ignored) {}
             }
         }
     }
