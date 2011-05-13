@@ -37,6 +37,7 @@ public class MonitorTorrent implements MonitorTorrentMXBean {
         frame = new JFrame();
         frame.setTitle("vuzetty-client");
         frame.setContentPane(contentPane);
+        frame.setSize(350, 0);
 
         final Thread thread = new Thread(new RefreshStats());
         thread.start();
@@ -53,7 +54,7 @@ public class MonitorTorrent implements MonitorTorrentMXBean {
         contentPane.add(displayer.getRootPanel());
         hashes.put(hash, displayer);
 
-        frame.pack();
+        frame.setSize(frame.getWidth(), (int)frame.getPreferredSize().getHeight());
         frame.setVisible(true);
     }
 
@@ -71,7 +72,7 @@ public class MonitorTorrent implements MonitorTorrentMXBean {
                     for (Map.Entry<String, DownloadStatsDisplayer> entry : hashes.entrySet()) {
                         entry.getValue().updateStats(api.getStats(entry.getKey()));
                     }
-                    frame.pack();
+                    frame.setSize(frame.getWidth(), (int)frame.getPreferredSize().getHeight());
                     Thread.sleep(1000L);
                 } catch (Exception e) {
                     log.error("failed to update stats", e);

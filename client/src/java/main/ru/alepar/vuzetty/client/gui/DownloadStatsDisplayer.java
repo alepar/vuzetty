@@ -6,6 +6,8 @@ import com.jgoodies.forms.layout.FormLayout;
 import ru.alepar.vuzetty.api.DownloadStats;
 
 import javax.swing.*;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 public class DownloadStatsDisplayer {
 
@@ -83,8 +85,25 @@ public class DownloadStatsDisplayer {
         etaValue.setText(formatTime(stats.estimatedSecsToCompletion));
     }
 
-    private static String formatSize(long bytes) {
-        return "" + bytes;
+    private static final String NUM_FORMAT = "#,##0.0";
+
+    private static final String[] SIZE_NAMES = new String[]
+            { "B", "KiB", "MiB", "GiB", "TiB" };
+
+    private final NumberFormat format = new DecimalFormat(NUM_FORMAT);
+
+    private String format(Long num) {
+        Double s = (double) num;
+        int c = 0;
+        while((c < 4) && (s / 1024 >= 1)) {
+            c++;
+            s /= 1024;
+        }
+        return format.format(s) + " " + SIZE_NAMES[c];
+    }
+
+    private String formatSize(long bytes) {
+        return format(bytes);
     }
 
     private static String formatTime(long secs) {
