@@ -11,7 +11,7 @@ import java.text.NumberFormat;
 
 public class DownloadStatsDisplayer {
 
-    private static final String[] TIME_SUFFIX = new String[] { "sec", "min", "h", "d" };
+    private static final String[] TIME_SUFFIX = new String[] { "s", "m", "h", "d" };
     private static final String[] SPACE_SUFFIX = new String[] { "B", "KiB", "MiB", "GiB", "TiB" };
     private static final String NUM_FORMAT = "#,##0.0";
 
@@ -106,7 +106,7 @@ public class DownloadStatsDisplayer {
     }
 
     private static String formatTime(long secs) {
-        if (secs < 0) {
+        if (secs < 0 || secs >= 3600*24*100) {
             return "∞";
         }
         long[] times = new long[4];
