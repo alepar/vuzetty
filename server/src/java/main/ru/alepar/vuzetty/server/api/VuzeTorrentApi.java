@@ -47,7 +47,7 @@ public class VuzeTorrentApi implements TorrentApi {
             result.status = translate(torrent.getState());
             result.statusString = torrent.getStats().getStatus();
 
-            if (torrent.getPeerManager().getStats() != null) {
+            if (torrent.getPeerManager() != null && torrent.getPeerManager().getStats() != null) {
                 result.seedsConnected = torrent.getPeerManager().getStats().getConnectedSeeds();
                 result.leechersConnected = torrent.getPeerManager().getStats().getConnectedLeechers();
             } else {
