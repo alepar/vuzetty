@@ -16,7 +16,6 @@
       </element>
       <element id="dir-copy" path="$PROJECT_DIR$/client/src/shell" />
       <element id="library" level="application" name="jgoodies" />
-      <element id="library" level="module" name="jmx" module-name="client" />
     </root>
   </artifact>
 </component>
