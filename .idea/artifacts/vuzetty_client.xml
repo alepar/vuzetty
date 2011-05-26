@@ -16,6 +16,9 @@
       </element>
       <element id="dir-copy" path="$PROJECT_DIR$/client/src/shell" />
       <element id="library" level="application" name="jgoodies" />
+      <element id="archive" name="vuzetty-bootstrap.jar">
+        <element id="module-output" name="client-bootstrap" />
+      </element>
     </root>
   </artifact>
 </component>
