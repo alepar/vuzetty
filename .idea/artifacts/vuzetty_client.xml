@@ -18,6 +18,9 @@
       <element id="library" level="application" name="jgoodies" />
       <element id="archive" name="vuzetty-bootstrap.jar">
         <element id="module-output" name="client-bootstrap" />
+        <element id="directory" name="META-INF">
+          <element id="file-copy" path="$PROJECT_DIR$/client-bootstrap/src/java/main/META-INF/MANIFEST.MF" />
+        </element>
       </element>
     </root>
   </artifact>

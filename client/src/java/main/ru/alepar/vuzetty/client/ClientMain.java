@@ -19,7 +19,7 @@ public class ClientMain {
 
     public static void main(String[] args) throws Exception {
         try {
-            RpcClient rpc = new NettyRpcClient(new InetSocketAddress("alepar.ru", 31337));
+            RpcClient rpc = new NettyRpcClient(new InetSocketAddress("azureus.alepar.ru", 31337));
             TorrentApi api = rpc.getImplementation(TorrentApi.class);
 
             log.info("submitting torrent to vuze...");
