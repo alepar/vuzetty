@@ -1,8 +1,10 @@
 package ru.alepar.vuzetty.client.bootstrap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import sun.rmi.runtime.Log;
+
 import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.net.URLClassLoader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -10,56 +12,53 @@ import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import static ru.alepar.vuzetty.client.bootstrap.FileUtil.listJarsIn;
+
 public class BootstrapMain {
 
     private static final SimpleDateFormat backupFolderFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
-
     private static final String UPDATE_FILE_NAME = "vuzetty-update.zip";
-    private static final String BOOTSTRAP_FILE_NAME = "vuzetty-bootstrap.jar";
+
+    private static final Logger log = LoggerFactory.getLogger(BootstrapMain.class);
 
     public static void main(String[] args) {
-        Class<?> clientMain = null;
+        MainStarter starter = new MainStarter("ru.alepar.vuzetty.client.ClientMain");
 
         // classpath has ru.alepar.vuzetty.client.ClientMain = dev mode - start it up, skip update
-        try {
-            clientMain = loadClientMainFrom(BootstrapMain.class.getClassLoader());
-            System.out.println("ClientMain found on classpath, skipping update");
-        } catch (ClassNotFoundException ignored) {}
+        if (starter.available()) {
+            log.info("ClientMain found on classpath, skipping update");
+            starter.invokeMain(args);
+            return;
+        }
 
         // do update if necessary
-        if (clientMain == null) {
-            File updateFile = new File(UPDATE_FILE_NAME);
-            if(updateFile.exists() && updateFile.isFile() && updateFile.canRead()) {
-                System.out.println("update file found");
-                File backupFolder = backupAllJarsInCwdExceptBootstrap();
-                System.out.println("backed up to " + backupFolder.getAbsolutePath());
-                extractUpdate(updateFile);
-                System.out.println("extracted update");
-                try {
-                    clientMain = loadClientMainFrom(addJarsFromCwdOver(BootstrapMain.class.getClassLoader()));
-                    System.out.println("loaded main class from update");
-                } catch (Exception e) {
-                    System.out.println("update failed");
-                    deleteFiles(listJarsIn(new File(".")));
-                    restoreBackup(backupFolder);
-                    deleteFile(backupFolder);
-                    deleteFile(updateFile);
-                }
+        File updateFile = new File(UPDATE_FILE_NAME);
+        if(updateFile.exists() && updateFile.isFile() && updateFile.canRead()) {
+            log.info("update file found");
+            File backupFolder = backupAllJarsInCwdExceptBootstrap();
+            log.info("backed up to {}", backupFolder.getAbsolutePath());
+            extractUpdate(updateFile);
+            log.info("extracted update");
+
+            starter.setClasspathFolder(new File("."));
+            if(starter.available()) {
+                log.info("loaded main class from update");
+            } else {
+                log.info("update failed");
+                deleteFiles(listJarsIn(new File(".")));
+                restoreBackup(backupFolder);
+                deleteFile(backupFolder);
+                deleteFile(updateFile);
             }
+        } else {
+            log.info("no update, regular startup");
         }
 
-        // no update or update failed - bootstrap from cwd
-        if (clientMain == null) {
-            System.out.println("no update, regular startup");
-            try {
-                clientMain = loadClientMainFrom(addJarsFromCwdOver(BootstrapMain.class.getClassLoader()));
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException("no ClientMain found", e);
-            }
-
+        if(!starter.available()) {
+            throw new RuntimeException("no ClientMain found");
         }
 
-        invokeMain(clientMain, args);
+        starter.invokeMain(args);
     }
 
     private static void deleteFiles(File[] files) {
@@ -137,44 +136,9 @@ public class BootstrapMain {
         }
     }
 
-    private static File[] listJarsIn(File curFolder) {
-        System.out.println("listing files in " + curFolder.getAbsolutePath());
-        return curFolder.listFiles(new FileFilter() {
-                @Override
-                public boolean accept(File file) {
-                    return file.isFile() && !file.getName().equals(BOOTSTRAP_FILE_NAME) && file.getName().endsWith(".jar");
-                }
-            });
-    }
-
     private static ClassLoader addJarsFromCwdOver(ClassLoader parent) {
         System.out.println("constructing classLoader from cwd");
-        return new URLClassLoader(toUrl(listJarsIn(new File("."))), parent);
-    }
-
-    private static URL[] toUrl(File[] files) {
-        try {
-            URL[] urls = new URL[files.length];
-            for (int i = 0; i < files.length; i++) {
-                urls[i] = files[i].toURI().toURL();
-            }
-            return urls;
-        } catch (MalformedURLException e) {
-            throw new RuntimeException("couldnot make url", e);
-        }
-    }
-
-    private static Class<?> loadClientMainFrom(ClassLoader classLoader) throws ClassNotFoundException {
-        return classLoader.loadClass("ru.alepar.vuzetty.client.ClientMain");
-    }
-
-    private static void invokeMain(Class<?> clientMain, String[] args) {
-        System.out.println("invoking ClientMain");
-        try {
-            clientMain.getMethod("main", String[].class).invoke(null, new Object[]{args});
-        } catch (Exception e) {
-            throw new RuntimeException("failed to invoke main method", e);
-        }
+        return new URLClassLoader(FileUtil.toUrl(listJarsIn(new File("."))), parent);
     }
 
 }
