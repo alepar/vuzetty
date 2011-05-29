@@ -6,6 +6,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -38,7 +39,8 @@ public class BootstrapMain {
                     clientMain = loadClientMainFrom(addJarsFromCwdOver(BootstrapMain.class.getClassLoader()));
                     System.out.println("loaded main class from update");
                 } catch (Exception e) {
-                    System.out.println("rollbacking update");
+                    System.out.println("update failed");
+                    deleteFiles(listJarsIn(new File(".")));
                     restoreBackup(backupFolder);
                     deleteFile(backupFolder);
                     deleteFile(updateFile);
@@ -60,11 +62,18 @@ public class BootstrapMain {
         invokeMain(clientMain, args);
     }
 
+    private static void deleteFiles(File[] files) {
+        for (File file : files) {
+            deleteFile(file);
+        }
+    }
+
     private static void extractUpdate(File updateFile) {
         try {
             ZipFile zipFile = new ZipFile(updateFile);
-            while (zipFile.entries().hasMoreElements()) {
-                ZipEntry entry = zipFile.entries().nextElement();
+            Enumeration<? extends ZipEntry> entries = zipFile.entries();
+            while (entries.hasMoreElements()) {
+                ZipEntry entry = entries.nextElement();
                 String fileName = entry.getName();
                 InputStream stream = zipFile.getInputStream(entry);
                 saveStreamTo(new File(".", fileName), stream);
@@ -101,6 +110,7 @@ public class BootstrapMain {
     }
 
     private static void restoreBackup(File backupFolder) {
+        System.out.println("restoring backup " + backupFolder.getAbsolutePath());
         moveFilesTo(new File("."), listJarsIn(backupFolder));
     }
 
