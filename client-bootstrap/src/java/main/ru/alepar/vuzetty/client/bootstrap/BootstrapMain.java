@@ -2,10 +2,8 @@ package ru.alepar.vuzetty.client.bootstrap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.rmi.runtime.Log;
 
 import java.io.*;
-import java.net.URLClassLoader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Enumeration;
@@ -134,11 +132,6 @@ public class BootstrapMain {
         for (File jarFile : files) {
             jarFile.renameTo(new File(folder, jarFile.getName()));
         }
-    }
-
-    private static ClassLoader addJarsFromCwdOver(ClassLoader parent) {
-        System.out.println("constructing classLoader from cwd");
-        return new URLClassLoader(FileUtil.toUrl(listJarsIn(new File("."))), parent);
     }
 
 }
