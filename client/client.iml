@@ -10,15 +10,8 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="common" />
     <orderEntry type="library" name="jgoodies" level="application" />
-    <orderEntry type="module-library" scope="PROVIDED">
-      <library name="jmx">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../lib/jmx/tools.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
+    <orderEntry type="library" name="logging" level="project" />
+    <orderEntry type="library" name="jmx" level="project" />
   </component>
 </module>
 
