@@ -1,4 +1,0 @@
-Manifest-Version: 1.0
-Class-Path: logback-classic-0.9.28.jar logback-core-0.9.28.jar slf4j-a
- pi-1.6.1.jar
-Main-Class: ru.alepar.vuzetty.client.bootstrap.BootstrapMain
