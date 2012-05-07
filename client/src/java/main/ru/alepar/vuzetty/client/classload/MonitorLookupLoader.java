@@ -18,7 +18,7 @@ public class MonitorLookupLoader {
             File toolsJar = new File(jdkHome() + File.separator + "lib" + File.separator + "tools.jar");
             log.info("using tools.jar = {}", toolsJar.getCanonicalPath());
             if(!toolsJar.exists()) {
-                throw new IllegalStateException("this program requires SUN JDK to run");
+                throw new IllegalStateException("this program requires tools.jar to run");
             }
 
             return (MonitorLookup) makeClassLoaderWithSunAttachMonitorLookup(makeClassLoaderWithJar(toolsJar)).loadClass("ru.alepar.vuzetty.client.jmx.SunAttachMonitorLookup").newInstance();
