@@ -1,4 +1,7 @@
 
 /out
 /target
+/client/target
+/common/target
+/server/target
 /.idea/workspace.xml

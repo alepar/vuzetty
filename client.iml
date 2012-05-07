@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/client/target/classes" />
+    <output-test url="file://$MODULE_DIR$/client/target/test-classes" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/client">
+      <sourceFolder url="file://$MODULE_DIR$/client/src/java/main" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/client/src/java/test" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/client/target" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="common" />
+  </component>
+</module>
+
