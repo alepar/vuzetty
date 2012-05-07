@@ -16,6 +16,7 @@
         <module>common</module>
         <module>client</module>
         <module>server</module>
+        <module>integration-testing</module>
     </modules>
 
     <!-- this will be inherited by all child modules -->

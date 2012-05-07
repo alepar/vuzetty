@@ -11,30 +11,27 @@
         <version>0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>server</artifactId>
+    <artifactId>integration-testing</artifactId>
     <packaging>jar</packaging>
 
-    <name>vuzetty-server</name>
+    <name>integration-testing</name>
 
     <dependencies>
 
         <dependency>
             <groupId>ru.alepar.vuzetty</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>client</artifactId>
             <version>${project.version}</version>
         </dependency>
-
-        <!-- azureus -->
         <dependency>
-            <groupId>org.gudy</groupId>
-            <artifactId>vuze</artifactId>
-            <version>4.7.0.2</version>
+            <groupId>ru.alepar.vuzetty</groupId>
+            <artifactId>server</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
     </dependencies>
 
     <build>
-        <sourceDirectory>src/java/main</sourceDirectory>
         <testSourceDirectory>src/java/test</testSourceDirectory>
     </build>
 
