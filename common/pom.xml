@@ -14,11 +14,22 @@
     <artifactId>common</artifactId>
     <packaging>jar</packaging>
 
-    <name>Vuzetty Shared client/server code</name>
+    <name>vuzetty-common</name>
 
     <build>
         <sourceDirectory>src/java/main</sourceDirectory>
         <testSourceDirectory>src/java/test</testSourceDirectory>
     </build>
+
+    <dependencies>
+
+        <!-- network layer -->
+        <dependency>
+            <groupId>ru.alepar</groupId>
+            <artifactId>netty-rpc</artifactId>
+            <version>0.3</version>
+        </dependency>
+
+    </dependencies>
 
 </project>

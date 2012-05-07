@@ -2,8 +2,8 @@ package ru.alepar.vuzetty.client;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.alepar.rpc.RpcClient;
-import ru.alepar.rpc.netty.NettyRpcClient;
+import ru.alepar.rpc.api.NettyRpcClientBuilder;
+import ru.alepar.rpc.api.RpcClient;
 import ru.alepar.vuzetty.api.TorrentApi;
 import ru.alepar.vuzetty.client.gui.MonitorTorrent;
 import ru.alepar.vuzetty.client.jmx.MonitorTorrentMXBean;
@@ -19,12 +19,15 @@ public class ClientMain {
 
     public static void main(String[] args) throws Exception {
         try {
-            RpcClient rpc = new NettyRpcClient(new InetSocketAddress("azureus.alepar.ru", 31337));
-            TorrentApi api = rpc.getImplementation(TorrentApi.class);
+            log.debug("connecting to vuzetty server");
+            final RpcClient rpc =
+                    new NettyRpcClientBuilder(new InetSocketAddress("azureus.alepar.ru", 31337))
+                    .build();
+            final TorrentApi api = rpc.getRemote().getProxy(TorrentApi.class);
 
-            log.info("submitting torrent to vuze...");
+            log.debug("submitting torrent to vuze...");
             String hash = api.addTorrent(readFile(args[0]));
-            log.info("...ok");
+            log.debug("...ok");
             MonitorTorrentMXBean monitor = loadLookup().findOrCreateMonitor(api);
             monitor.monitor(hash);
 

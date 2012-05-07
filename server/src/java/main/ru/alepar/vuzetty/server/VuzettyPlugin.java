@@ -7,8 +7,7 @@ import org.gudy.azureus2.plugins.download.DownloadManager;
 import org.gudy.azureus2.plugins.torrent.TorrentManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.alepar.rpc.RpcServer;
-import ru.alepar.rpc.netty.NettyRpcServer;
+import ru.alepar.rpc.api.NettyRpcServerBuilder;
 import ru.alepar.vuzetty.api.TorrentApi;
 import ru.alepar.vuzetty.server.api.VuzeTorrentApi;
 
@@ -21,20 +20,22 @@ public class VuzettyPlugin implements Plugin {
     @Override
     public void initialize(PluginInterface pluginInterface) throws PluginException {
 
-        log.info("Starting up vuzetty");
-        ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
+        log.info("starting up vuzetty server ");
+        final ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
         Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());
 
-        TorrentManager torrentManager = pluginInterface.getTorrentManager();
-        DownloadManager downloadManager = pluginInterface.getDownloadManager();
+        final TorrentManager torrentManager = pluginInterface.getTorrentManager();
+        final DownloadManager downloadManager = pluginInterface.getDownloadManager();
 
-        InetSocketAddress bindAddress = new InetSocketAddress(31337);
-        log.info("Binding vuzetty to " + bindAddress);
-        RpcServer rpcServer = new NettyRpcServer(bindAddress);
-        rpcServer.addImplementation(TorrentApi.class, new VuzeTorrentApi(torrentManager, downloadManager));
+        final InetSocketAddress bindAddress = new InetSocketAddress(31337);
+        log.info("binding vuzetty to " + bindAddress);
+
+        new NettyRpcServerBuilder(bindAddress)
+                .addObject(TorrentApi.class, new VuzeTorrentApi(torrentManager, downloadManager))
+                .build();
 
         Thread.currentThread().setContextClassLoader(oldClassLoader);
-        log.info("Vuzetty is up and running");
+        log.info("vuzetty server is up and running");
     }
 
 }

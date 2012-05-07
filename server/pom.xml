@@ -14,7 +14,7 @@
     <artifactId>server</artifactId>
     <packaging>jar</packaging>
 
-    <name>Vuzetty server code</name>
+    <name>vuzetty-server</name>
 
     <dependencies>
 
@@ -22,6 +22,12 @@
             <groupId>ru.alepar.vuzetty</groupId>
             <artifactId>common</artifactId>
             <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.gudy</groupId>
+            <artifactId>vuze</artifactId>
+            <version>4.7.0.2</version>
         </dependency>
 
     </dependencies>
