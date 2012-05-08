@@ -6,38 +6,31 @@ import org.gudy.azureus2.plugins.download.DownloadManager;
 import org.gudy.azureus2.plugins.torrent.TorrentManager;
 import ru.alepar.vuzetty.api.DownloadState;
 import ru.alepar.vuzetty.api.DownloadStats;
-import ru.alepar.vuzetty.api.TorrentApi;
+import ru.alepar.vuzetty.api.ServerApi;
+import ru.alepar.vuzetty.server.util.HashUtil;
 
-import java.math.BigInteger;
-
-public class VuzeTorrentApi implements TorrentApi {
+public class VuzeServerApi implements ServerApi {
 
     private final TorrentManager torrentManager;
     private final DownloadManager downloadManager;
 
-    public VuzeTorrentApi(TorrentManager torrentManager, DownloadManager downloadManager) {
+    public VuzeServerApi(TorrentManager torrentManager, DownloadManager downloadManager) {
         this.torrentManager = torrentManager;
         this.downloadManager = downloadManager;
     }
 
-    public String addTorrent(byte[] torrent) {
+    public void addTorrent(byte[] torrent) {
         try {
-            return hashToString(downloadManager.addDownload(torrentManager.createFromBEncodedData(torrent)).getTorrent().getHash());
+            downloadManager.addDownload(torrentManager.createFromBEncodedData(torrent)).getTorrent().getHash();
         } catch (Exception e) {
             throw new RuntimeException("failed to add torrent", e);
         }
     }
 
-    private static String hashToString(byte[] hash) {
-        return new BigInteger(hash).toString(16);
-    }
-
-    private static byte[] stringToHash(String hash) {
-        return new BigInteger(hash, 16).toByteArray();
-    }
-
     @Override
-    public DownloadStats getStats(String hash) {
+    public void pollForStats() {
+        // TODO return stats to Remote for all torrents registered in this session
+        final String hash = "TODO";
         try {
             Download torrent = findTorrent(hash);
             DownloadStats result = new DownloadStats();
@@ -76,7 +69,6 @@ public class VuzeTorrentApi implements TorrentApi {
             result.shareRatio = torrent.getStats().getShareRatio() / 1000.0;
             result.estimatedSecsToCompletion = torrent.getStats().getETASecs();
 
-            return result;
         } catch (Exception e) {
             throw new RuntimeException("failed to get stats for hash=" + hash, e);
         }
@@ -108,6 +100,6 @@ public class VuzeTorrentApi implements TorrentApi {
     }
 
     private Download findTorrent(String hash) throws DownloadException {
-        return downloadManager.getDownload(stringToHash(hash));
+        return downloadManager.getDownload(HashUtil.stringToHash(hash));
     }
 }

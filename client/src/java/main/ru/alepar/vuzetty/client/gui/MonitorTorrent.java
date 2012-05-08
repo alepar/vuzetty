@@ -2,7 +2,7 @@ package ru.alepar.vuzetty.client.gui;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.alepar.vuzetty.api.TorrentApi;
+import ru.alepar.vuzetty.api.ServerApi;
 import ru.alepar.vuzetty.client.jmx.MonitorTorrentMXBean;
 import sun.awt.VerticalBagLayout;
 
@@ -18,7 +18,7 @@ public class MonitorTorrent implements MonitorTorrentMXBean {
     private static final Logger log = LoggerFactory.getLogger(MonitorTorrent.class);
 
     private final Map<String, DownloadStatsDisplayer> hashes = Collections.synchronizedMap(new HashMap<String, DownloadStatsDisplayer>());
-    private final TorrentApi api;
+    private final ServerApi api;
     private final JFrame frame;
     private JPanel contentPane;
 
@@ -28,7 +28,7 @@ public class MonitorTorrent implements MonitorTorrentMXBean {
         } catch (Exception ignored) {}
     }
 
-    public MonitorTorrent(TorrentApi api) {
+    public MonitorTorrent(ServerApi api) {
         this.api = api;
 
         contentPane = new JPanel();
@@ -78,7 +78,8 @@ public class MonitorTorrent implements MonitorTorrentMXBean {
                 try {
                     try {
                         for (Map.Entry<String, DownloadStatsDisplayer> entry : hashes.entrySet()) {
-                            entry.getValue().updateStats(api.getStats(entry.getKey()));
+                            // TODO wire stats calback into GUI
+                            // entry.getValue().updateStats(api.pollForStats(entry.getKey()));
                         }
                     } catch (Exception e) {
                         log.error("failed to update stats", e);

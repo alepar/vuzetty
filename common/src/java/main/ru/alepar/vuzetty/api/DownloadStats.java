@@ -3,6 +3,7 @@ package ru.alepar.vuzetty.api;
 import java.io.Serializable;
 
 public class DownloadStats implements Serializable {
+
     public String hash;
     public String name;
     public DownloadState status;

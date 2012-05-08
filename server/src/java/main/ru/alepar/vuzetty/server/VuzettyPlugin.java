@@ -7,9 +7,7 @@ import org.gudy.azureus2.plugins.download.DownloadManager;
 import org.gudy.azureus2.plugins.torrent.TorrentManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.alepar.rpc.api.NettyRpcServerBuilder;
-import ru.alepar.vuzetty.api.TorrentApi;
-import ru.alepar.vuzetty.server.api.VuzeTorrentApi;
+import ru.alepar.vuzetty.server.api.VuzeServerApi;
 
 import java.net.InetSocketAddress;
 
@@ -24,15 +22,12 @@ public class VuzettyPlugin implements Plugin {
         final ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
         Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());
 
+        final InetSocketAddress bindAddress = new InetSocketAddress(31337);
         final TorrentManager torrentManager = pluginInterface.getTorrentManager();
         final DownloadManager downloadManager = pluginInterface.getDownloadManager();
 
-        final InetSocketAddress bindAddress = new InetSocketAddress(31337);
         log.info("binding vuzetty to " + bindAddress);
-
-        new NettyRpcServerBuilder(bindAddress)
-                .addObject(TorrentApi.class, new VuzeTorrentApi(torrentManager, downloadManager))
-                .build();
+        new VuzettyServer(bindAddress, new VuzeServerApi(torrentManager, downloadManager));
 
         Thread.currentThread().setContextClassLoader(oldClassLoader);
         log.info("vuzetty server is up and running");
