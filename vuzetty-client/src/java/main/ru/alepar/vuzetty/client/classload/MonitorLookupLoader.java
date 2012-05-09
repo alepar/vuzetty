@@ -16,7 +16,7 @@ public class MonitorLookupLoader {
     public static MonitorLookup loadLookup() {
         try {
             File toolsJar = new File(jdkHome() + File.separator + "lib" + File.separator + "tools.jar");
-            log.info("using tools.jar = {}", toolsJar.getCanonicalPath());
+            log.debug("using tools.jar = {}", toolsJar.getCanonicalPath());
             if(!toolsJar.exists()) {
                 throw new IllegalStateException("this program requires tools.jar to run");
             }
