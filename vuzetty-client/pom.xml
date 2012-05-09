@@ -46,8 +46,17 @@
         <sourceDirectory>src/java/main</sourceDirectory>
         <testSourceDirectory>src/java/test</testSourceDirectory>
 
-        <plugins>
+        <resources>
+          <resource>
+            <directory>src/java/main</directory>
+            <includes>
+              <include>logback.xml</include>
+              <include>ru/alepar/vuzetty/client/gui/vuze.png</include>
+            </includes>
+          </resource>
+        </resources>
 
+        <plugins>
             <!-- intellij uidesigner forms compiler -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>

@@ -43,6 +43,7 @@
             <directory>src/java/main</directory>
             <includes>
               <include>plugin.properties</include>
+              <include>logback.xml</include>
             </includes>
           </resource>
         </resources>
