@@ -38,6 +38,15 @@
         <sourceDirectory>src/java/main</sourceDirectory>
         <testSourceDirectory>src/java/test</testSourceDirectory>
 
+        <resources>
+          <resource>
+            <directory>src/java/main</directory>
+            <includes>
+              <include>plugin.properties</include>
+            </includes>
+          </resource>
+        </resources>
+
         <plugins>
             <!-- copy dependencies to targetdir -->
             <plugin>
