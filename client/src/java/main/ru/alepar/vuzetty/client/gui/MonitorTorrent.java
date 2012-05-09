@@ -7,6 +7,7 @@ import ru.alepar.vuzetty.client.jmx.MonitorTorrentMXBean;
 import sun.awt.VerticalBagLayout;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Collections;
@@ -15,6 +16,7 @@ import java.util.Map;
 
 public class MonitorTorrent implements MonitorTorrentMXBean {
 
+    private static final String ICON_PATH = "ru/alepar/vuzetty/client/gui/vuze.png";
     private static final Logger log = LoggerFactory.getLogger(MonitorTorrent.class);
 
     private final Map<String, DownloadStatsDisplayer> hashes = Collections.synchronizedMap(new HashMap<String, DownloadStatsDisplayer>());
@@ -62,6 +64,7 @@ public class MonitorTorrent implements MonitorTorrentMXBean {
         hashes.put(hash, displayer);
 
         frame.setSize(frame.getWidth(), (int)frame.getPreferredSize().getHeight());
+        frame.setIconImage(Toolkit.getDefaultToolkit().getImage(MonitorTorrent.class.getClassLoader().getResource(ICON_PATH)));
         frame.setVisible(true);
     }
 
