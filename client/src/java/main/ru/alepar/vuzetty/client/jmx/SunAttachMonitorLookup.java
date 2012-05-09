@@ -4,8 +4,6 @@ import com.sun.tools.attach.VirtualMachine;
 import com.sun.tools.attach.VirtualMachineDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.alepar.vuzetty.api.ServerRemote;
-import ru.alepar.vuzetty.client.gui.MonitorTorrent;
 
 import javax.management.*;
 import javax.management.remote.JMXConnector;
@@ -22,21 +20,12 @@ public class SunAttachMonitorLookup implements MonitorLookup {
     private static final String MXBEAN_NAME = "ru.alepar.vuzetty.client:type=MonitorTorrent";
 
     @Override
-    public MonitorTorrentMXBean findOrCreateMonitor(ServerRemote remote) throws MalformedObjectNameException, MBeanRegistrationException, InstanceAlreadyExistsException, NotCompliantMBeanException {
-        MonitorTorrentMXBean monitor = findMonitor();
-        if(monitor != null) {
-            return monitor;
-        }
-
-        log.info("monitor not found, creating new");
-        monitor = new MonitorTorrent(remote);
+    public void registerMonitor(MonitorTorrentMXBean monitor) throws MalformedObjectNameException, MBeanRegistrationException, InstanceAlreadyExistsException, NotCompliantMBeanException {
         ManagementFactory.getPlatformMBeanServer().registerMBean(monitor, new ObjectName(MXBEAN_NAME));
-        return monitor;
     }
 
     @Override
     public MonitorTorrentMXBean findMonitor() {
-        log.info("looking for monitor");
         for (VirtualMachineDescriptor vd : VirtualMachine.list()) {
             try {
                 String vmId = vd.id();

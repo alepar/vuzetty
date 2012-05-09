@@ -36,8 +36,10 @@ public class VuzeTorrentApi implements TorrentApi {
             try {
                 stats.add(extractStats(downloadManager.getDownload(hash.bytes())));
             } catch (Exception e) {
-                // TODO extract dummy stats with exception notify
-                // throw new RuntimeException("failed to get stats for hash=" + hash, e);
+                final DownloadStats stat = new DownloadStats();
+                stat.hash = hash.toString();
+                stat.errorMessage = e.toString();
+                stats.add(stat);
             }
         }
         return stats.toArray(new DownloadStats[stats.size()]);

@@ -21,27 +21,13 @@ public class DownloadStats implements Serializable {
     public float availability;
     public double shareRatio;
     public long estimatedSecsToCompletion;
+    public String errorMessage;
 
     @Override
     public String toString() {
         return "DownloadStats{" +
                 "hash='" + hash + '\'' +
-                ", name='" + name + '\'' +
-                ", status=" + status +
-                ", statusString='" + statusString + '\'' +
-                ", seedsConnected=" + seedsConnected +
-                ", leechersConnected=" + leechersConnected +
-                ", downloadSize=" + downloadSize +
-                ", percentDone=" + percentDone +
-                ", downloadedBytes=" + downloadedBytes +
-                ", uploadedBytes=" + uploadedBytes +
-                ", downloadSpeed=" + downloadSpeed +
-                ", uploadSpeed=" + uploadSpeed +
-                ", seedsAvailable=" + seedsAvailable +
-                ", leechersAvailable=" + leechersAvailable +
-                ", availability=" + availability +
-                ", shareRatio=" + shareRatio +
-                ", estimatedSecsToCompletion=" + estimatedSecsToCompletion +
+                "errorMessage='" + errorMessage + '\'' +
                 '}';
     }
 }

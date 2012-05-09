@@ -13,11 +13,10 @@ import java.net.InetSocketAddress;
 
 public class VuzettyPlugin implements Plugin {
 
-    private static final Logger log = LoggerFactory.getLogger(VuzettyPlugin.class);
+    private final Logger log = LoggerFactory.getLogger(VuzettyPlugin.class);
 
     @Override
     public void initialize(PluginInterface pluginInterface) throws PluginException {
-
         log.info("starting up vuzetty server ");
         final ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
         Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());

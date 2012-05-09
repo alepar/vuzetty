@@ -41,6 +41,10 @@ public class VuzettyClient implements ServerRemote {
         rpc.shutdown();
     }
 
+    public String getAddress() {
+        return rpc.getRemote().getRemoteAddress();
+    }
+
     public class RemoteImpl implements ClientRemote {
         @Override
         public void statsUpdated(DownloadStats[] stats) {

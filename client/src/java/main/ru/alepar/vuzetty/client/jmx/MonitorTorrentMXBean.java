@@ -1,6 +1,6 @@
 package ru.alepar.vuzetty.client.jmx;
 
 public interface MonitorTorrentMXBean {
-    void monitor(String hash);
+    void addTorrent(String argument);
     boolean check();
 }

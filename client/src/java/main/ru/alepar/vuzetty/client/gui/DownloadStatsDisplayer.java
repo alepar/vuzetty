@@ -82,13 +82,18 @@ public class DownloadStatsDisplayer {
         return torrentPanel;
     }
 
-    public void updateStats(DownloadStats stats) {
-        torrentPanel.setBorder(BorderFactory.createTitledBorder(stats.name));
-        progressBar.setValue((int)stats.percentDone);
-        statusValue.setText(stats.statusString);
-        downloadSpeedValue.setText(formatSize(stats.downloadSpeed) + "/s");
-        torrentSizeValue.setText(formatSize(stats.downloadSize));
-        etaValue.setText(formatTime(stats.estimatedSecsToCompletion));
+    public void updateStats(final DownloadStats stats) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                torrentPanel.setBorder(BorderFactory.createTitledBorder(stats.name));
+                progressBar.setValue((int)stats.percentDone);
+                statusValue.setText(stats.statusString);
+                downloadSpeedValue.setText(formatSize(stats.downloadSpeed) + "/s");
+                torrentSizeValue.setText(formatSize(stats.downloadSize));
+                etaValue.setText(formatTime(stats.estimatedSecsToCompletion));
+            }
+        });
     }
 
     private String format(Long num) {
