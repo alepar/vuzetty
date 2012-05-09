@@ -46,7 +46,7 @@ public class MonitorTorrent implements MonitorTorrentMXBean {
         frame.setTitle("vuzetty @ " + client.getAddress());
         frame.setContentPane(contentPane);
         frame.setIconImage(Toolkit.getDefaultToolkit().getImage(MonitorTorrent.class.getClassLoader().getResource(ICON_PATH)));
-        frame.setSize(350, 0);
+        frame.setSize(500, 0);
 
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
