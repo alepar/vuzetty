@@ -11,7 +11,7 @@
         <version>0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>server</artifactId>
+    <artifactId>vuzetty-server</artifactId>
     <packaging>jar</packaging>
 
     <name>vuzetty-server</name>
@@ -20,7 +20,7 @@
 
         <dependency>
             <groupId>ru.alepar.vuzetty</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>vuzetty-common</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -29,6 +29,7 @@
             <groupId>org.gudy</groupId>
             <artifactId>vuze</artifactId>
             <version>4.7.0.2</version>
+            <scope>provided</scope>
         </dependency>
 
     </dependencies>
@@ -36,6 +37,25 @@
     <build>
         <sourceDirectory>src/java/main</sourceDirectory>
         <testSourceDirectory>src/java/test</testSourceDirectory>
+
+        <plugins>
+            <!-- copy dependencies to targetdir -->
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <includeScope>runtime</includeScope>
+                            <outputDirectory>${targetdirectory}</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 
 </project>

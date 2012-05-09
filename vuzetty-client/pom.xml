@@ -11,7 +11,7 @@
         <version>0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>client</artifactId>
+    <artifactId>vuzetty-client</artifactId>
     <packaging>jar</packaging>
 
     <name>vuzetty-client</name>
@@ -20,7 +20,7 @@
 
         <dependency>
             <groupId>ru.alepar.vuzetty</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>vuzetty-common</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -46,9 +46,9 @@
         <sourceDirectory>src/java/main</sourceDirectory>
         <testSourceDirectory>src/java/test</testSourceDirectory>
 
-        <!-- intellij uidesigner forms compiler -->
         <plugins>
 
+            <!-- intellij uidesigner forms compiler -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>ideauidesigner-maven-plugin</artifactId>
@@ -67,6 +67,7 @@
                 </configuration>
             </plugin>
 
+            <!-- autogenerate MANIFEST.MF with classpath and main class -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -79,6 +80,23 @@
                         </manifest>
                     </archive>
                 </configuration>
+            </plugin>
+
+            <!-- copy dependencies to targetdir -->
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <includeScope>runtime</includeScope>
+                            <outputDirectory>${targetdirectory}</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
         </plugins>

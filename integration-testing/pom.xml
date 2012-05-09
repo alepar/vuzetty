@@ -20,12 +20,12 @@
 
         <dependency>
             <groupId>ru.alepar.vuzetty</groupId>
-            <artifactId>client</artifactId>
+            <artifactId>vuzetty-client</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>ru.alepar.vuzetty</groupId>
-            <artifactId>server</artifactId>
+            <artifactId>vuzetty-server</artifactId>
             <version>${project.version}</version>
         </dependency>
 

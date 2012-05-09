@@ -13,9 +13,9 @@
     <name>vuzetty</name>
 
     <modules>
-        <module>common</module>
-        <module>client</module>
-        <module>server</module>
+        <module>vuzetty-common</module>
+        <module>vuzetty-client</module>
+        <module>vuzetty-server</module>
         <module>integration-testing</module>
     </modules>
 
