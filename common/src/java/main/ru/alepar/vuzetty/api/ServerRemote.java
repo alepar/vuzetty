@@ -1,8 +1,6 @@
 package ru.alepar.vuzetty.api;
 
-public interface ServerApi {
-
+public interface ServerRemote {
     void addTorrent(byte[] torrent);
     void pollForStats();
-
 }

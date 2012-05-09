@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.alepar.vuzetty.client.gui.MonitorTorrent;
 import ru.alepar.vuzetty.client.jmx.MonitorTorrentMXBean;
+import ru.alepar.vuzetty.client.remote.VuzettyClient;
 
 import java.io.*;
 import java.net.InetSocketAddress;

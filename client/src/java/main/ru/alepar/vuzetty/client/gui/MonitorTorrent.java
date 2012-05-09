@@ -2,7 +2,7 @@ package ru.alepar.vuzetty.client.gui;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.alepar.vuzetty.api.ServerApi;
+import ru.alepar.vuzetty.api.ServerRemote;
 import ru.alepar.vuzetty.client.jmx.MonitorTorrentMXBean;
 import sun.awt.VerticalBagLayout;
 
@@ -18,7 +18,7 @@ public class MonitorTorrent implements MonitorTorrentMXBean {
     private static final Logger log = LoggerFactory.getLogger(MonitorTorrent.class);
 
     private final Map<String, DownloadStatsDisplayer> hashes = Collections.synchronizedMap(new HashMap<String, DownloadStatsDisplayer>());
-    private final ServerApi api;
+    private final ServerRemote remote;
     private final JFrame frame;
     private JPanel contentPane;
 
@@ -28,8 +28,8 @@ public class MonitorTorrent implements MonitorTorrentMXBean {
         } catch (Exception ignored) {}
     }
 
-    public MonitorTorrent(ServerApi api) {
-        this.api = api;
+    public MonitorTorrent(ServerRemote remote) {
+        this.remote = remote;
 
         contentPane = new JPanel();
         contentPane.setLayout(new VerticalBagLayout());
