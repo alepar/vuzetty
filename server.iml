@@ -4,8 +4,11 @@
     <output url="file://$MODULE_DIR$/vuzetty-server/target/classes" />
     <output-test url="file://$MODULE_DIR$/vuzetty-server/target/test-classes" />
     <content url="file://$MODULE_DIR$/vuzetty-server">
-      <sourceFolder url="file://$MODULE_DIR$/vuzetty-server/src/java/main" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/vuzetty-server/src/java/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/vuzetty-server/src/java/main" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/vuzetty-server/${project.build.directory}/classes" />
+      <excludeFolder url="file://$MODULE_DIR$/vuzetty-server/${project.build.directory}/test-classes" />
+      <excludeFolder url="file://$MODULE_DIR$/vuzetty-server/${project.build.directory}/workdir/plugins/vuzetty" />
       <excludeFolder url="file://$MODULE_DIR$/vuzetty-server/target" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -16,7 +19,9 @@
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.6.2" level="project" />
     <orderEntry type="library" name="Maven: ch.qos.logback:logback-classic:0.9.30" level="project" />
     <orderEntry type="library" name="Maven: ch.qos.logback:logback-core:0.9.30" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.gudy:vuze:4.7.0.2" level="project" />
+    <orderEntry type="library" name="Maven: org.gudy:vuze:4.7.0.2" level="project" />
+    <orderEntry type="library" name="Maven: commons-cli:commons-cli:1.2" level="project" />
+    <orderEntry type="library" name="Maven: log4j:log4j:1.2.4" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.8.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jmock:jmock-junit4:2.5.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jmock:jmock:2.5.1" level="project" />
