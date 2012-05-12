@@ -9,6 +9,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: commons-cli:commons-cli:1.2" level="project" />
+    <orderEntry type="library" name="Maven: log4j:log4j:1.2.4" level="project" />
     <orderEntry type="module" module-name="client" />
     <orderEntry type="module" module-name="common" />
     <orderEntry type="library" name="Maven: ru.alepar:netty-rpc:0.3" level="project" />

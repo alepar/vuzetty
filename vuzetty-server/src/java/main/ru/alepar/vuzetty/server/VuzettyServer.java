@@ -54,8 +54,14 @@ public class VuzettyServer {
 
         @Override
         public void addTorrent(byte[] torrent) {
-            final Hash addedHash = api.addTorrent(torrent);
-            hashes.add(addedHash);
+            final Hash hash = api.addTorrent(torrent);
+            hashes.add(hash);
+        }
+
+        @Override
+        public void addTorrent(String url) {
+            final Hash hash = api.addTorrent(url);
+            hashes.add(hash);
         }
 
         @Override

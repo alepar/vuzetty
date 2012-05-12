@@ -46,7 +46,7 @@ public class MonitorTorrent implements MonitorTorrentMXBean {
         frame.setTitle("vuzetty @ " + client.getAddress());
         frame.setContentPane(contentPane);
         frame.setIconImage(Toolkit.getDefaultToolkit().getImage(MonitorTorrent.class.getClassLoader().getResource(ICON_PATH)));
-        frame.setSize(500, 0);
+        frame.setSize(350, 0);
 
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -61,10 +61,18 @@ public class MonitorTorrent implements MonitorTorrentMXBean {
     public void addTorrent(String argument) {
         log.info("adding torrent={}", argument);
         try {
-            client.addTorrent(readFile(argument));
+            if (isLocalFile(argument)) {
+                client.addTorrent(readFile(argument));
+            } else {
+                client.addTorrent(argument);
+            }
         } catch (IOException e) {
             log.error("failed to add torrent=" + argument, e);
         }
+    }
+
+    private static boolean isLocalFile(String argument) {
+        return new File(argument).isFile();
     }
 
     @Override

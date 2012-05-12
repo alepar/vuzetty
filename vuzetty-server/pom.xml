@@ -48,13 +48,13 @@
         <testSourceDirectory>src/java/test</testSourceDirectory>
 
         <resources>
-          <resource>
-            <directory>src/java/main</directory>
-            <includes>
-              <include>plugin.properties</include>
-              <include>logback.xml</include>
-            </includes>
-          </resource>
+            <resource>
+                <directory>src/java/main</directory>
+                <includes>
+                    <include>plugin.properties</include>
+                    <include>logback.xml</include>
+                </includes>
+            </resource>
         </resources>
 
         <plugins>

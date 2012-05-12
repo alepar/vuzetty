@@ -29,6 +29,11 @@ public class VuzettyClient implements ServerRemote {
     }
 
     @Override
+    public void addTorrent(String url) {
+        api.addTorrent(url);
+    }
+
+    @Override
     public void pollForStats() {
         api.pollForStats();
     }

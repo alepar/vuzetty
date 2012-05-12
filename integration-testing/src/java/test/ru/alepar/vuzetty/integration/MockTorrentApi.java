@@ -14,6 +14,11 @@ public class MockTorrentApi implements TorrentApi {
     }
 
     @Override
+    public Hash addTorrent(String url) {
+        return new Hash(url.getBytes());
+    }
+
+    @Override
     public DownloadStats[] getStats(Collection<Hash> hashes) {
         final DownloadStats[] stats = new DownloadStats[hashes.size()];
         int i=0;

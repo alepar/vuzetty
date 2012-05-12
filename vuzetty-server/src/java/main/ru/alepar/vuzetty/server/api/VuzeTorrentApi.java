@@ -2,10 +2,15 @@ package ru.alepar.vuzetty.server.api;
 
 import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.download.DownloadManager;
+import org.gudy.azureus2.plugins.torrent.Torrent;
 import org.gudy.azureus2.plugins.torrent.TorrentManager;
+import org.gudy.azureus2.plugins.utils.Utilities;
+import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloader;
 import ru.alepar.vuzetty.api.DownloadState;
 import ru.alepar.vuzetty.api.DownloadStats;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -14,16 +19,32 @@ public class VuzeTorrentApi implements TorrentApi {
 
     private final TorrentManager torrentManager;
     private final DownloadManager downloadManager;
+    private final Utilities utilities;
 
-    public VuzeTorrentApi(TorrentManager torrentManager, DownloadManager downloadManager) {
+    public VuzeTorrentApi(TorrentManager torrentManager, DownloadManager downloadManager, Utilities utilities) {
         this.torrentManager = torrentManager;
         this.downloadManager = downloadManager;
+        this.utilities = utilities;
     }
 
     @Override
     public Hash addTorrent(byte[] torrent) {
         try {
             return new Hash(downloadManager.addDownload(torrentManager.createFromBEncodedData(torrent)).getTorrent().getHash());
+        } catch (Exception e) {
+            throw new RuntimeException("failed to add torrent", e);
+        }
+    }
+
+    @Override
+    public Hash addTorrent(String url1) {
+        try {
+            final URL url = new URL(url1);
+            final ResourceDownloader rd = utilities.getResourceDownloaderFactory().create(url);
+            final InputStream is = rd.download();
+            final Torrent torrent = torrentManager.createFromBEncodedInputStream(is);
+            downloadManager.addDownload(torrent);
+            return new Hash(torrent.getHash());
         } catch (Exception e) {
             throw new RuntimeException("failed to add torrent", e);
         }
