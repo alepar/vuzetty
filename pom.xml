@@ -44,6 +44,10 @@
         </dependency>
     </dependencies>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      </properties>
+
     <build>
         <!-- Java compiler version -->
         <plugins>
@@ -54,7 +58,6 @@
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
-                    <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
 
