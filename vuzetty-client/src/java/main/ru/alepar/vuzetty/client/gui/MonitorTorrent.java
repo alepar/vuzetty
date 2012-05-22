@@ -47,6 +47,7 @@ public class MonitorTorrent implements MonitorTorrentMXBean {
         frame.setContentPane(contentPane);
         frame.setIconImage(Toolkit.getDefaultToolkit().getImage(MonitorTorrent.class.getClassLoader().getResource(ICON_PATH)));
         frame.setSize(350, 0);
+        frame.setVisible(true);
 
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -95,8 +96,9 @@ public class MonitorTorrent implements MonitorTorrentMXBean {
                 displayer.updateStats(stat);
             }
 
-            frame.setSize(frame.getWidth(), (int) frame.getPreferredSize().getHeight());
-            frame.setVisible(true);
+            if (frame.getHeight() != frame.getPreferredSize().getHeight()) {
+                frame.setSize(frame.getWidth(), (int) frame.getPreferredSize().getHeight());
+            }
         }
     }
 
