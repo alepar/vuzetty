@@ -90,13 +90,13 @@ public class MonitorTorrent implements MonitorTorrentMXBean {
                     displayer = new DownloadStatsDisplayer();
                     contentPane.add(displayer.getRootPanel());
                     hashes.put(stat.hash, displayer);
-
-                    frame.setSize(frame.getWidth(), (int) frame.getPreferredSize().getHeight());
-                    frame.setVisible(true);
                 }
 
                 displayer.updateStats(stat);
             }
+
+            frame.setSize(frame.getWidth(), (int) frame.getPreferredSize().getHeight());
+            frame.setVisible(true);
         }
     }
 
