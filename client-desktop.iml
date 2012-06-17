@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/vuzetty-client/target/classes" />
-    <output-test url="file://$MODULE_DIR$/vuzetty-client/target/test-classes" />
+    <output url="file://$MODULE_DIR$/vuzetty-client-desktop/target/classes" />
+    <output-test url="file://$MODULE_DIR$/vuzetty-client-desktop/target/test-classes" />
     <content url="file://$MODULE_DIR$/vuzetty-client-desktop">
       <sourceFolder url="file://$MODULE_DIR$/vuzetty-client-desktop/src/java/main" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/vuzetty-client-desktop/src/java/test" isTestSource="true" />
@@ -15,8 +15,6 @@
     <orderEntry type="library" name="Maven: ru.alepar:netty-rpc:0.3" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.netty:netty:3.2.7.Final" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.6.2" level="project" />
-    <orderEntry type="library" name="Maven: ch.qos.logback:logback-classic:0.9.30" level="project" />
-    <orderEntry type="library" name="Maven: ch.qos.logback:logback-core:0.9.30" level="project" />
     <orderEntry type="library" name="Maven: com.intellij:forms_rt:7.0.3" level="project" />
     <orderEntry type="library" name="Maven: asm:asm-commons:3.0" level="project" />
     <orderEntry type="library" name="Maven: asm:asm-tree:3.0" level="project" />
@@ -24,6 +22,8 @@
     <orderEntry type="library" name="Maven: com.jgoodies:forms:1.1-preview" level="project" />
     <orderEntry type="library" name="Maven: jdom:jdom:1.0" level="project" />
     <orderEntry type="library" name="Maven: com.sun:tools:1.5" level="project" />
+    <orderEntry type="library" name="Maven: ch.qos.logback:logback-classic:0.9.30" level="project" />
+    <orderEntry type="library" name="Maven: ch.qos.logback:logback-core:0.9.30" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.8.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jmock:jmock-junit4:2.5.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jmock:jmock:2.5.1" level="project" />

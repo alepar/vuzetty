@@ -23,13 +23,6 @@
     <!-- this will be inherited by all child modules -->
 
     <dependencies>
-        <!-- logging -->
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>0.9.30</version>
-        </dependency>
-
         <!-- testing -->
         <dependency>
             <groupId>junit</groupId>
