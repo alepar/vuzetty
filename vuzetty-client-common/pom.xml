@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                             http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>ru.alepar.vuzetty</groupId>
+        <artifactId>parent</artifactId>
+        <version>0.2-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>vuzetty-client-common</artifactId>
+    <packaging>jar</packaging>
+
+    <name>vuzetty-client-common</name>
+
+    <build>
+        <sourceDirectory>src/java/main</sourceDirectory>
+        <testSourceDirectory>src/java/test</testSourceDirectory>
+    </build>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>ru.alepar.vuzetty</groupId>
+            <artifactId>vuzetty-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- network layer -->
+        <dependency>
+            <groupId>ru.alepar</groupId>
+            <artifactId>netty-rpc</artifactId>
+            <version>0.3</version>
+        </dependency>
+
+    </dependencies>
+
+</project>

@@ -1,6 +1,7 @@
 
 /out
 /target
+/vuzetty-client-common/target
 /vuzetty-client-desktop/target
 /vuzetty-common/target
 /vuzetty-server/target
