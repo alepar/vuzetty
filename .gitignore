@@ -1,6 +1,9 @@
 
 /out
 /target
+/vuzetty-client-android/gen
+/vuzetty-client-android/out
+/vuzetty-client-android/target
 /vuzetty-client-common/target
 /vuzetty-client-desktop/target
 /vuzetty-common/target
