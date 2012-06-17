@@ -14,7 +14,7 @@
 
     <modules>
         <module>vuzetty-common</module>
-        <module>vuzetty-client</module>
+        <module>vuzetty-client-desktop</module>
         <module>vuzetty-server</module>
         <module>integration-testing</module>
     </modules>

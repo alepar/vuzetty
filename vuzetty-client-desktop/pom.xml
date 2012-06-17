@@ -11,10 +11,10 @@
         <version>0.2-SNAPSHOT</version>
     </parent>
 
-    <artifactId>vuzetty-client</artifactId>
+    <artifactId>vuzetty-client-desktop</artifactId>
     <packaging>jar</packaging>
 
-    <name>vuzetty-client</name>
+    <name>vuzetty-client-desktop</name>
 
     <dependencies>
 

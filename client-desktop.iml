@@ -3,10 +3,10 @@
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/vuzetty-client/target/classes" />
     <output-test url="file://$MODULE_DIR$/vuzetty-client/target/test-classes" />
-    <content url="file://$MODULE_DIR$/vuzetty-client">
-      <sourceFolder url="file://$MODULE_DIR$/vuzetty-client/src/java/main" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/vuzetty-client/src/java/test" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/vuzetty-client/target" />
+    <content url="file://$MODULE_DIR$/vuzetty-client-desktop">
+      <sourceFolder url="file://$MODULE_DIR$/vuzetty-client-desktop/src/java/main" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vuzetty-client-desktop/src/java/test" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/vuzetty-client-desktop/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

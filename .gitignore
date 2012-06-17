@@ -1,9 +1,9 @@
 
 /out
 /target
-/client/target
-/common/target
-/server/target
+/vuzetty-client-desktop/target
+/vuzetty-common/target
+/vuzetty-server/target
 /.idea/workspace.xml
 /.idea/libraries/Maven__com_sun_tools_1_5.xml
 *.log

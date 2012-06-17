@@ -20,7 +20,7 @@
 
         <dependency>
             <groupId>ru.alepar.vuzetty</groupId>
-            <artifactId>vuzetty-client</artifactId>
+            <artifactId>vuzetty-client-desktop</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

@@ -9,7 +9,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="client" />
+    <orderEntry type="module" module-name="client-desktop" />
     <orderEntry type="module" module-name="common" />
     <orderEntry type="library" name="Maven: ru.alepar:netty-rpc:0.3" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.netty:netty:3.2.7.Final" level="project" />
