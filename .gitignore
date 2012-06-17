@@ -1,6 +1,7 @@
 
 /out
 /target
+/integration-testing/target
 /vuzetty-client-android/gen
 /vuzetty-client-android/out
 /vuzetty-client-android/target
