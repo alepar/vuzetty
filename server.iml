@@ -4,8 +4,8 @@
     <output url="file://$MODULE_DIR$/vuzetty-server/target/classes" />
     <output-test url="file://$MODULE_DIR$/vuzetty-server/target/test-classes" />
     <content url="file://$MODULE_DIR$/vuzetty-server">
-      <sourceFolder url="file://$MODULE_DIR$/vuzetty-server/src/java/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/vuzetty-server/src/java/main" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/vuzetty-server/src/java/test" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/vuzetty-server/${project.build.directory}/classes" />
       <excludeFolder url="file://$MODULE_DIR$/vuzetty-server/${project.build.directory}/test-classes" />
       <excludeFolder url="file://$MODULE_DIR$/vuzetty-server/${project.build.directory}/workdir/plugins/vuzetty" />
