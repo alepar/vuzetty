@@ -20,7 +20,7 @@ public class MonitorTorrent implements MonitorTorrentMXBean {
     private static final String ICON_PATH = "ru/alepar/vuzetty/client/gui/vuze.png";
 
     private final Logger log = LoggerFactory.getLogger(MonitorTorrent.class);
-    private final Map<String, DownloadStatsDisplayer> hashes = new HashMap<>();
+    private final Map<String, DownloadStatsDisplayer> hashes = new HashMap<String, DownloadStatsDisplayer>();
 
     private final VuzettyClient client;
 
@@ -117,7 +117,8 @@ public class MonitorTorrent implements MonitorTorrentMXBean {
     }
 
     private static byte[] readFile(String arg) throws IOException {
-        try (InputStream is = new FileInputStream(new File(arg))) {
+        final InputStream is = new FileInputStream(new File(arg));
+        try {
             final ByteArrayOutputStream bos = new ByteArrayOutputStream();
             byte buffer[] = new byte[10240];
             int read;
@@ -125,6 +126,8 @@ public class MonitorTorrent implements MonitorTorrentMXBean {
                 bos.write(buffer, 0, read);
             }
             return bos.toByteArray();
+        } finally {
+            is.close();
         }
     }
 

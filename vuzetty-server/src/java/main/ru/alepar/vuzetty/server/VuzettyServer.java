@@ -43,7 +43,7 @@ public class VuzettyServer {
 
     public static class ServerRemoteHandler implements ServerRemote {
 
-        private final List<Hash> hashes = new LinkedList<>();
+        private final List<Hash> hashes = new LinkedList<Hash>();
         private final ClientRemote clientRemote;
         private final TorrentApi api;
 

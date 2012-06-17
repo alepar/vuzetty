@@ -52,7 +52,7 @@ public class VuzeTorrentApi implements TorrentApi {
 
     @Override
     public DownloadStats[] getStats(Collection<Hash> hashes) {
-        final List<DownloadStats> stats = new ArrayList<>(hashes.size());
+        final List<DownloadStats> stats = new ArrayList<DownloadStats>(hashes.size());
         for (Hash hash : hashes) {
             try {
                 stats.add(extractStats(downloadManager.getDownload(hash.bytes())));
