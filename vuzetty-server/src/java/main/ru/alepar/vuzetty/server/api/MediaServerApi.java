@@ -1,11 +1,12 @@
 package ru.alepar.vuzetty.server.api;
 
-import org.gudy.azureus2.plugins.disk.DiskManagerFileInfo;
 import org.gudy.azureus2.plugins.download.Download;
+import ru.alepar.vuzetty.api.FileInfo;
+
+import java.util.Collection;
 
 public interface MediaServerApi {
 
-    String getContentURL(Download d);
-    String getContentURL(DiskManagerFileInfo file);
+    Collection<FileInfo> getContentUrls(Download d);
 
 }

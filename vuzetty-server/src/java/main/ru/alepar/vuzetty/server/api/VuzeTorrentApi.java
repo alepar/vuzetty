@@ -20,11 +20,13 @@ public class VuzeTorrentApi implements TorrentApi {
     private final TorrentManager torrentManager;
     private final DownloadManager downloadManager;
     private final Utilities utilities;
+    private final MediaServerApi mediaServer;
 
-    public VuzeTorrentApi(TorrentManager torrentManager, DownloadManager downloadManager, Utilities utilities) {
+    public VuzeTorrentApi(TorrentManager torrentManager, DownloadManager downloadManager, Utilities utilities, MediaServerApi mediaServer) {
         this.torrentManager = torrentManager;
         this.downloadManager = downloadManager;
         this.utilities = utilities;
+        this.mediaServer = mediaServer;
     }
 
     @Override
@@ -66,7 +68,7 @@ public class VuzeTorrentApi implements TorrentApi {
         return stats.toArray(new DownloadStats[stats.size()]);
     }
 
-    private static DownloadStats extractStats(Download download) {
+    private DownloadStats extractStats(Download download) {
         final DownloadStats stat = new DownloadStats();
         final Hash hash = new Hash(download.getTorrent().getHash());
 
@@ -104,6 +106,9 @@ public class VuzeTorrentApi implements TorrentApi {
         stat.availability = download.getStats().getAvailability();
         stat.shareRatio = download.getStats().getShareRatio() / 1000.0;
         stat.estimatedSecsToCompletion = download.getStats().getETASecs();
+
+        stat.fileInfos = mediaServer.getContentUrls(download);
+
         return stat;
     }
 

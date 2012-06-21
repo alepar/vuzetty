@@ -1,6 +1,7 @@
 package ru.alepar.vuzetty.api;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 public class DownloadStats implements Serializable {
 
@@ -22,6 +23,7 @@ public class DownloadStats implements Serializable {
     public double shareRatio;
     public long estimatedSecsToCompletion;
     public String errorMessage;
+    public Collection<FileInfo> fileInfos;
 
     @Override
     public String toString() {
