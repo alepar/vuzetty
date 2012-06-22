@@ -2,10 +2,15 @@ package ru.alepar.vuzetty.client.gui;
 
 import javax.swing.*;
 
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.HashSet;
 
 import ru.alepar.vuzetty.api.DownloadStats;
+import ru.alepar.vuzetty.api.FileInfo;
 
 public class DownloadStatsPanel implements DownloadStatsDisplayer {
 
@@ -22,6 +27,38 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 	private JLabel statusValue;
 	private JLabel torrentSizeValue;
 	private JButton playButton;
+
+	public DownloadStatsPanel() {
+		playButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				final JPopupMenu popup = createMenu();
+				final JComponent source = (JButton) e.getSource();
+				final Point location = new Point(0, source.getHeight());
+				SwingUtilities.convertPointToScreen(location, source);
+				popup.setLocation(location);
+				popup.setVisible(true);
+			}
+		});
+	}
+
+	private JPopupMenu createMenu() {
+		final JPopupMenu popup = new JPopupMenu("actions");
+		popup.add(createMenuItem("hi", new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				popup.setVisible(false);
+				JOptionPane.showConfirmDialog(popup, "hi confirmed");
+			}
+		}));
+		return popup;
+	}
+
+	private static JMenuItem createMenuItem(String label, ActionListener action) {
+		final JMenuItem result = new JMenuItem(label);
+		result.addActionListener(action);
+		return result;
+	}
 
 	public JPanel getRootPanel() {
 		return torrentPanel;
@@ -73,6 +110,26 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 			}
 		}
 		return sb.toString();
+	}
+
+	public static void main(String[] args) throws Exception {
+		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		final JFrame frame = new JFrame();
+
+		final DownloadStatsPanel panel = new DownloadStatsPanel();
+		final DownloadStats stats = new DownloadStats();
+		stats.fileInfos = new HashSet<FileInfo>() {{
+			add(new FileInfo("Movie A", 1024l*1024*700, "http://some url/for/movie_a.avi"));
+			add(new FileInfo("Movie B", 1024l*1024*1400, "http://some url/for/movie_b.avi"));
+			add(new FileInfo("Movie C", 1024l*1024*2100, "http://some url/for/movie_c.avi"));
+		}};
+
+		panel.updateStats(stats);
+
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		frame.setContentPane(panel.getRootPanel());
+		frame.pack();
+		frame.setVisible(true);
 	}
 
 }
