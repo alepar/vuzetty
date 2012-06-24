@@ -89,7 +89,7 @@ public class MonitorTorrent implements MonitorTorrentMXBean {
                 DownloadStatsDisplayer displayer = hashes.get(stat.hash);
 
                 if(displayer == null) {
-                    DownloadStatsPanel panel = new DownloadStatsPanel(new UrlRunner.NativeFactory());
+                    DownloadStatsPanel panel = new DownloadStatsPanel(new UrlRunner.NativeFactory(), client);
                     contentPane.add(panel.getRootPanel());
                     hashes.put(stat.hash, panel);
 					displayer = panel;

@@ -68,6 +68,17 @@ public class VuzeTorrentApi implements TorrentApi {
         return stats.toArray(new DownloadStats[stats.size()]);
     }
 
+    @Override
+    public void deleteTorrent(Hash hash) {
+        try {
+            final Download download = downloadManager.getDownload(hash.bytes());
+            download.stopDownload();
+            download.remove(true, true);
+        } catch (Exception e) {
+            throw new RuntimeException("failed to remove download " + hash, e);
+        }
+    }
+
     private DownloadStats extractStats(Download download) {
         final DownloadStats stat = new DownloadStats();
         final Hash hash = new Hash(download.getTorrent().getHash());

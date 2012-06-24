@@ -2,6 +2,7 @@ package ru.alepar.vuzetty.client.gui;
 
 import ru.alepar.vuzetty.api.DownloadStats;
 import ru.alepar.vuzetty.api.FileInfo;
+import ru.alepar.vuzetty.api.ServerRemote;
 import ru.alepar.vuzetty.client.play.UrlRunner;
 
 import javax.swing.*;
@@ -10,7 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.HashSet;
 
 public class DownloadStatsPanel implements DownloadStatsDisplayer {
@@ -22,6 +23,9 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 	private final NumberFormat format = new DecimalFormat(NUM_FORMAT);
 
     private final UrlRunner.NativeFactory urlRunnerFactory;
+    private final ServerRemote remote;
+
+    private DownloadStats lastStats;
 
 	private JPanel torrentPanel;
 	private JProgressBar progressBar;
@@ -30,10 +34,10 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 	private JLabel statusValue;
 	private JLabel torrentSizeValue;
 	private JButton playButton;
-    private Collection<FileInfo> fileInfos;
 
-    public DownloadStatsPanel(UrlRunner.NativeFactory urlRunnerFactory) {
+    public DownloadStatsPanel(UrlRunner.NativeFactory urlRunnerFactory, ServerRemote remote) {
         this.urlRunnerFactory = urlRunnerFactory;
+        this.remote = remote;
         playButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -47,7 +51,22 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 
 	private JPopupMenu createMenu() {
 		final JPopupMenu popup = new JPopupMenu("actions");
-        for (final FileInfo info : fileInfos) {
+        createMenuItem(popup, "remove from server", new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                final int choice = JOptionPane.showConfirmDialog(
+                        torrentPanel,
+                        "Are you sure you want to delete\n" + lastStats.name + "?",
+                        "Removal confirmation",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE
+                );
+                if(choice == JOptionPane.YES_OPTION) {
+                    remote.deleteTorrent(lastStats.hash);
+                }
+            }
+        });
+        for (final FileInfo info : lastStats.fileInfos) {
             createMenuItem(popup, info.name + " [" + formatSize(info.length) + ']', new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -73,7 +92,7 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
         SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-                fileInfos = stats.fileInfos;
+                lastStats = stats;
 				torrentPanel.setBorder(BorderFactory.createTitledBorder(stats.name));
 				progressBar.setValue((int)stats.percentDone);
 				statusValue.setText(stats.statusString);
@@ -121,8 +140,10 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		final JFrame frame = new JFrame();
 
-		final DownloadStatsPanel panel = new DownloadStatsPanel(new UrlRunner.NativeFactory());
+		final DownloadStatsPanel panel = new DownloadStatsPanel(new UrlRunner.NativeFactory(), new DummyRemote());
 		final DownloadStats stats = new DownloadStats();
+        stats.hash = "somehash";
+        stats.name = "Movies";
 		stats.fileInfos = new HashSet<FileInfo>() {{
 			add(new FileInfo("Movie A", 1024l*1024*700, "http://some url/for/movie_a.avi"));
 			add(new FileInfo("Movie B", 1024l*1024*1400, "http://some url/for/movie_b.avi"));
@@ -137,4 +158,25 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 		frame.setVisible(true);
 	}
 
+    private static class DummyRemote implements ServerRemote {
+        @Override
+        public void addTorrent(byte[] torrent) {
+            System.out.println("ServerRemote#addTorrent(" + Arrays.toString(torrent)+")");
+        }
+
+        @Override
+        public void addTorrent(String url) {
+            System.out.println("ServerRemote#addTorrent(" + url+")");
+        }
+
+        @Override
+        public void pollForStats() {
+            System.out.println("ServerRemote#pollForStats()");
+        }
+
+        @Override
+        public void deleteTorrent(String hash) {
+            System.out.println("ServerRemote#deleteTorrent(" + hash +")");
+        }
+    }
 }

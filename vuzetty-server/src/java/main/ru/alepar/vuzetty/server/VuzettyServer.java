@@ -68,6 +68,11 @@ public class VuzettyServer {
         public void pollForStats() {
             clientRemote.statsUpdated(api.getStats(hashes));
         }
+
+        @Override
+        public void deleteTorrent(String hash) {
+            api.deleteTorrent(new Hash(hash));
+        }
     }
 
 }

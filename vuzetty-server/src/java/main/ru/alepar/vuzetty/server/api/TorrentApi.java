@@ -9,5 +9,5 @@ public interface TorrentApi {
     Hash addTorrent(byte[] torrent);
     Hash addTorrent(String url);
     DownloadStats[] getStats(Collection<Hash> hashes);
-
+    void deleteTorrent(Hash hash);
 }

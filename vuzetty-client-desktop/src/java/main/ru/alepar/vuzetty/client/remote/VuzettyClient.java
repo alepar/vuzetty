@@ -38,6 +38,11 @@ public class VuzettyClient implements ServerRemote {
         api.pollForStats();
     }
 
+    @Override
+    public void deleteTorrent(String hash) {
+        api.deleteTorrent(hash);
+    }
+
     public void setStatsListener(StatsListener listener) {
         this.listener = listener;
     }
