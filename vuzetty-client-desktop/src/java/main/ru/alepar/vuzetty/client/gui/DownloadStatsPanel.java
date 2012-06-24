@@ -7,10 +7,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Collection;
 import java.util.HashSet;
 
 import ru.alepar.vuzetty.api.DownloadStats;
 import ru.alepar.vuzetty.api.FileInfo;
+import ru.alepar.vuzetty.client.play.DummyUrlRunner;
+import ru.alepar.vuzetty.client.play.UrlRunner;
 
 public class DownloadStatsPanel implements DownloadStatsDisplayer {
 
@@ -20,6 +23,8 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 
 	private final NumberFormat format = new DecimalFormat(NUM_FORMAT);
 
+    private final UrlRunner urlRunner = new DummyUrlRunner();
+
 	private JPanel torrentPanel;
 	private JProgressBar progressBar;
 	private JLabel downloadSpeedValue;
@@ -27,37 +32,37 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 	private JLabel statusValue;
 	private JLabel torrentSizeValue;
 	private JButton playButton;
+    private Collection<FileInfo> fileInfos;
 
-	public DownloadStatsPanel() {
+    public DownloadStatsPanel() {
 		playButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				final JPopupMenu popup = createMenu();
 				final JComponent source = (JButton) e.getSource();
 				final Point location = new Point(0, source.getHeight());
-				SwingUtilities.convertPointToScreen(location, source);
-				popup.setLocation(location);
-				popup.setVisible(true);
+				popup.show(source, location.x, location.y);
 			}
 		});
 	}
 
 	private JPopupMenu createMenu() {
 		final JPopupMenu popup = new JPopupMenu("actions");
-		popup.add(createMenuItem("hi", new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				popup.setVisible(false);
-				JOptionPane.showConfirmDialog(popup, "hi confirmed");
-			}
-		}));
+        for (final FileInfo info : fileInfos) {
+            createMenuItem(popup, info.name + " [" + formatSize(info.length) + ']', new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    urlRunner.run(info.url);
+                }
+            });
+        }
 		return popup;
 	}
 
-	private static JMenuItem createMenuItem(String label, ActionListener action) {
+	private static void createMenuItem(JPopupMenu menu, String label, ActionListener action) {
 		final JMenuItem result = new JMenuItem(label);
 		result.addActionListener(action);
-		return result;
+		menu.add(result);
 	}
 
 	public JPanel getRootPanel() {
@@ -66,9 +71,10 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 
 	@Override
 	public void updateStats(final DownloadStats stats) {
-		SwingUtilities.invokeLater(new Runnable() {
+        SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
+                fileInfos = stats.fileInfos;
 				torrentPanel.setBorder(BorderFactory.createTitledBorder(stats.name));
 				progressBar.setValue((int)stats.percentDone);
 				statusValue.setText(stats.statusString);
