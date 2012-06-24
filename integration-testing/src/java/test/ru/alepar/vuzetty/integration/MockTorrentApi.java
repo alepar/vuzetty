@@ -29,4 +29,9 @@ public class MockTorrentApi implements TorrentApi {
         }
         return stats;
     }
+
+    @Override
+    public void deleteTorrent(Hash hash) {
+        // do nothing
+    }
 }
