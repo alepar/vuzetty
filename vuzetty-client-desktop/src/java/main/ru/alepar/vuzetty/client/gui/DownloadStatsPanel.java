@@ -40,7 +40,7 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 			public void actionPerformed(ActionEvent e) {
 				final JPopupMenu popup = createMenu();
 				final JComponent source = (JButton) e.getSource();
-				final Point location = new Point(0, source.getHeight());
+				final Point location = new Point(source.getWidth(), 0);
 				popup.show(source, location.x, location.y);
 			}
 		});

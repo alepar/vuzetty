@@ -15,8 +15,10 @@
     <colspec value="fill:max(p;60px):noGrow"/>
     <colspec value="left:4dlu:noGrow"/>
     <colspec value="fill:max(p;60px):noGrow"/>
+    <colspec value="left:4dlu:noGrow"/>
+    <colspec value="fill:max(d;4px):noGrow"/>
     <constraints>
-      <xy x="20" y="16" width="320" height="93"/>
+      <xy x="20" y="16" width="343" height="93"/>
     </constraints>
     <properties/>
     <border type="none" title=" ">
@@ -92,20 +94,6 @@
           <text value="Status"/>
         </properties>
       </component>
-      <component id="1e785" class="javax.swing.JButton" binding="playButton">
-        <constraints>
-          <grid row="4" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-          <forms defaultalign-vert="false"/>
-        </constraints>
-        <properties>
-          <borderPainted value="false"/>
-          <focusPainted value="false"/>
-          <focusable value="true"/>
-          <font style="1"/>
-          <preferredSize width="47" height="14"/>
-          <text value="..."/>
-        </properties>
-      </component>
       <component id="dc76" class="javax.swing.JLabel" binding="downloadSpeedValue">
         <constraints>
           <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -117,10 +105,24 @@
       </component>
       <component id="9b07a" class="javax.swing.JProgressBar" binding="progressBar">
         <constraints>
-          <grid row="0" column="0" row-span="1" col-span="9" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="0" column="0" row-span="1" col-span="11" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
           <forms defaultalign-horz="false"/>
         </constraints>
         <properties/>
+      </component>
+      <component id="1e785" class="javax.swing.JButton" binding="playButton">
+        <constraints>
+          <grid row="2" column="10" row-span="3" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <forms defaultalign-vert="false"/>
+        </constraints>
+        <properties>
+          <borderPainted value="false"/>
+          <focusPainted value="false"/>
+          <focusable value="true"/>
+          <font style="1"/>
+          <preferredSize width="20" height="14"/>
+          <text value="&gt;"/>
+        </properties>
       </component>
     </children>
   </grid>
