@@ -9,6 +9,7 @@
 /vuzetty-client-desktop/target
 /vuzetty-common/target
 /vuzetty-server/target
-/.idea
+/.idea/*
+!/.idea/runConfigurations
 *.log
 *.iml
