@@ -17,6 +17,7 @@ public class ClientMain {
     private static final InetSocketAddress SERVER_ADDRESS = new InetSocketAddress("azureus.alepar.ru", 31337);
 
     public static void main(String[] args) throws Exception {
+        Thread.setDefaultUncaughtExceptionHandler(new DefaultThreadExceptionHandler());
         try {
             log.debug("looking for existing monitor");
             final MonitorLookup monitorLookup = loadLookup();

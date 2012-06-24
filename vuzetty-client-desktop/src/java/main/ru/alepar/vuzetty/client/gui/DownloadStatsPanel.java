@@ -1,7 +1,10 @@
 package ru.alepar.vuzetty.client.gui;
 
-import javax.swing.*;
+import ru.alepar.vuzetty.api.DownloadStats;
+import ru.alepar.vuzetty.api.FileInfo;
+import ru.alepar.vuzetty.client.play.UrlRunner;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,11 +12,6 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Collection;
 import java.util.HashSet;
-
-import ru.alepar.vuzetty.api.DownloadStats;
-import ru.alepar.vuzetty.api.FileInfo;
-import ru.alepar.vuzetty.client.play.DummyUrlRunner;
-import ru.alepar.vuzetty.client.play.UrlRunner;
 
 public class DownloadStatsPanel implements DownloadStatsDisplayer {
 
@@ -23,7 +21,7 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 
 	private final NumberFormat format = new DecimalFormat(NUM_FORMAT);
 
-    private final UrlRunner urlRunner = new DummyUrlRunner();
+    private final UrlRunner.NativeFactory urlRunnerFactory;
 
 	private JPanel torrentPanel;
 	private JProgressBar progressBar;
@@ -34,8 +32,9 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 	private JButton playButton;
     private Collection<FileInfo> fileInfos;
 
-    public DownloadStatsPanel() {
-		playButton.addActionListener(new ActionListener() {
+    public DownloadStatsPanel(UrlRunner.NativeFactory urlRunnerFactory) {
+        this.urlRunnerFactory = urlRunnerFactory;
+        playButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				final JPopupMenu popup = createMenu();
@@ -52,7 +51,7 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
             createMenuItem(popup, info.name + " [" + formatSize(info.length) + ']', new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    urlRunner.run(info.url);
+                    urlRunnerFactory.create().run(info.url);
                 }
             });
         }
@@ -122,7 +121,7 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		final JFrame frame = new JFrame();
 
-		final DownloadStatsPanel panel = new DownloadStatsPanel();
+		final DownloadStatsPanel panel = new DownloadStatsPanel(new UrlRunner.NativeFactory());
 		final DownloadStats stats = new DownloadStats();
 		stats.fileInfos = new HashSet<FileInfo>() {{
 			add(new FileInfo("Movie A", 1024l*1024*700, "http://some url/for/movie_a.avi"));

@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.alepar.vuzetty.api.DownloadStats;
 import ru.alepar.vuzetty.client.jmx.MonitorTorrentMXBean;
+import ru.alepar.vuzetty.client.play.UrlRunner;
 import ru.alepar.vuzetty.client.remote.VuzettyClient;
 import sun.awt.VerticalBagLayout;
 
@@ -88,7 +89,7 @@ public class MonitorTorrent implements MonitorTorrentMXBean {
                 DownloadStatsDisplayer displayer = hashes.get(stat.hash);
 
                 if(displayer == null) {
-                    DownloadStatsPanel panel = new DownloadStatsPanel();
+                    DownloadStatsPanel panel = new DownloadStatsPanel(new UrlRunner.NativeFactory());
                     contentPane.add(panel.getRootPanel());
                     hashes.put(stat.hash, panel);
 					displayer = panel;
