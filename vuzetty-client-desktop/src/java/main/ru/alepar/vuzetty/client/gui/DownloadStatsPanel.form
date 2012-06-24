@@ -8,17 +8,17 @@
     <rowspec value="center:p:noGrow"/>
     <colspec value="fill:max(p;60px):noGrow"/>
     <colspec value="left:4dlu:noGrow"/>
-    <colspec value="fill:max(p;60px):noGrow"/>
+    <colspec value="right:max(p;60px):noGrow"/>
     <colspec value="left:4dlu:noGrow"/>
     <colspec value="fill:d:grow"/>
     <colspec value="left:4dlu:noGrow"/>
     <colspec value="fill:max(p;60px):noGrow"/>
     <colspec value="left:4dlu:noGrow"/>
-    <colspec value="fill:max(p;60px):noGrow"/>
+    <colspec value="right:max(p;60px):noGrow"/>
     <colspec value="left:4dlu:noGrow"/>
     <colspec value="fill:max(p;10px):noGrow"/>
     <constraints>
-      <xy x="20" y="16" width="346" height="93"/>
+      <xy x="20" y="16" width="381" height="93"/>
     </constraints>
     <properties/>
     <border type="none" title=" ">
@@ -120,7 +120,7 @@
           <focusPainted value="false"/>
           <focusable value="false"/>
           <font/>
-          <preferredSize width="40" height="14"/>
+          <preferredSize width="45" height="14"/>
           <text value="&gt;"/>
         </properties>
       </component>
