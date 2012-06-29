@@ -83,28 +83,65 @@
                 </configuration>
             </plugin>
 
+            <!-- jnlp generation -->
             <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.3</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>ru.alepar.vuzetty.client.ClientMain</mainClass>
-                        </manifest>
-                    </archive>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                </configuration>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>webstart-maven-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>make-my-jar-with-dependencies</id>
+                        <id>make-jnlp</id>
                         <phase>package</phase>
                         <goals>
-                            <goal>single</goal>
+                            <goal>jnlp-single</goal>
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <excludeTransitive>false</excludeTransitive>
+
+                    <jnlp>
+                        <outputFile>vuzetty.jnlp</outputFile>
+                        <mainClass>ru.alepar.vuzetty.client.ClientMain</mainClass>
+                    </jnlp>
+
+<!--
+                    <sign>
+                        <keystore>fillme</keystore>
+                        <keypass>fillme</keypass>
+                        &lt;!&ndash; we need to override passwords easily from the command line. ${keypass} &ndash;&gt;
+                        <storepass>fillme</storepass>
+                        &lt;!&ndash; ${storepass} &ndash;&gt;
+                        &lt;!&ndash;storetype>fillme</storetype&ndash;&gt;
+                        <alias>fillme</alias>
+
+                        &lt;!&ndash;validity>fillme</validity&ndash;&gt;
+
+                        &lt;!&ndash; only required for generating the keystore &ndash;&gt;
+                        &lt;!&ndash;dnameCn>fillme</dnameCn>
+                        <dnameOu>fillme</dnameOu>
+                        <dnameO>fillme</dnameO>
+                        <dnameL>fillme</dnameL>
+                        <dnameSt>fillme</dnameSt>
+                        <dnameC>fillme</dnameC&ndash;&gt;
+
+                        <verify>true</verify>
+                        &lt;!&ndash; verify that the signing operation succeeded &ndash;&gt;
+
+                        &lt;!&ndash; KEYSTORE MANAGEMENT &ndash;&gt;
+                        <keystoreConfig>
+                            <delete>true</delete>
+                            &lt;!&ndash; delete the keystore &ndash;&gt;
+                            <gen>true</gen>
+                            &lt;!&ndash; optional shortcut to generate the store. &ndash;&gt;
+                        </keystoreConfig>
+                    </sign>
+-->
+
+                    <pack200>true</pack200>
+                    <gzip>true</gzip>
+                    <outputJarVersions>true</outputJarVersions>
+                    <verbose>true</verbose>
+                </configuration>
             </plugin>
 
         </plugins>
