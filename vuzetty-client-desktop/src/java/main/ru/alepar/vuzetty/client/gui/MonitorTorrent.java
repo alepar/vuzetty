@@ -35,26 +35,36 @@ public class MonitorTorrent implements MonitorTorrentMXBean {
         }
     }
 
-    public MonitorTorrent(VuzettyClient client) {
+    public MonitorTorrent(final VuzettyClient client) {
         this.client = client;
 
         client.setStatsListener(new StatsListener());
 
         contentPane = new JPanel();
-        contentPane.setLayout(new VerticalBagLayout());
-
         frame = new JFrame();
-        frame.setTitle("vuzetty @ " + client.getAddress());
-        frame.setContentPane(contentPane);
-        frame.setIconImage(Toolkit.getDefaultToolkit().getImage(MonitorTorrent.class.getClassLoader().getResource(ICON_PATH)));
-        frame.setSize(350, 0);
-        frame.setVisible(true);
 
-        frame.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                System.exit(0);
-            }
-        });
+        try {
+            SwingUtilities.invokeAndWait(new Runnable() {
+                @Override
+                public void run() {
+                    contentPane.setLayout(new VerticalBagLayout());
+
+                    frame.setTitle("vuzetty @ " + client.getAddress());
+                    frame.setContentPane(contentPane);
+                    frame.setIconImage(Toolkit.getDefaultToolkit().getImage(MonitorTorrent.class.getClassLoader().getResource(ICON_PATH)));
+                    frame.setSize(445, 0);
+                    frame.setVisible(true);
+
+                    frame.addWindowListener(new WindowAdapter() {
+                        public void windowClosing(WindowEvent e) {
+                            System.exit(0);
+                        }
+                    });
+                }
+            });
+        } catch (Exception e) {
+            throw new RuntimeException("something went completely bollocks", e);
+        }
 
         new Thread(new StatPoller()).start();
     }
