@@ -3,9 +3,9 @@ package ru.alepar.vuzetty.client.gui;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.alepar.vuzetty.api.DownloadStats;
-import ru.alepar.vuzetty.client.jmx.MonitorTorrentMXBean;
 import ru.alepar.vuzetty.client.play.UrlRunner;
 import ru.alepar.vuzetty.client.remote.VuzettyClient;
+import ru.alepar.vuzetty.client.remote.VuzettyRemote;
 import sun.awt.VerticalBagLayout;
 
 import javax.swing.*;
@@ -16,7 +16,7 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MonitorTorrent implements MonitorTorrentMXBean {
+public class MonitorTorrent implements VuzettyRemote {
 
     private static final String ICON_PATH = "ru/alepar/vuzetty/client/gui/vuze.png";
 
@@ -85,11 +85,6 @@ public class MonitorTorrent implements MonitorTorrentMXBean {
 
     private static boolean isLocalFile(String argument) {
         return new File(argument).isFile();
-    }
-
-    @Override
-    public boolean check() {
-        return true;
     }
 
     private class StatsListener implements ru.alepar.vuzetty.client.remote.StatsListener {
