@@ -13,8 +13,8 @@ import java.util.List;
 public class ClientMain {
 
     private static final Logger log = LoggerFactory.getLogger(ClientMain.class);
-//    private static final InetSocketAddress SERVER_ADDRESS = new InetSocketAddress("azureus.alepar.ru", 31337);
-    private static final InetSocketAddress SERVER_ADDRESS = new InetSocketAddress("localhost", 31337);
+    private static final InetSocketAddress SERVER_ADDRESS = new InetSocketAddress("azureus.alepar.ru", 31337);
+//    private static final InetSocketAddress SERVER_ADDRESS = new InetSocketAddress("localhost", 31337);
 
     public static void main(String[] args) throws Exception {
         args = cleanupJwsMess(args);
