@@ -11,6 +11,7 @@ public interface UrlRunner {
         private static String[] knownPlayers = new String[] {
                 "/usr/bin/vlc",
                 "C:\\Program Files (x86)\\VideoLAN\\VLC\\vlc.exe",
+                "C:\\Program Files\\VideoLAN\\VLC\\vlc.exe",
                 "C:\\Program Files\\Media Player Classic - Home Cinema\\mpc-hc64.exe",
         };
 
