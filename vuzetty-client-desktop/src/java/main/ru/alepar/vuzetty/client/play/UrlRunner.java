@@ -3,6 +3,7 @@ package ru.alepar.vuzetty.client.play;
 import java.io.File;
 
 public interface UrlRunner {
+
     void run(String url);
 
     public class NativeFactory {
@@ -13,13 +14,13 @@ public interface UrlRunner {
                 "C:\\Program Files (x86)\\VideoLAN\\VLC\\vlc.exe",
         };
 
-        public UrlRunner create() {
+        public static UrlRunner create(String serverHost) {
             for (String player : knownPlayers) {
                 if(new File(player).canExecute()) {
-                    return new PlayerUrlRunner(new RuntimeCmdRunner(), player);
+                    return new AddHostUrlRunner(new PlayerUrlRunner(new RuntimeCmdRunner(), player), serverHost);
                 }
             }
-            throw new RuntimeException("could not find suitable player");
+            return new DummyUrlRunner();
         }
     }
 

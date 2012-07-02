@@ -36,7 +36,7 @@ public class VuzeMediaServerApi implements MediaServerApi {
 
     private String getContentURL(DiskManagerFileInfo info) {
         try {
-            return (String) getMediaIpc().invoke("getContentURL", new Object[]{info});
+            return chopOffHostname((String) getMediaIpc().invoke("getContentURL", new Object[]{info}));
         } catch (IPCException e) {
             throw new RuntimeException("got exception while invoking azupnpav.getContentURL()", e);
         }
@@ -51,6 +51,10 @@ public class VuzeMediaServerApi implements MediaServerApi {
             mediaIpc = mediaInterface.getIPC();
         }
         return mediaIpc;
+    }
+
+    private static String chopOffHostname(String url) {
+        return url.replaceFirst("http://[^:/]+(.*)", "$1");
     }
 
 }

@@ -30,7 +30,7 @@ public class ClientMain {
             boolean shouldExit = false;
             if(vuzetty == null) {
                 log.debug("no vuzetty found, creating new one");
-                vuzetty = new MonitorTorrent(new VuzettyClient(config.getServerAddress()));
+                vuzetty = new MonitorTorrent(config, new VuzettyClient(config.getServerAddress()));
                 discovery.announce(vuzetty);
             } else {
                 log.debug("already running vuzetty found");

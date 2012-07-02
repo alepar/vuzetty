@@ -3,6 +3,7 @@ package ru.alepar.vuzetty.client.gui;
 import ru.alepar.vuzetty.api.DownloadStats;
 import ru.alepar.vuzetty.api.FileInfo;
 import ru.alepar.vuzetty.api.ServerRemote;
+import ru.alepar.vuzetty.client.play.DummyUrlRunner;
 import ru.alepar.vuzetty.client.play.UrlRunner;
 
 import javax.swing.*;
@@ -22,7 +23,7 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 
 	private final NumberFormat format = new DecimalFormat(NUM_FORMAT);
 
-    private final UrlRunner.NativeFactory urlRunnerFactory;
+    private final UrlRunner urlRunner;
     private final ServerRemote remote;
 
     private DownloadStats lastStats;
@@ -35,8 +36,7 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 	private JLabel torrentSizeValue;
 	private JButton playButton;
 
-    public DownloadStatsPanel(UrlRunner.NativeFactory urlRunnerFactory, ServerRemote remote) {
-        this.urlRunnerFactory = urlRunnerFactory;
+    public DownloadStatsPanel(ServerRemote remote, UrlRunner urlRunner) {
         this.remote = remote;
         playButton.addActionListener(new ActionListener() {
 			@Override
@@ -47,7 +47,8 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 				popup.show(source, location.x, location.y);
 			}
 		});
-	}
+        this.urlRunner = urlRunner;
+    }
 
 	private JPopupMenu createMenu() {
 		final JPopupMenu popup = new JPopupMenu("actions");
@@ -70,7 +71,7 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
             createMenuItem(popup, info.name + " [" + formatSize(info.length) + ']', new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    urlRunnerFactory.create().run(info.url);
+                    urlRunner.run(info.url);
                 }
             });
         }
@@ -140,7 +141,7 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		final JFrame frame = new JFrame();
 
-		final DownloadStatsPanel panel = new DownloadStatsPanel(new UrlRunner.NativeFactory(), new DummyRemote());
+		final DownloadStatsPanel panel = new DownloadStatsPanel(new DummyRemote(), new DummyUrlRunner());
 		final DownloadStats stats = new DownloadStats();
         stats.hash = "somehash";
         stats.name = "Movies";

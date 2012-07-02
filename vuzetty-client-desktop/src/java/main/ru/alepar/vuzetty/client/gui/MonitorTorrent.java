@@ -3,6 +3,7 @@ package ru.alepar.vuzetty.client.gui;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.alepar.vuzetty.api.DownloadStats;
+import ru.alepar.vuzetty.client.config.Configuration;
 import ru.alepar.vuzetty.client.play.UrlRunner;
 import ru.alepar.vuzetty.client.remote.VuzettyClient;
 import ru.alepar.vuzetty.client.remote.VuzettyRemote;
@@ -23,6 +24,7 @@ public class MonitorTorrent implements VuzettyRemote {
     private final Logger log = LoggerFactory.getLogger(MonitorTorrent.class);
     private final Map<String, DownloadStatsDisplayer> hashes = new HashMap<String, DownloadStatsDisplayer>();
 
+    private final Configuration config;
     private final VuzettyClient client;
 
     private final JFrame frame;
@@ -35,7 +37,8 @@ public class MonitorTorrent implements VuzettyRemote {
         }
     }
 
-    public MonitorTorrent(final VuzettyClient client) {
+    public MonitorTorrent(Configuration config, final VuzettyClient client) {
+        this.config = config;
         this.client = client;
 
         client.setStatsListener(new StatsListener());
@@ -94,7 +97,12 @@ public class MonitorTorrent implements VuzettyRemote {
                 DownloadStatsDisplayer displayer = hashes.get(stat.hash);
 
                 if(displayer == null) {
-                    DownloadStatsPanel panel = new DownloadStatsPanel(new UrlRunner.NativeFactory(), client);
+                    final DownloadStatsPanel panel = new DownloadStatsPanel(
+                            client,
+                            UrlRunner.NativeFactory.create(
+                                    config.getServerAddress().getAddress().getHostAddress()
+                            )
+                    );
                     contentPane.add(panel.getRootPanel());
                     hashes.put(stat.hash, panel);
 					displayer = panel;
