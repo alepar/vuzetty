@@ -2,23 +2,25 @@ package ru.alepar.vuzetty.client;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.alepar.vuzetty.client.config.Configuration;
+import ru.alepar.vuzetty.client.config.ResourceConfiguration;
 import ru.alepar.vuzetty.client.gui.MonitorTorrent;
 import ru.alepar.vuzetty.client.remote.VuzettyClient;
 import ru.alepar.vuzetty.client.remote.VuzettyRemote;
 
-import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class ClientMain {
 
     private static final Logger log = LoggerFactory.getLogger(ClientMain.class);
-    private static final InetSocketAddress SERVER_ADDRESS = new InetSocketAddress("azureus.alepar.ru", 31337);
-//    private static final InetSocketAddress SERVER_ADDRESS = new InetSocketAddress("localhost", 31337);
 
     public static void main(String[] args) throws Exception {
         args = cleanupJwsMess(args);
         Thread.setDefaultUncaughtExceptionHandler(new DefaultThreadExceptionHandler());
+
+        final Configuration config = new ResourceConfiguration(ResourceBundle.getBundle("vuzetty-config"));
 
         log.debug("looking for existing monitor");
         final VuzettyDiscovery discovery = new VuzettyDiscovery();
@@ -28,7 +30,7 @@ public class ClientMain {
             boolean shouldExit = false;
             if(vuzetty == null) {
                 log.debug("no vuzetty found, creating new one");
-                vuzetty = new MonitorTorrent(new VuzettyClient(SERVER_ADDRESS));
+                vuzetty = new MonitorTorrent(new VuzettyClient(config.getServerAddress()));
                 discovery.announce(vuzetty);
             } else {
                 log.debug("already running vuzetty found");
