@@ -60,6 +60,7 @@
                 <directory>src/java/main</directory>
                 <includes>
                     <include>logback.xml</include>
+                    <include>vuzetty-config.properties</include>
                     <include>ru/alepar/vuzetty/client/gui/vuze.png</include>
                 </includes>
             </resource>
