@@ -5,8 +5,8 @@ import ru.alepar.rpc.api.NettyRpcServerBuilder;
 import ru.alepar.rpc.api.Remote;
 import ru.alepar.rpc.api.RpcServer;
 import ru.alepar.vuzetty.api.ClientRemote;
+import ru.alepar.vuzetty.api.Hash;
 import ru.alepar.vuzetty.api.ServerRemote;
-import ru.alepar.vuzetty.server.api.Hash;
 import ru.alepar.vuzetty.server.api.TorrentApi;
 
 import java.net.InetSocketAddress;
@@ -70,8 +70,8 @@ public class VuzettyServer {
         }
 
         @Override
-        public void deleteTorrent(String hash) {
-            api.deleteTorrent(new Hash(hash));
+        public void deleteTorrent(Hash hash) {
+            api.deleteTorrent(hash);
         }
     }
 

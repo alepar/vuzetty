@@ -5,7 +5,7 @@ import java.util.Collection;
 
 public class DownloadStats implements Serializable {
 
-    public String hash;
+    public Hash hash;
     public String name;
     public DownloadState status;
     public String statusString;

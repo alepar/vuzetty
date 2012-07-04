@@ -8,6 +8,7 @@ import org.gudy.azureus2.plugins.utils.Utilities;
 import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloader;
 import ru.alepar.vuzetty.api.DownloadState;
 import ru.alepar.vuzetty.api.DownloadStats;
+import ru.alepar.vuzetty.api.Hash;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -60,7 +61,7 @@ public class VuzeTorrentApi implements TorrentApi {
                 stats.add(extractStats(downloadManager.getDownload(hash.bytes())));
             } catch (Exception e) {
                 final DownloadStats stat = new DownloadStats();
-                stat.hash = hash.toString();
+                stat.hash = hash;
                 stat.errorMessage = e.toString();
                 stats.add(stat);
             }
@@ -81,9 +82,8 @@ public class VuzeTorrentApi implements TorrentApi {
 
     private DownloadStats extractStats(Download download) {
         final DownloadStats stat = new DownloadStats();
-        final Hash hash = new Hash(download.getTorrent().getHash());
 
-        stat.hash = hash.toString();
+        stat.hash = new Hash(download.getTorrent().getHash());
         stat.name = download.getName();
 
         stat.status = translate(download.getState());

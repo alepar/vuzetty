@@ -3,6 +3,7 @@ package ru.alepar.vuzetty.client.gui;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.alepar.vuzetty.api.DownloadStats;
+import ru.alepar.vuzetty.api.Hash;
 import ru.alepar.vuzetty.client.config.Configuration;
 import ru.alepar.vuzetty.client.play.UrlRunner;
 import ru.alepar.vuzetty.client.remote.VuzettyClient;
@@ -22,7 +23,7 @@ public class MonitorTorrent implements VuzettyRemote {
     private static final String ICON_PATH = "ru/alepar/vuzetty/client/gui/vuze.png";
 
     private final Logger log = LoggerFactory.getLogger(MonitorTorrent.class);
-    private final Map<String, DownloadStatsDisplayer> hashes = new HashMap<String, DownloadStatsDisplayer>();
+    private final Map<Hash, DownloadStatsDisplayer> hashes = new HashMap<Hash, DownloadStatsDisplayer>();
 
     private final Configuration config;
     private final VuzettyClient client;

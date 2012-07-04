@@ -1,6 +1,7 @@
 package ru.alepar.vuzetty.server.api;
 
 import ru.alepar.vuzetty.api.DownloadStats;
+import ru.alepar.vuzetty.api.Hash;
 
 import java.util.Collection;
 

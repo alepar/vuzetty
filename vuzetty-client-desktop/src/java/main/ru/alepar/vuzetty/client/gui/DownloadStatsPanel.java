@@ -2,6 +2,7 @@ package ru.alepar.vuzetty.client.gui;
 
 import ru.alepar.vuzetty.api.DownloadStats;
 import ru.alepar.vuzetty.api.FileInfo;
+import ru.alepar.vuzetty.api.Hash;
 import ru.alepar.vuzetty.api.ServerRemote;
 import ru.alepar.vuzetty.client.play.DummyUrlRunner;
 import ru.alepar.vuzetty.client.play.UrlRunner;
@@ -143,7 +144,7 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 
 		final DownloadStatsPanel panel = new DownloadStatsPanel(new DummyRemote(), new DummyUrlRunner());
 		final DownloadStats stats = new DownloadStats();
-        stats.hash = "somehash";
+        stats.hash = new Hash("cafebabe");
         stats.name = "Movies";
 		stats.fileInfos = new HashSet<FileInfo>() {{
 			add(new FileInfo("Movie A", 1024l*1024*700, "http://some url/for/movie_a.avi"));
@@ -176,7 +177,7 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
         }
 
         @Override
-        public void deleteTorrent(String hash) {
+        public void deleteTorrent(Hash hash) {
             System.out.println("ServerRemote#deleteTorrent(" + hash +")");
         }
     }
