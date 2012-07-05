@@ -2,6 +2,7 @@ package ru.alepar.vuzetty.client.gui;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.alepar.vuzetty.api.Category;
 import ru.alepar.vuzetty.api.DownloadStats;
 import ru.alepar.vuzetty.api.Hash;
 import ru.alepar.vuzetty.client.config.Configuration;
@@ -38,7 +39,7 @@ public class MonitorTorrent implements VuzettyRemote {
         }
     }
 
-    public MonitorTorrent(Configuration config, final VuzettyClient client) {
+    public MonitorTorrent(final Configuration config, final VuzettyClient client) {
         this.config = config;
         this.client = client;
 
@@ -53,7 +54,7 @@ public class MonitorTorrent implements VuzettyRemote {
                 public void run() {
                     contentPane.setLayout(new VerticalBagLayout());
 
-                    frame.setTitle("vuzetty @ " + client.getAddress());
+                    frame.setTitle(config.getNickname() + " @ " + client.getAddress());
                     frame.setContentPane(contentPane);
                     frame.setIconImage(Toolkit.getDefaultToolkit().getImage(MonitorTorrent.class.getClassLoader().getResource(ICON_PATH)));
                     frame.setSize(445, 0);
@@ -78,9 +79,9 @@ public class MonitorTorrent implements VuzettyRemote {
         log.info("adding torrent={}", argument);
         try {
             if (isLocalFile(argument)) {
-                client.addTorrent(readFile(argument));
+                client.addTorrent(readFile(argument), new Category(config.getNickname()));
             } else {
-                client.addTorrent(argument);
+                client.addTorrent(argument, new Category(config.getNickname()));
             }
         } catch (IOException e) {
             log.error("failed to add torrent=" + argument, e);

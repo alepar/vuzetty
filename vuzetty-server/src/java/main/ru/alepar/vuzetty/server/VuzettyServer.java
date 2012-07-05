@@ -4,6 +4,7 @@ import ru.alepar.rpc.api.ImplementationFactory;
 import ru.alepar.rpc.api.NettyRpcServerBuilder;
 import ru.alepar.rpc.api.Remote;
 import ru.alepar.rpc.api.RpcServer;
+import ru.alepar.vuzetty.api.Category;
 import ru.alepar.vuzetty.api.ClientRemote;
 import ru.alepar.vuzetty.api.Hash;
 import ru.alepar.vuzetty.api.ServerRemote;
@@ -53,14 +54,14 @@ public class VuzettyServer {
         }
 
         @Override
-        public void addTorrent(byte[] torrent) {
-            final Hash hash = api.addTorrent(torrent);
+        public void addTorrent(byte[] torrent, Category category) {
+            final Hash hash = api.addTorrent(torrent, category);
             hashes.add(hash);
         }
 
         @Override
-        public void addTorrent(String url) {
-            final Hash hash = api.addTorrent(url);
+        public void addTorrent(String url, Category category) {
+            final Hash hash = api.addTorrent(url, category);
             hashes.add(hash);
         }
 

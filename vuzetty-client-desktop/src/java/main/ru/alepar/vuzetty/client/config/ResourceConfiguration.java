@@ -19,4 +19,8 @@ public class ResourceConfiguration implements Configuration {
         );
     }
 
+    @Override
+    public String getNickname() {
+        return null;
+    }
 }

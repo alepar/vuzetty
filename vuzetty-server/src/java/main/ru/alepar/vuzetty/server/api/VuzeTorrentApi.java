@@ -1,11 +1,14 @@
 package ru.alepar.vuzetty.server.api;
 
 import org.gudy.azureus2.plugins.download.Download;
+import org.gudy.azureus2.plugins.download.DownloadException;
 import org.gudy.azureus2.plugins.download.DownloadManager;
 import org.gudy.azureus2.plugins.torrent.Torrent;
+import org.gudy.azureus2.plugins.torrent.TorrentAttribute;
 import org.gudy.azureus2.plugins.torrent.TorrentManager;
 import org.gudy.azureus2.plugins.utils.Utilities;
 import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloader;
+import ru.alepar.vuzetty.api.Category;
 import ru.alepar.vuzetty.api.DownloadState;
 import ru.alepar.vuzetty.api.DownloadStats;
 import ru.alepar.vuzetty.api.Hash;
@@ -22,35 +25,55 @@ public class VuzeTorrentApi implements TorrentApi {
     private final DownloadManager downloadManager;
     private final Utilities utilities;
     private final MediaServerApi mediaServer;
+    private final TorrentAttribute categoryAttr;
 
     public VuzeTorrentApi(TorrentManager torrentManager, DownloadManager downloadManager, Utilities utilities, MediaServerApi mediaServer) {
         this.torrentManager = torrentManager;
         this.downloadManager = downloadManager;
         this.utilities = utilities;
         this.mediaServer = mediaServer;
+        this.categoryAttr = torrentManager.getAttribute(TorrentAttribute.TA_CATEGORY);
     }
 
     @Override
-    public Hash addTorrent(byte[] torrent) {
+    public Hash addTorrent(byte[] bytes, Category category) {
         try {
-            return new Hash(downloadManager.addDownload(torrentManager.createFromBEncodedData(torrent)).getTorrent().getHash());
+            final Torrent torrent = torrentManager.createFromBEncodedData(bytes);
+            return addTorrent(torrent, category);
         } catch (Exception e) {
             throw new RuntimeException("failed to add torrent", e);
         }
     }
 
     @Override
-    public Hash addTorrent(String url1) {
+    public Hash addTorrent(String urlStr, Category category) {
         try {
-            final URL url = new URL(url1);
+            final URL url = new URL(urlStr);
             final ResourceDownloader rd = utilities.getResourceDownloaderFactory().create(url);
             final InputStream is = rd.download();
             final Torrent torrent = torrentManager.createFromBEncodedInputStream(is);
-            downloadManager.addDownload(torrent);
-            return new Hash(torrent.getHash());
+            return addTorrent(torrent, category);
         } catch (Exception e) {
             throw new RuntimeException("failed to add torrent", e);
         }
+    }
+
+    private Hash addTorrent(Torrent torrent, Category category) throws DownloadException {
+        final Download download = downloadManager.addDownload(torrent);
+        if(!isCategoryDefined(category)) {
+            categoryAttr.addDefinedValue(category.name);
+        }
+        download.setAttribute(categoryAttr, category.name);
+        return new Hash(torrent.getHash());
+    }
+
+    private boolean isCategoryDefined(Category category) {
+        for (String name : categoryAttr.getDefinedValues()) {
+            if(name.equals(category.name)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

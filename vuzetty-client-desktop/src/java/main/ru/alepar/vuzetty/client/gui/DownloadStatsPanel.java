@@ -1,9 +1,6 @@
 package ru.alepar.vuzetty.client.gui;
 
-import ru.alepar.vuzetty.api.DownloadStats;
-import ru.alepar.vuzetty.api.FileInfo;
-import ru.alepar.vuzetty.api.Hash;
-import ru.alepar.vuzetty.api.ServerRemote;
+import ru.alepar.vuzetty.api.*;
 import ru.alepar.vuzetty.client.play.DummyUrlRunner;
 import ru.alepar.vuzetty.client.play.UrlRunner;
 
@@ -162,12 +159,12 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 
     private static class DummyRemote implements ServerRemote {
         @Override
-        public void addTorrent(byte[] torrent) {
+        public void addTorrent(byte[] torrent, Category category) {
             System.out.println("ServerRemote#addTorrent(" + Arrays.toString(torrent)+")");
         }
 
         @Override
-        public void addTorrent(String url) {
+        public void addTorrent(String url, Category category) {
             System.out.println("ServerRemote#addTorrent(" + url+")");
         }
 

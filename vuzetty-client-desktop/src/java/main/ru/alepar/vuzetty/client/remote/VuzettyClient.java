@@ -2,9 +2,7 @@ package ru.alepar.vuzetty.client.remote;
 
 import ru.alepar.rpc.api.NettyRpcClientBuilder;
 import ru.alepar.rpc.api.RpcClient;
-import ru.alepar.vuzetty.api.ClientRemote;
-import ru.alepar.vuzetty.api.DownloadStats;
-import ru.alepar.vuzetty.api.ServerRemote;
+import ru.alepar.vuzetty.api.*;
 
 import java.net.InetSocketAddress;
 
@@ -24,13 +22,13 @@ public class VuzettyClient implements ServerRemote {
     }
 
     @Override
-    public void addTorrent(byte[] torrent) {
-        api.addTorrent(torrent);
+    public void addTorrent(byte[] torrent, Category category) {
+        api.addTorrent(torrent, category);
     }
 
     @Override
-    public void addTorrent(String url) {
-        api.addTorrent(url);
+    public void addTorrent(String url, Category category) {
+        api.addTorrent(url, category);
     }
 
     @Override
@@ -39,7 +37,7 @@ public class VuzettyClient implements ServerRemote {
     }
 
     @Override
-    public void deleteTorrent(String hash) {
+    public void deleteTorrent(Hash hash) {
         api.deleteTorrent(hash);
     }
 

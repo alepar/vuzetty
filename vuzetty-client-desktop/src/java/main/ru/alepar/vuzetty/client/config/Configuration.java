@@ -6,4 +6,5 @@ public interface Configuration {
 
     InetSocketAddress getServerAddress();
 
+    String getNickname();
 }

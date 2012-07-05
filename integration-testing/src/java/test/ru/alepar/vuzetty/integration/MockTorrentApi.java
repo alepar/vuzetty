@@ -1,5 +1,6 @@
 package ru.alepar.vuzetty.integration;
 
+import ru.alepar.vuzetty.api.Category;
 import ru.alepar.vuzetty.api.DownloadStats;
 import ru.alepar.vuzetty.api.Hash;
 import ru.alepar.vuzetty.server.api.TorrentApi;
@@ -9,12 +10,12 @@ import java.util.Collection;
 public class MockTorrentApi implements TorrentApi {
 
     @Override
-    public Hash addTorrent(byte[] torrent) {
+    public Hash addTorrent(byte[] torrent, Category category) {
         return new Hash(torrent);
     }
 
     @Override
-    public Hash addTorrent(String url) {
+    public Hash addTorrent(String url, Category category) {
         return new Hash(url.getBytes());
     }
 
