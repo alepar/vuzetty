@@ -33,14 +33,14 @@ public class ClientServerCommunicationTest {
         final TorrentApi api = mockery.mock(TorrentApi.class);
 
         mockery.checking(new Expectations() {{
-            one(api).addTorrent(TORRENT_ONE);
+            one(api).addTorrent(TORRENT_ONE, null);
         }});
 
         final VuzettyServer server = new VuzettyServer(LISTEN_ADDRESS, api);
         final VuzettyClient client = new VuzettyClient(LISTEN_ADDRESS);
 
         try {
-            client.addTorrent(TORRENT_ONE);
+            client.addTorrent(TORRENT_ONE, null);
             sleep();
         } finally {
             client.shutdown();
@@ -59,8 +59,8 @@ public class ClientServerCommunicationTest {
         client.setStatsListener(listener);
 
         try {
-            client.addTorrent(TORRENT_ONE);
-            client.addTorrent(TORRENT_TWO);
+            client.addTorrent(TORRENT_ONE, null);
+            client.addTorrent(TORRENT_TWO, null);
             client.pollForStats();
             sleep();
 
