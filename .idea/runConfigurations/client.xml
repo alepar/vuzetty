@@ -8,7 +8,7 @@
     </extension>
     <option name="MAIN_CLASS_NAME" value="ru.alepar.vuzetty.client.ClientMain" />
     <option name="VM_PARAMETERS" value="" />
-    <option name="PROGRAM_PARAMETERS" value="magnet:?xt=urn:btih:0cb17aefc8364ff259ccf078a10ff7302463704b&amp;dn=Futurama.S07E02.720p.HDTV.x264-IMMERSE+%5BPublicHD%5D&amp;tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80&amp;tr=udp%3A%2F%2Ftracker.publicbt.com%3A80&amp;tr=udp%3A%2F%2Ftracker.istole.it%3A6969&amp;tr=udp%3A%2F%2Ftracker.ccc.de%3A80" />
+    <option name="PROGRAM_PARAMETERS" value="magnet:?xt=urn:btih:71c6eeff63e5b01e3e186aca50f2802d585d0890&amp;dn=Futurama.S07E04.720p.HDTV.x264-IMMERSE+%5BPublicHD%5D&amp;tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80&amp;tr=udp%3A%2F%2Ftracker.publicbt.com%3A80&amp;tr=udp%3A%2F%2Ftracker.istole.it%3A6969&amp;tr=udp%3A%2F%2Ftracker.ccc.de%3A80" />
     <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
     <option name="ALTERNATIVE_JRE_PATH" value="" />
