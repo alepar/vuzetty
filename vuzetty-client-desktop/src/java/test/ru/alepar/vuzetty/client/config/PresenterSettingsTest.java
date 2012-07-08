@@ -26,8 +26,11 @@ public class PresenterSettingsTest {
 		final SettingsSaver saver = mockery.mock(SettingsSaver.class);
 
 		mockery.checking(new Expectations() {{
-			one(currentSettings).getString(KEY);
+			allowing(currentSettings).getString(KEY);
 				will(returnValue(OLD_VALUE));
+
+			allowing(presenter).knownKeys();
+				will(returnValue(new String[] {KEY}));
 
 			one(presenter).highlightServerAddressHost();
 			one(presenter).setServerAddressHost(OLD_VALUE);
@@ -35,7 +38,7 @@ public class PresenterSettingsTest {
 			one(presenter).show();
 			one(presenter).waitForOk();
 
-			one(presenter).getServerAddressHost();
+			allowing(presenter).getServerAddressHost();
 				will(returnValue(NEW_VALUE));
 
 			one(saver).set(KEY, NEW_VALUE);
@@ -72,9 +75,9 @@ public class PresenterSettingsTest {
 				will(returnValue(OLD_VALUE));
 
 			one(presenter).highlightServerAddressHost();
-			one(presenter).setServerAddressHost(with(OLD_VALUE));
-			one(presenter).setServerAddressPort(with(OLD_VALUE));
-			one(presenter).setClientNickname(with(OLD_VALUE));
+			one(presenter).setServerAddressHost(OLD_VALUE);
+			one(presenter).setServerAddressPort(OLD_VALUE);
+			one(presenter).setClientNickname(OLD_VALUE);
 
 			one(presenter).waitForOk();
 			one(presenter).show();
@@ -88,6 +91,54 @@ public class PresenterSettingsTest {
 
 			one(saver).set(KNOWN_KEYS[0], NEW_VALUE);
 			one(saver).set(KNOWN_KEYS[2], NEW_VALUE);
+		}});
+
+		final Settings presenterSettings = new PresenterSettings(currentSettings, presenter, saver);
+		presenterSettings.getString(KNOWN_KEYS[0]);
+	}
+
+	@Test
+	public void handlesNullsInValuesCorrectly() throws Exception {
+		final String[] KNOWN_KEYS = new String[] {
+				"server.address.host",
+				"server.address.port",
+				"client.nickname"
+		};
+
+		final String NOT_NULL = "NOT_NULL";
+
+		final Settings currentSettings = mockery.mock(Settings.class, "currentSettings");
+		final Presenter presenter = mockery.mock(Presenter.class);
+		final SettingsSaver saver = mockery.mock(SettingsSaver.class);
+
+		mockery.checking(new Expectations() {{
+			allowing(presenter).knownKeys();
+				will(returnValue(KNOWN_KEYS));
+
+			allowing(currentSettings).getString(KNOWN_KEYS[0]);
+				will(returnValue(null));
+			allowing(currentSettings).getString(KNOWN_KEYS[1]);
+				will(returnValue(null));
+			allowing(currentSettings).getString(KNOWN_KEYS[2]);
+				will(returnValue(NOT_NULL));
+
+			one(presenter).highlightServerAddressHost();
+			one(presenter).setServerAddressHost(null);
+			one(presenter).setServerAddressPort(null);
+			one(presenter).setClientNickname(NOT_NULL);
+
+			one(presenter).waitForOk();
+			one(presenter).show();
+
+			allowing(presenter).getServerAddressHost();
+				will(returnValue(NOT_NULL));
+			one(presenter).getServerAddressPort();
+				will(returnValue(null));
+			one(presenter).getClientNickname();
+				will(returnValue(null));
+
+			one(saver).set(KNOWN_KEYS[0], NOT_NULL);
+			one(saver).set(KNOWN_KEYS[2], null);
 		}});
 
 		final Settings presenterSettings = new PresenterSettings(currentSettings, presenter, saver);
