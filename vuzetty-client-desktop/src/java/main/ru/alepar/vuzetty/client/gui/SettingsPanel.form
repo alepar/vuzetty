@@ -30,7 +30,6 @@
           <forms/>
         </constraints>
         <properties>
-          <enabled value="true"/>
           <text value="Server Address"/>
         </properties>
       </component>
