@@ -21,14 +21,20 @@ public class PresenterSettings implements Settings {
 
     @Override
     public String getString(String key) {
-		final String currentValue = currentSettings.getString(key);
 		highlightOnPresenter(key);
-		setOnPresenter(key, currentValue);
+		populatePresenter();
 		presenter.show();
 		presenter.waitForOk();
 		final String newValue = getFromPresenter(key);
 		saver.set(key, newValue);
 		return newValue;
+	}
+
+	private void populatePresenter() {
+		for (String key : presenter.knownKeys()) {
+			final String value = currentSettings.getString(key);
+			setOnPresenter(key, value);
+		}
 	}
 
 	private String getFromPresenter(String key) {

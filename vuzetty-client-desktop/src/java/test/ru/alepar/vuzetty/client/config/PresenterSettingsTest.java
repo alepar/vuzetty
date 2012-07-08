@@ -21,7 +21,7 @@ public class PresenterSettingsTest {
 
     @Test
     public void asksCurrentSettingsIfValueExistsAndHighlightsItAndDisplaysItViaPresenter() throws Exception {
-		final Settings currentSettings = mockery.mock(Settings.class);
+		final Settings currentSettings = mockery.mock(Settings.class, "currentSettings");
 		final Presenter presenter = mockery.mock(Presenter.class);
 		final SettingsSaver saver = mockery.mock(SettingsSaver.class);
 
@@ -45,14 +45,45 @@ public class PresenterSettingsTest {
 		assertThat(presenterSettings.getString(KEY), equalTo(NEW_VALUE));
     }
 
-    @Test
-    public void savesChangedValues() throws Exception {
-
-    }
-
 	@Test
 	public void populatesAllKnownKeysInPresenter() throws Exception {
+		final Settings currentSettings = mockery.mock(Settings.class, "currentSettings");
+		final Presenter presenter = mockery.mock(Presenter.class);
+		final SettingsSaver saver = mockery.mock(SettingsSaver.class);
 
+		final String[] knownKeys = new String[] {
+				"server.address.host",
+				"server.address.port",
+				"client.nickname"
+		};
+
+		mockery.checking(new Expectations() {{
+			ignoring(currentSettings);
+			ignoring(saver);
+
+			one(presenter).knownKeys();
+				will(returnValue(knownKeys));
+
+			one(presenter).highlightServerAddressHost();
+			one(presenter).setServerAddressHost(with(any(String.class)));
+			one(presenter).setServerAddressPort(with(any(String.class)));
+			one(presenter).setClientNickname(with(any(String.class)));
+
+			one(presenter).waitForOk();
+			one(presenter).show();
+
+			one(presenter).getServerAddressHost();
+//			one(presenter).getServerAddressPort();
+//			one(presenter).getClientNickname();
+		}});
+
+		final Settings presenterSettings = new PresenterSettings(currentSettings, presenter, saver);
+		presenterSettings.getString(KEY);
 	}
+
+    @Test
+    public void savesOnlyChangedValues() throws Exception {
+
+    }
 
 }
