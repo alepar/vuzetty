@@ -8,22 +8,20 @@ import java.awt.*;
 
 public class SettingsPanel implements Presenter {
 
-	public static final String[] KNOWN_KEYS = new String[]{
-			"server.address.host",
-			"server.address.port",
-			"client.nickname",
-	};
-
 	private JPanel rootPanel;
+	private JLabel nicknameLabel;
 	private JTextField nicknameField;
 	private JTextField serverAddressHostField;
 	private JTextField serverAddressPortField;
-	private JLabel nicknameLabel;
 	private JLabel serverAddressLabel;
 
 	@Override
 	public String[] knownKeys() {
-		return KNOWN_KEYS;
+		return new String[] {
+				"client.nickname",
+				"server.address.host",
+				"server.address.port",
+		};
 	}
 
 	@Override
@@ -35,16 +33,13 @@ public class SettingsPanel implements Presenter {
 	public void show() {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception ignored) {
-		}
+		} catch (Exception ignored) {}
 
 		final JFrame frame = new JFrame("Vuzetty settings");
-
-		final SettingsPanel settings = new SettingsPanel();
 		final SettingsButtons buttons = new SettingsButtons();
-
 		final JPanel container = new JPanel(new VerticalBagLayout());
-		container.add(settings.rootPanel);
+
+		container.add(rootPanel);
 		container.add(buttons.getRootPanel());
 
 		frame.setContentPane(container);
@@ -64,7 +59,12 @@ public class SettingsPanel implements Presenter {
 
 	@Override
 	public void highlightServerAddressHost() {
-		serverAddressLabel.setForeground(Color.RED);
+		highlight(serverAddressLabel);
+	}
+
+	private void highlight(JLabel component) {
+		component.setForeground(Color.RED);
+		component.setFont(component.getFont().deriveFont(Font.BOLD));
 	}
 
 	@Override
@@ -79,7 +79,7 @@ public class SettingsPanel implements Presenter {
 
 	@Override
 	public void highlightServerAddressPort() {
-		serverAddressLabel.setForeground(Color.RED);
+		highlightServerAddressHost();
 	}
 
 	@Override
@@ -94,31 +94,13 @@ public class SettingsPanel implements Presenter {
 
 	@Override
 	public void highlightClientNickname() {
-		nicknameLabel.setForeground(Color.RED);
+		highlight(nicknameLabel);
 	}
 
 	public static void main(String[] args) throws Exception {
 		final SettingsPanel panel = new SettingsPanel();
 
 		panel.show();
-
-		while(true) {
-			panel.highlightClientNickname();
-		}
-
-/*
-		final JFrame frame = new JFrame();
-
-		final JPanel panel = new JPanel();
-		final JLabel label = new JLabel();
-		label.setText("Hello, world!");
-		panel.add(label);
-
-		frame.add(panel);
-		frame.pack();
-		frame.setVisible(true);
-		label.setForeground(Color.RED);
-*/
+		panel.highlightClientNickname();
 	}
-
 }
