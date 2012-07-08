@@ -25,9 +25,22 @@ public class PresenterSettings implements Settings {
 		populatePresenter();
 		presenter.show();
 		presenter.waitForOk();
-		final String newValue = getFromPresenter(key);
-		saver.set(key, newValue);
-		return newValue;
+		populateSaver();
+		return getFromPresenter(key);
+	}
+
+	private void populateSaver() {
+		for (String key : presenter.knownKeys()) {
+			final String oldValue = currentSettings.getString(key);
+			final String newValue = getFromPresenter(key);
+
+			if (oldValue == null || newValue == null || !newValue.equals(oldValue)) {
+				if (oldValue != null || newValue != null) {
+					saver.set(key, newValue);
+				}
+			}
+
+		}
 	}
 
 	private void populatePresenter() {

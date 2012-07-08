@@ -13,14 +13,14 @@ import static org.junit.Assert.assertThat;
 @RunWith(JMock.class)
 public class PresenterSettingsTest {
 
-	private static final String KEY = "server.address.host";
-	private static final String OLD_VALUE = "value";
-	private static final String NEW_VALUE = "new value";
-
 	private final Mockery mockery = new JUnit4Mockery();
 
     @Test
     public void asksCurrentSettingsIfValueExistsAndHighlightsItAndDisplaysItViaPresenter() throws Exception {
+		final String KEY = "server.address.host";
+		final String OLD_VALUE = "value";
+		final String NEW_VALUE = "new value";
+
 		final Settings currentSettings = mockery.mock(Settings.class, "currentSettings");
 		final Presenter presenter = mockery.mock(Presenter.class);
 		final SettingsSaver saver = mockery.mock(SettingsSaver.class);
@@ -46,44 +46,52 @@ public class PresenterSettingsTest {
     }
 
 	@Test
-	public void populatesAllKnownKeysInPresenter() throws Exception {
-		final Settings currentSettings = mockery.mock(Settings.class, "currentSettings");
-		final Presenter presenter = mockery.mock(Presenter.class);
-		final SettingsSaver saver = mockery.mock(SettingsSaver.class);
-
-		final String[] knownKeys = new String[] {
+	public void populatesAllKnownKeysInPresenterAndSavesOnlyChangedValues() throws Exception {
+		final String[] KNOWN_KEYS = new String[] {
 				"server.address.host",
 				"server.address.port",
 				"client.nickname"
 		};
 
-		mockery.checking(new Expectations() {{
-			ignoring(currentSettings);
-			ignoring(saver);
+		final String OLD_VALUE = "old_value";
+		final String NEW_VALUE = "new_value";
 
-			one(presenter).knownKeys();
-				will(returnValue(knownKeys));
+		final Settings currentSettings = mockery.mock(Settings.class, "currentSettings");
+		final Presenter presenter = mockery.mock(Presenter.class);
+		final SettingsSaver saver = mockery.mock(SettingsSaver.class);
+
+		mockery.checking(new Expectations() {{
+			allowing(presenter).knownKeys();
+				will(returnValue(KNOWN_KEYS));
+
+			allowing(currentSettings).getString(KNOWN_KEYS[0]);
+				will(returnValue(OLD_VALUE));
+			allowing(currentSettings).getString(KNOWN_KEYS[1]);
+				will(returnValue(OLD_VALUE));
+			allowing(currentSettings).getString(KNOWN_KEYS[2]);
+				will(returnValue(OLD_VALUE));
 
 			one(presenter).highlightServerAddressHost();
-			one(presenter).setServerAddressHost(with(any(String.class)));
-			one(presenter).setServerAddressPort(with(any(String.class)));
-			one(presenter).setClientNickname(with(any(String.class)));
+			one(presenter).setServerAddressHost(with(OLD_VALUE));
+			one(presenter).setServerAddressPort(with(OLD_VALUE));
+			one(presenter).setClientNickname(with(OLD_VALUE));
 
 			one(presenter).waitForOk();
 			one(presenter).show();
 
-			one(presenter).getServerAddressHost();
-//			one(presenter).getServerAddressPort();
-//			one(presenter).getClientNickname();
+			allowing(presenter).getServerAddressHost();
+				will(returnValue(NEW_VALUE));
+			one(presenter).getServerAddressPort();
+				will(returnValue(OLD_VALUE));
+			one(presenter).getClientNickname();
+				will(returnValue(NEW_VALUE));
+
+			one(saver).set(KNOWN_KEYS[0], NEW_VALUE);
+			one(saver).set(KNOWN_KEYS[2], NEW_VALUE);
 		}});
 
 		final Settings presenterSettings = new PresenterSettings(currentSettings, presenter, saver);
-		presenterSettings.getString(KEY);
+		presenterSettings.getString(KNOWN_KEYS[0]);
 	}
-
-    @Test
-    public void savesOnlyChangedValues() throws Exception {
-
-    }
 
 }
