@@ -14,11 +14,6 @@ public class PresenterSettings implements Settings {
 		this.saver = saver;
 	}
 
-	@Override
-    public Integer getInteger(String key) {
-        throw new RuntimeException("alepar haven't implemented me yet");
-    }
-
     @Override
     public String getString(String key) {
 		highlightOnPresenter(key);

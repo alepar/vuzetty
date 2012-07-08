@@ -11,15 +11,6 @@ public class ResourceSettings implements Settings {
     }
 
     @Override
-    public Integer getInteger(String key) {
-        try {
-            return Integer.valueOf(getString(key));
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    @Override
     public String getString(String key) {
         try {
             return bundle.getString(key);

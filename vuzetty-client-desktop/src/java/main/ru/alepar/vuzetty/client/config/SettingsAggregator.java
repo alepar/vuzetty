@@ -9,18 +9,6 @@ public class SettingsAggregator implements Settings {
     }
 
     @Override
-    public Integer getInteger(String key) {
-        for (Settings setting : settings) {
-            final Integer result = setting.getInteger(key);
-            if(result != null) {
-                return result;
-            }
-        }
-
-        return null;
-    }
-
-    @Override
     public String getString(String key) {
         for (Settings setting : settings) {
             final String result = setting.getString(key);
