@@ -49,24 +49,19 @@ public class MonitorTorrent implements VuzettyRemote {
         frame = new JFrame();
 
         try {
-            SwingUtilities.invokeAndWait(new Runnable() {
-                @Override
-                public void run() {
-                    contentPane.setLayout(new VerticalBagLayout());
+			contentPane.setLayout(new VerticalBagLayout());
 
-                    frame.setTitle(config.getNickname() + " @ " + client.getAddress());
-                    frame.setContentPane(contentPane);
-                    frame.setIconImage(Toolkit.getDefaultToolkit().getImage(MonitorTorrent.class.getClassLoader().getResource(ICON_PATH)));
-                    frame.setSize(445, 0);
-                    frame.setVisible(true);
+			frame.setTitle(config.getNickname() + " @ " + client.getAddress());
+			frame.setContentPane(contentPane);
+			frame.setIconImage(Toolkit.getDefaultToolkit().getImage(MonitorTorrent.class.getClassLoader().getResource(ICON_PATH)));
+			frame.setSize(445, 0);
+			frame.setVisible(true);
 
-                    frame.addWindowListener(new WindowAdapter() {
-                        public void windowClosing(WindowEvent e) {
-                            System.exit(0);
-                        }
-                    });
-                }
-            });
+			frame.addWindowListener(new WindowAdapter() {
+				public void windowClosing(WindowEvent e) {
+					System.exit(0);
+				}
+			});
         } catch (Exception e) {
             throw new RuntimeException("something went completely bollocks", e);
         }

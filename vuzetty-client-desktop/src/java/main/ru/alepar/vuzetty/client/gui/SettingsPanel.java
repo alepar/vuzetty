@@ -5,6 +5,7 @@ import sun.awt.VerticalBagLayout;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.concurrent.CountDownLatch;
 
 public class SettingsPanel implements Presenter {
 
@@ -14,6 +15,34 @@ public class SettingsPanel implements Presenter {
 	private JTextField serverAddressHostField;
 	private JTextField serverAddressPortField;
 	private JLabel serverAddressLabel;
+
+	private final CountDownLatch latch = new CountDownLatch(1);
+	private JFrame frame;
+	private boolean buttonResult;
+
+	public SettingsPanel() {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception ignored) {}
+
+		frame = new JFrame("Vuzetty settings");
+
+		final SettingsButtons buttons = new SettingsButtons();
+		final JPanel container = new JPanel(new VerticalBagLayout());
+
+		buttons.setButtonListener(new SettingsButtons.Listener() {
+			@Override
+			public void onClick(boolean ok) {
+				buttonResult = ok;
+				latch.countDown();
+			}
+		});
+
+		container.add(rootPanel);
+		container.add(buttons.getRootPanel());
+
+		frame.setContentPane(container);
+	}
 
 	@Override
 	public String[] knownKeys() {
@@ -25,24 +54,18 @@ public class SettingsPanel implements Presenter {
 	}
 
 	@Override
-	public void waitForOk() {
-		throw new RuntimeException("alepar haven't implemented me yet");
+	public boolean waitForOk() {
+		try {
+			latch.await();
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+		frame.setVisible(false);
+		return buttonResult;
 	}
 
 	@Override
 	public void show() {
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception ignored) {}
-
-		final JFrame frame = new JFrame("Vuzetty settings");
-		final SettingsButtons buttons = new SettingsButtons();
-		final JPanel container = new JPanel(new VerticalBagLayout());
-
-		container.add(rootPanel);
-		container.add(buttons.getRootPanel());
-
-		frame.setContentPane(container);
 		frame.pack();
 		frame.setVisible(true);
 	}
@@ -95,6 +118,7 @@ public class SettingsPanel implements Presenter {
 	@Override
 	public void highlightClientNickname() {
 		highlight(nicknameLabel);
+		frame.pack();
 	}
 
 	public static void main(String[] args) throws Exception {

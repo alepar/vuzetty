@@ -19,9 +19,12 @@ public class PresenterSettings implements Settings {
 		highlightOnPresenter(key);
 		populatePresenter();
 		presenter.show();
-		presenter.waitForOk();
-		populateSaver();
-		return getFromPresenter(key);
+		if(presenter.waitForOk()) {
+			populateSaver();
+			return getFromPresenter(key);
+		} else {
+			return currentSettings.getString(key);
+		}
 	}
 
 	private void populateSaver() {

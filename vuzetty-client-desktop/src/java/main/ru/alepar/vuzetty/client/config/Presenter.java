@@ -3,7 +3,7 @@ package ru.alepar.vuzetty.client.config;
 public interface Presenter {
 
 	String[] knownKeys();
-	void waitForOk();
+	boolean waitForOk();
 	void show();
 
 	String getServerAddressHost();

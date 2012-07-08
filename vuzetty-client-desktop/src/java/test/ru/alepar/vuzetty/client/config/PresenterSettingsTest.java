@@ -36,7 +36,7 @@ public class PresenterSettingsTest {
 			one(presenter).setServerAddressHost(OLD_VALUE);
 
 			one(presenter).show();
-			one(presenter).waitForOk();
+			one(presenter).waitForOk(); will(returnValue(true));
 
 			allowing(presenter).getServerAddressHost();
 				will(returnValue(NEW_VALUE));
@@ -79,7 +79,7 @@ public class PresenterSettingsTest {
 			one(presenter).setServerAddressPort(OLD_VALUE);
 			one(presenter).setClientNickname(OLD_VALUE);
 
-			one(presenter).waitForOk();
+			one(presenter).waitForOk(); will(returnValue(true));
 			one(presenter).show();
 
 			allowing(presenter).getServerAddressHost();
@@ -127,7 +127,7 @@ public class PresenterSettingsTest {
 			one(presenter).setServerAddressPort(null);
 			one(presenter).setClientNickname(NOT_NULL);
 
-			one(presenter).waitForOk();
+			one(presenter).waitForOk(); will(returnValue(true));
 			one(presenter).show();
 
 			allowing(presenter).getServerAddressHost();
