@@ -50,21 +50,6 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 
 	private JPopupMenu createMenu() {
 		final JPopupMenu popup = new JPopupMenu("actions");
-        createMenuItem(popup, "remove from server", new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                final int choice = JOptionPane.showConfirmDialog(
-                        torrentPanel,
-                        "Are you sure you want to delete\n" + lastStats.name + "?",
-                        "Removal confirmation",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE
-                );
-                if(choice == JOptionPane.YES_OPTION) {
-                    remote.deleteTorrent(lastStats.hash);
-                }
-            }
-        });
         for (final FileInfo info : lastStats.fileInfos) {
             createMenuItem(popup, info.name + " [" + formatSize(info.length) + ']', new ActionListener() {
                 @Override
@@ -73,6 +58,22 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
                 }
             });
         }
+		createMenuItem(popup, "remove from server", new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				final int choice = JOptionPane.showConfirmDialog(
+						torrentPanel,
+						"Are you sure you want to delete\n" + lastStats.name + "?",
+						"Removal confirmation",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE
+				);
+				if (choice == JOptionPane.YES_OPTION) {
+					remote.deleteTorrent(lastStats.hash);
+				}
+			}
+		});
+
 		return popup;
 	}
 
