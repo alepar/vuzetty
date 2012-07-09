@@ -58,6 +58,7 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
                 }
             });
         }
+		popup.addSeparator();
 		createMenuItem(popup, "remove from server", new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
