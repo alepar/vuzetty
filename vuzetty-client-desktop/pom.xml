@@ -62,6 +62,7 @@
                     <include>logback.xml</include>
                     <include>vuzetty-config.properties</include>
                     <include>ru/alepar/vuzetty/client/gui/vuze.png</include>
+                    <include>ru/alepar/vuzetty/client/gui/settings.gif</include>
                 </includes>
             </resource>
         </resources>

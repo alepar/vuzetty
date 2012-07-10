@@ -157,7 +157,9 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		final JFrame frame = new JFrame();
 
-		final DownloadStatsPanel panel = new DownloadStatsPanel(new DummyRemote(), new DummyUrlRunner());
+        final JPanel container = new JPanel(new BorderLayout());
+
+		final DownloadStatsPanel statsPanel = new DownloadStatsPanel(new DummyRemote(), new DummyUrlRunner());
 		final DownloadStats stats = new DownloadStats();
         stats.hash = new Hash("cafebabe");
         stats.name = "Movies";
@@ -167,10 +169,13 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 			add(new FileInfo("1 Movie C.vob", 1024l*1024*2100, "http://some url/for/movie_c.vob", FileType.VIDEO));
 		}};
 
-		panel.updateStats(stats);
+		statsPanel.updateStats(stats);
+
+        container.add(statsPanel.getRootPanel(), BorderLayout.CENTER);
+        container.add(new StatusBar().getRootPanel(), BorderLayout.SOUTH);
 
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		frame.setContentPane(panel.getRootPanel());
+		frame.setContentPane(container);
 		frame.pack();
 		frame.setVisible(true);
 	}

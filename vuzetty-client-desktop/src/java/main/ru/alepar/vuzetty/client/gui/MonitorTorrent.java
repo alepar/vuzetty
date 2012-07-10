@@ -51,8 +51,12 @@ public class MonitorTorrent implements VuzettyRemote {
         try {
 			contentPane.setLayout(new VerticalBagLayout());
 
+            final JPanel container = new JPanel(new BorderLayout());
+            container.add(contentPane, BorderLayout.CENTER);
+            container.add(new StatusBar().getRootPanel(), BorderLayout.SOUTH);
+
 			frame.setTitle(config.getNickname() + " @ " + formatAddress(client.getAddress()));
-			frame.setContentPane(contentPane);
+			frame.setContentPane(container);
 			frame.setIconImage(Toolkit.getDefaultToolkit().getImage(MonitorTorrent.class.getClassLoader().getResource(ICON_PATH)));
 			frame.setSize(445, 0);
 			frame.setVisible(true);
