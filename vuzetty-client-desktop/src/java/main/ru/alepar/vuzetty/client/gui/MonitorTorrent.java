@@ -51,7 +51,7 @@ public class MonitorTorrent implements VuzettyRemote {
         try {
 			contentPane.setLayout(new VerticalBagLayout());
 
-			frame.setTitle(config.getNickname() + " @ " + client.getAddress());
+			frame.setTitle(config.getNickname() + " @ " + formatAddress(client.getAddress()));
 			frame.setContentPane(contentPane);
 			frame.setIconImage(Toolkit.getDefaultToolkit().getImage(MonitorTorrent.class.getClassLoader().getResource(ICON_PATH)));
 			frame.setSize(445, 0);
@@ -81,6 +81,10 @@ public class MonitorTorrent implements VuzettyRemote {
         } catch (IOException e) {
             log.error("failed to add torrent=" + argument, e);
         }
+    }
+
+    private static String formatAddress(String address) {
+        return address.replaceFirst("([^/:]+).*", "$1");
     }
 
     private static boolean isLocalFile(String argument) {
