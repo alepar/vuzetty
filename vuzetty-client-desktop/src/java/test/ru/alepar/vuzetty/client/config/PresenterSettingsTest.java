@@ -44,7 +44,14 @@ public class PresenterSettingsTest {
 			one(saver).set(KEY, NEW_VALUE);
 		}});
 
-		final Settings presenterSettings = new PresenterSettings(currentSettings, presenter, saver);
+        final Presenter.Factory factory = new Presenter.Factory() {
+            @Override
+            public Presenter create() {
+                throw new RuntimeException("parfenal, implement me!");
+            }
+        };
+
+        final Settings presenterSettings = new PresenterSettings(currentSettings, factory, saver);
 		assertThat(presenterSettings.getString(KEY), equalTo(NEW_VALUE));
     }
 
@@ -93,7 +100,14 @@ public class PresenterSettingsTest {
 			one(saver).set(KNOWN_KEYS[2], NEW_VALUE);
 		}});
 
-		final Settings presenterSettings = new PresenterSettings(currentSettings, presenter, saver);
+        final Presenter.Factory factory = new Presenter.Factory() {
+            @Override
+            public Presenter create() {
+                throw new RuntimeException("parfenal, implement me!");
+            }
+        };
+
+        final Settings presenterSettings = new PresenterSettings(currentSettings, factory, saver);
 		presenterSettings.getString(KNOWN_KEYS[0]);
 	}
 
@@ -141,7 +155,14 @@ public class PresenterSettingsTest {
 			one(saver).set(KNOWN_KEYS[2], null);
 		}});
 
-		final Settings presenterSettings = new PresenterSettings(currentSettings, presenter, saver);
+        final Presenter.Factory factory = new Presenter.Factory() {
+            @Override
+            public Presenter create() {
+                throw new RuntimeException("parfenal, implement me!");
+            }
+        };
+
+        final Settings presenterSettings = new PresenterSettings(currentSettings, factory, saver);
 		presenterSettings.getString(KNOWN_KEYS[0]);
 	}
 

@@ -17,4 +17,9 @@ public interface Presenter {
 	String getClientNickname();
 	void setClientNickname(String value);
 	void highlightClientNickname();
+
+    interface Factory {
+        Presenter create();
+    }
+
 }

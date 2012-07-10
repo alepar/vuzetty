@@ -121,6 +121,13 @@ public class SettingsPanel implements Presenter {
 		frame.pack();
 	}
 
+    public static class Factory implements Presenter.Factory {
+        @Override
+        public Presenter create() {
+            return new SettingsPanel();
+        }
+    }
+
 	public static void main(String[] args) throws Exception {
 		final SettingsPanel panel = new SettingsPanel();
 

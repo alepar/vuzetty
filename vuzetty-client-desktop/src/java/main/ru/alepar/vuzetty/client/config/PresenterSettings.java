@@ -5,27 +5,34 @@ import java.lang.reflect.Method;
 public class PresenterSettings implements Settings {
 
 	private final Settings currentSettings;
-	private final Presenter presenter;
+	private final Presenter.Factory factory;
 	private final SettingsSaver saver;
 
-	public PresenterSettings(Settings currentSettings, Presenter presenter, SettingsSaver saver) {
+    private Presenter presenter;
+
+	public PresenterSettings(Settings currentSettings, Presenter.Factory factory, SettingsSaver saver) {
 		this.currentSettings = currentSettings;
-		this.presenter = presenter;
+		this.factory = factory;
 		this.saver = saver;
 	}
 
     @Override
     public String getString(String key) {
-		highlightOnPresenter(key);
-		populatePresenter();
-		presenter.show();
-		if(presenter.waitForOk()) {
-			populateSaver();
-			return getFromPresenter(key);
-		} else {
-			return currentSettings.getString(key);
-		}
-	}
+        presenter = factory.create();
+        try {
+            highlightOnPresenter(key);
+            populatePresenter();
+            presenter.show();
+            if(presenter.waitForOk()) {
+                populateSaver();
+                return getFromPresenter(key);
+            } else {
+                return currentSettings.getString(key);
+            }
+        } finally {
+            presenter = null;
+        }
+    }
 
 	private void populateSaver() {
 		for (String key : presenter.knownKeys()) {

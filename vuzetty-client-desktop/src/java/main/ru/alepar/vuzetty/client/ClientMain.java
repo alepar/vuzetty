@@ -67,7 +67,7 @@ public class ClientMain {
 				builtinSettings,
 				new PresenterSettings(
 						new SettingsAggregator(existingSettings),
-						new SettingsPanel(),
+						new SettingsPanel.Factory(),
 						new PreferencesSettingsSaver(preferences)
 				)
 		};
