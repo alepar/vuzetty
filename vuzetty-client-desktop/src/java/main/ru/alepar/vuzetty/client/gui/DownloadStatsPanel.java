@@ -1,8 +1,8 @@
 package ru.alepar.vuzetty.client.gui;
 
-import ru.alepar.vuzetty.api.*;
 import ru.alepar.vuzetty.client.play.DummyUrlRunner;
 import ru.alepar.vuzetty.client.play.UrlRunner;
+import ru.alepar.vuzetty.common.api.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,8 +10,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.Arrays;
-import java.util.HashSet;
+import java.util.*;
+
+import static ru.alepar.vuzetty.common.util.FileNameUtil.extractFileExtension;
 
 public class DownloadStatsPanel implements DownloadStatsDisplayer {
 
@@ -50,13 +51,28 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 
 	private JPopupMenu createMenu() {
 		final JPopupMenu popup = new JPopupMenu("actions");
-        for (final FileInfo info : lastStats.fileInfos) {
-            createMenuItem(popup, info.name + " [" + formatSize(info.length) + ']', new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    urlRunner.run(info.url);
+        final SortedSet<FileInfo> sortedInfos = new TreeSet<FileInfo>(new Comparator<FileInfo>() {
+            @Override
+            public int compare(FileInfo left, FileInfo right) {
+                if(left == null || right == null) {
+                    if(left == null && right != null) return -1;
+                    if(left != null) return 1;
+                    return 0;
                 }
-            });
+                return left.name.compareTo(right.name);
+            }
+        });
+        sortedInfos.addAll(lastStats.fileInfos);
+        for (final FileInfo info : sortedInfos) {
+            if(info.type == FileType.VIDEO) {
+                final String label = String.format("play video %s %s - %s", extractFileExtension(info.name), formatSize(info.length), info.name);
+                createMenuItem(popup, label, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        urlRunner.run(info.url);
+                    }
+                });
+            }
         }
 		popup.addSeparator();
 		createMenuItem(popup, "remove from server", new ActionListener() {
@@ -146,9 +162,9 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
         stats.hash = new Hash("cafebabe");
         stats.name = "Movies";
 		stats.fileInfos = new HashSet<FileInfo>() {{
-			add(new FileInfo("Movie A", 1024l*1024*700, "http://some url/for/movie_a.avi", FileType.VIDEO));
-			add(new FileInfo("Movie B", 1024l*1024*1400, "http://some url/for/movie_b.avi", FileType.VIDEO));
-			add(new FileInfo("Movie C", 1024l*1024*2100, "http://some url/for/movie_c.avi", FileType.VIDEO));
+			add(new FileInfo("3 Movie A.avi", 1024l*1024*700, "http://some url/for/movie_a.avi", FileType.VIDEO));
+			add(new FileInfo("2 Movie B.mvk", 1024l*1024*1400, "http://some url/for/movie_b.mkv", FileType.VIDEO));
+			add(new FileInfo("1 Movie C.vob", 1024l*1024*2100, "http://some url/for/movie_c.vob", FileType.VIDEO));
 		}};
 
 		panel.updateStats(stats);

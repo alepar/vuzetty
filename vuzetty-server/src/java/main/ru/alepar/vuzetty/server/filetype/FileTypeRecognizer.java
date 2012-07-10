@@ -1,6 +1,6 @@
 package ru.alepar.vuzetty.server.filetype;
 
-import ru.alepar.vuzetty.api.FileType;
+import ru.alepar.vuzetty.common.api.FileType;
 
 import java.io.File;
 

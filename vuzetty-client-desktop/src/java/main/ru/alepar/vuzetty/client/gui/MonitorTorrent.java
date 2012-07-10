@@ -2,13 +2,13 @@ package ru.alepar.vuzetty.client.gui;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.alepar.vuzetty.api.Category;
-import ru.alepar.vuzetty.api.DownloadStats;
-import ru.alepar.vuzetty.api.Hash;
 import ru.alepar.vuzetty.client.config.Configuration;
 import ru.alepar.vuzetty.client.play.UrlRunner;
 import ru.alepar.vuzetty.client.remote.VuzettyClient;
 import ru.alepar.vuzetty.client.remote.VuzettyRemote;
+import ru.alepar.vuzetty.common.api.Category;
+import ru.alepar.vuzetty.common.api.DownloadStats;
+import ru.alepar.vuzetty.common.api.Hash;
 import sun.awt.VerticalBagLayout;
 
 import javax.swing.*;

@@ -6,9 +6,9 @@ import org.jmock.integration.junit4.JMock;
 import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import ru.alepar.vuzetty.api.DownloadStats;
 import ru.alepar.vuzetty.client.remote.StatsListener;
 import ru.alepar.vuzetty.client.remote.VuzettyClient;
+import ru.alepar.vuzetty.common.api.DownloadStats;
 import ru.alepar.vuzetty.server.VuzettyServer;
 import ru.alepar.vuzetty.server.vuze.TorrentApi;
 

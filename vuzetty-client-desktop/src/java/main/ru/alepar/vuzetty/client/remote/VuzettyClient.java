@@ -2,7 +2,7 @@ package ru.alepar.vuzetty.client.remote;
 
 import ru.alepar.rpc.api.NettyRpcClientBuilder;
 import ru.alepar.rpc.api.RpcClient;
-import ru.alepar.vuzetty.api.*;
+import ru.alepar.vuzetty.common.api.*;
 
 import java.net.InetSocketAddress;
 

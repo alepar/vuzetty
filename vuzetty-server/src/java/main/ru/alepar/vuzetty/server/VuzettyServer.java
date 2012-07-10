@@ -4,10 +4,10 @@ import ru.alepar.rpc.api.ImplementationFactory;
 import ru.alepar.rpc.api.NettyRpcServerBuilder;
 import ru.alepar.rpc.api.Remote;
 import ru.alepar.rpc.api.RpcServer;
-import ru.alepar.vuzetty.api.Category;
-import ru.alepar.vuzetty.api.ClientRemote;
-import ru.alepar.vuzetty.api.Hash;
-import ru.alepar.vuzetty.api.ServerRemote;
+import ru.alepar.vuzetty.common.api.Category;
+import ru.alepar.vuzetty.common.api.ClientRemote;
+import ru.alepar.vuzetty.common.api.Hash;
+import ru.alepar.vuzetty.common.api.ServerRemote;
 import ru.alepar.vuzetty.server.vuze.TorrentApi;
 
 import java.net.InetSocketAddress;

@@ -1,6 +1,6 @@
 package ru.alepar.vuzetty.client.gui;
 
-import ru.alepar.vuzetty.api.DownloadStats;
+import ru.alepar.vuzetty.common.api.DownloadStats;
 
 public interface DownloadStatsDisplayer {
 

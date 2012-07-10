@@ -1,4 +1,4 @@
-package ru.alepar.vuzetty.api;
+package ru.alepar.vuzetty.common.api;
 
 public interface ServerRemote {
     void addTorrent(byte[] torrent, Category category);

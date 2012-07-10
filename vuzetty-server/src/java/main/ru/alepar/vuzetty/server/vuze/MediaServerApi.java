@@ -1,7 +1,7 @@
 package ru.alepar.vuzetty.server.vuze;
 
 import org.gudy.azureus2.plugins.download.Download;
-import ru.alepar.vuzetty.api.FileInfo;
+import ru.alepar.vuzetty.common.api.FileInfo;
 
 import java.util.Collection;
 

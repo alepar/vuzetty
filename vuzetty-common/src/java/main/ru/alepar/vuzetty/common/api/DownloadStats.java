@@ -1,4 +1,4 @@
-package ru.alepar.vuzetty.api;
+package ru.alepar.vuzetty.common.api;
 
 import java.io.Serializable;
 import java.util.Collection;

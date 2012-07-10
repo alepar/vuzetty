@@ -6,7 +6,7 @@ import org.gudy.azureus2.plugins.disk.DiskManagerFileInfo;
 import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.ipc.IPCException;
 import org.gudy.azureus2.plugins.ipc.IPCInterface;
-import ru.alepar.vuzetty.api.FileInfo;
+import ru.alepar.vuzetty.common.api.FileInfo;
 import ru.alepar.vuzetty.server.filetype.FileTypeRecognizer;
 
 import java.util.ArrayList;

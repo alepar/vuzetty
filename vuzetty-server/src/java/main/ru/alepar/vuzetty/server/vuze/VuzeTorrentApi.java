@@ -8,10 +8,10 @@ import org.gudy.azureus2.plugins.torrent.TorrentAttribute;
 import org.gudy.azureus2.plugins.torrent.TorrentManager;
 import org.gudy.azureus2.plugins.utils.Utilities;
 import org.gudy.azureus2.plugins.utils.resourcedownloader.ResourceDownloader;
-import ru.alepar.vuzetty.api.Category;
-import ru.alepar.vuzetty.api.DownloadState;
-import ru.alepar.vuzetty.api.DownloadStats;
-import ru.alepar.vuzetty.api.Hash;
+import ru.alepar.vuzetty.common.api.Category;
+import ru.alepar.vuzetty.common.api.DownloadState;
+import ru.alepar.vuzetty.common.api.DownloadStats;
+import ru.alepar.vuzetty.common.api.Hash;
 
 import java.io.InputStream;
 import java.net.URL;
