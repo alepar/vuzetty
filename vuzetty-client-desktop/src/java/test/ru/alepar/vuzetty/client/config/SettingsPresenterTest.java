@@ -11,7 +11,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 @RunWith(JMock.class)
-public class PresenterSettingsTest {
+public class SettingsPresenterTest {
 
 	private final Mockery mockery = new JUnit4Mockery();
 
@@ -22,36 +22,35 @@ public class PresenterSettingsTest {
 		final String NEW_VALUE = "new value";
 
 		final Settings currentSettings = mockery.mock(Settings.class, "currentSettings");
-		final Presenter presenter = mockery.mock(Presenter.class);
+		final SettingsView view = mockery.mock(SettingsView.class);
 		final SettingsSaver saver = mockery.mock(SettingsSaver.class);
 
 		mockery.checking(new Expectations() {{
 			allowing(currentSettings).getString(KEY);
 				will(returnValue(OLD_VALUE));
 
-			allowing(presenter).knownKeys();
+			allowing(view).knownKeys();
 				will(returnValue(new String[] {KEY}));
 
-			one(presenter).highlightServerAddressHost();
-			one(presenter).setServerAddressHost(OLD_VALUE);
+			one(view).highlightServerAddressHost();
+			one(view).setServerAddressHost(OLD_VALUE);
 
-			one(presenter).show();
-			one(presenter).waitForOk(); will(returnValue(true));
+			one(view).show();
 
-			allowing(presenter).getServerAddressHost();
+			allowing(view).getServerAddressHost();
 				will(returnValue(NEW_VALUE));
 
 			one(saver).set(KEY, NEW_VALUE);
 		}});
 
-        final Presenter.Factory factory = new Presenter.Factory() {
+        final SettingsView.Factory factory = new SettingsView.Factory() {
             @Override
-            public Presenter create() {
+            public SettingsView create() {
                 throw new RuntimeException("parfenal, implement me!");
             }
         };
 
-        final Settings presenterSettings = new PresenterSettings(currentSettings, factory, saver);
+        final Settings presenterSettings = new SettingsPresenter(currentSettings, factory, saver);
 		assertThat(presenterSettings.getString(KEY), equalTo(NEW_VALUE));
     }
 
@@ -67,11 +66,11 @@ public class PresenterSettingsTest {
 		final String NEW_VALUE = "new_value";
 
 		final Settings currentSettings = mockery.mock(Settings.class, "currentSettings");
-		final Presenter presenter = mockery.mock(Presenter.class);
+		final SettingsView view = mockery.mock(SettingsView.class);
 		final SettingsSaver saver = mockery.mock(SettingsSaver.class);
 
 		mockery.checking(new Expectations() {{
-			allowing(presenter).knownKeys();
+			allowing(view).knownKeys();
 				will(returnValue(KNOWN_KEYS));
 
 			allowing(currentSettings).getString(KNOWN_KEYS[0]);
@@ -81,33 +80,32 @@ public class PresenterSettingsTest {
 			allowing(currentSettings).getString(KNOWN_KEYS[2]);
 				will(returnValue(OLD_VALUE));
 
-			one(presenter).highlightServerAddressHost();
-			one(presenter).setServerAddressHost(OLD_VALUE);
-			one(presenter).setServerAddressPort(OLD_VALUE);
-			one(presenter).setClientNickname(OLD_VALUE);
+			one(view).highlightServerAddressHost();
+			one(view).setServerAddressHost(OLD_VALUE);
+			one(view).setServerAddressPort(OLD_VALUE);
+			one(view).setClientNickname(OLD_VALUE);
 
-			one(presenter).waitForOk(); will(returnValue(true));
-			one(presenter).show();
+			one(view).show();
 
-			allowing(presenter).getServerAddressHost();
+			allowing(view).getServerAddressHost();
 				will(returnValue(NEW_VALUE));
-			one(presenter).getServerAddressPort();
+			one(view).getServerAddressPort();
 				will(returnValue(OLD_VALUE));
-			one(presenter).getClientNickname();
+			one(view).getClientNickname();
 				will(returnValue(NEW_VALUE));
 
 			one(saver).set(KNOWN_KEYS[0], NEW_VALUE);
 			one(saver).set(KNOWN_KEYS[2], NEW_VALUE);
 		}});
 
-        final Presenter.Factory factory = new Presenter.Factory() {
+        final SettingsView.Factory factory = new SettingsView.Factory() {
             @Override
-            public Presenter create() {
+            public SettingsView create() {
                 throw new RuntimeException("parfenal, implement me!");
             }
         };
 
-        final Settings presenterSettings = new PresenterSettings(currentSettings, factory, saver);
+        final Settings presenterSettings = new SettingsPresenter(currentSettings, factory, saver);
 		presenterSettings.getString(KNOWN_KEYS[0]);
 	}
 
@@ -122,11 +120,11 @@ public class PresenterSettingsTest {
 		final String NOT_NULL = "NOT_NULL";
 
 		final Settings currentSettings = mockery.mock(Settings.class, "currentSettings");
-		final Presenter presenter = mockery.mock(Presenter.class);
+		final SettingsView view = mockery.mock(SettingsView.class);
 		final SettingsSaver saver = mockery.mock(SettingsSaver.class);
 
 		mockery.checking(new Expectations() {{
-			allowing(presenter).knownKeys();
+			allowing(view).knownKeys();
 				will(returnValue(KNOWN_KEYS));
 
 			allowing(currentSettings).getString(KNOWN_KEYS[0]);
@@ -136,33 +134,32 @@ public class PresenterSettingsTest {
 			allowing(currentSettings).getString(KNOWN_KEYS[2]);
 				will(returnValue(NOT_NULL));
 
-			one(presenter).highlightServerAddressHost();
-			one(presenter).setServerAddressHost(null);
-			one(presenter).setServerAddressPort(null);
-			one(presenter).setClientNickname(NOT_NULL);
+			one(view).highlightServerAddressHost();
+			one(view).setServerAddressHost(null);
+			one(view).setServerAddressPort(null);
+			one(view).setClientNickname(NOT_NULL);
 
-			one(presenter).waitForOk(); will(returnValue(true));
-			one(presenter).show();
+			one(view).show();
 
-			allowing(presenter).getServerAddressHost();
+			allowing(view).getServerAddressHost();
 				will(returnValue(NOT_NULL));
-			one(presenter).getServerAddressPort();
+			one(view).getServerAddressPort();
 				will(returnValue(null));
-			one(presenter).getClientNickname();
+			one(view).getClientNickname();
 				will(returnValue(null));
 
 			one(saver).set(KNOWN_KEYS[0], NOT_NULL);
 			one(saver).set(KNOWN_KEYS[2], null);
 		}});
 
-        final Presenter.Factory factory = new Presenter.Factory() {
+        final SettingsView.Factory factory = new SettingsView.Factory() {
             @Override
-            public Presenter create() {
+            public SettingsView create() {
                 throw new RuntimeException("parfenal, implement me!");
             }
         };
 
-        final Settings presenterSettings = new PresenterSettings(currentSettings, factory, saver);
+        final Settings presenterSettings = new SettingsPresenter(currentSettings, factory, saver);
 		presenterSettings.getString(KNOWN_KEYS[0]);
 	}
 

@@ -1,16 +1,20 @@
 package ru.alepar.vuzetty.client.config;
 
-import java.lang.reflect.Method;
+import ru.alepar.vuzetty.client.gui.SettingsButtons;
 
-public class PresenterSettings implements Settings {
+import java.lang.reflect.Method;
+import java.util.concurrent.CountDownLatch;
+
+public class SettingsPresenter implements Settings {
 
 	private final Settings currentSettings;
-	private final Presenter.Factory factory;
+	private final SettingsView.Factory factory;
 	private final SettingsSaver saver;
 
-    private Presenter presenter;
+    private SettingsView view;
+    private boolean okPressed;
 
-	public PresenterSettings(Settings currentSettings, Presenter.Factory factory, SettingsSaver saver) {
+	public SettingsPresenter(Settings currentSettings, SettingsView.Factory factory, SettingsSaver saver) {
 		this.currentSettings = currentSettings;
 		this.factory = factory;
 		this.saver = saver;
@@ -18,24 +22,54 @@ public class PresenterSettings implements Settings {
 
     @Override
     public String getString(String key) {
-        presenter = factory.create();
+        view = factory.create();
         try {
             highlightOnPresenter(key);
             populatePresenter();
-            presenter.show();
-            if(presenter.waitForOk()) {
+            view.show();
+
+            final CountDownLatch latch = new CountDownLatch(1);
+            view.setButtonListener(new SettingsButtons.Listener() {
+                @Override
+                public void onClick(boolean ok) {
+                    okPressed = ok;
+                    latch.countDown();
+                }
+            });
+            latch.await();
+
+            if(okPressed) {
                 populateSaver();
                 return getFromPresenter(key);
             } else {
                 return currentSettings.getString(key);
             }
+        } catch(InterruptedException e) {
+            throw new RuntimeException("interrupted while waiting for user input", e);
         } finally {
-            presenter = null;
+            view.close();
+            view = null;
         }
     }
 
+    public void show() {
+        view = factory.create();
+        populatePresenter();
+        view.show();
+
+        view.setButtonListener(new SettingsButtons.Listener() {
+            @Override
+            public void onClick(boolean ok) {
+                view.close();
+                if(ok) {
+                    populateSaver();
+                }
+            }
+        });
+    }
+
 	private void populateSaver() {
-		for (String key : presenter.knownKeys()) {
+		for (String key : view.knownKeys()) {
 			final String oldValue = currentSettings.getString(key);
 			final String newValue = getFromPresenter(key);
 
@@ -49,7 +83,7 @@ public class PresenterSettings implements Settings {
 	}
 
 	private void populatePresenter() {
-		for (String key : presenter.knownKeys()) {
+		for (String key : view.knownKeys()) {
 			final String value = currentSettings.getString(key);
 			setOnPresenter(key, value);
 		}
@@ -58,19 +92,19 @@ public class PresenterSettings implements Settings {
 	private String getFromPresenter(String key) {
 		final String methodName = "get" + makeMethodNameFrom(key);
 		try {
-			final Method method = presenter.getClass().getDeclaredMethod(methodName);
-			final Object result = method.invoke(presenter);
+			final Method method = view.getClass().getDeclaredMethod(methodName);
+			final Object result = method.invoke(view);
 			return (String) result;
 		} catch (Exception e) {
-			throw new RuntimeException("failed to read from presenter " + key, e);
+			throw new RuntimeException("failed to read from view " + key, e);
 		}
 	}
 
 	private void highlightOnPresenter(String key) {
 		final String methodName = "highlight" + makeMethodNameFrom(key);
 		try {
-			final Method method = presenter.getClass().getDeclaredMethod(methodName);
-			method.invoke(presenter);
+			final Method method = view.getClass().getDeclaredMethod(methodName);
+			method.invoke(view);
 		} catch (Exception e) {
 			throw new RuntimeException("failed to highlight " + key, e);
 		}
@@ -79,8 +113,8 @@ public class PresenterSettings implements Settings {
 	private void setOnPresenter(String key, String value) {
 		final String methodName = "set" + makeMethodNameFrom(key);
 		try {
-			final Method method = presenter.getClass().getDeclaredMethod(methodName, String.class);
-			method.invoke(presenter, value);
+			final Method method = view.getClass().getDeclaredMethod(methodName, String.class);
+			method.invoke(view, value);
 		} catch (Exception e) {
 			throw new RuntimeException("failed to present " + key, e);
 		}

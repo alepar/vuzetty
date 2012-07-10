@@ -65,7 +65,7 @@ public class ClientMain {
 		final Settings[] userAskingSettings = new Settings[] {
 				userSettings,
 				builtinSettings,
-				new PresenterSettings(
+				new SettingsPresenter(
 						new SettingsAggregator(existingSettings),
 						new SettingsPanel.Factory(),
 						new PreferencesSettingsSaver(preferences)

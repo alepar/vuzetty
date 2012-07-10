@@ -1,10 +1,13 @@
 package ru.alepar.vuzetty.client.config;
 
-public interface Presenter {
+import ru.alepar.vuzetty.client.gui.SettingsButtons;
+
+public interface SettingsView {
 
 	String[] knownKeys();
-	boolean waitForOk();
+	void setButtonListener(SettingsButtons.Listener listener);
 	void show();
+    void close();
 
 	String getServerAddressHost();
 	void setServerAddressHost(String value);
@@ -19,7 +22,7 @@ public interface Presenter {
 	void highlightClientNickname();
 
     interface Factory {
-        Presenter create();
+        SettingsView create();
     }
 
 }

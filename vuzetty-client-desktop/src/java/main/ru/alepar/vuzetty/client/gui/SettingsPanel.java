@@ -1,13 +1,12 @@
 package ru.alepar.vuzetty.client.gui;
 
-import ru.alepar.vuzetty.client.config.Presenter;
+import ru.alepar.vuzetty.client.config.SettingsView;
 import sun.awt.VerticalBagLayout;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.concurrent.CountDownLatch;
 
-public class SettingsPanel implements Presenter {
+public class SettingsPanel implements SettingsView {
 
 	private JPanel rootPanel;
 	private JLabel nicknameLabel;
@@ -16,27 +15,18 @@ public class SettingsPanel implements Presenter {
 	private JTextField serverAddressPortField;
 	private JLabel serverAddressLabel;
 
-	private final CountDownLatch latch = new CountDownLatch(1);
 	private JFrame frame;
-	private boolean buttonResult;
+    private final SettingsButtons buttons;
 
-	public SettingsPanel() {
+    public SettingsPanel() {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception ignored) {}
 
 		frame = new JFrame("Vuzetty settings");
 
-		final SettingsButtons buttons = new SettingsButtons();
+        buttons = new SettingsButtons();
 		final JPanel container = new JPanel(new VerticalBagLayout());
-
-		buttons.setButtonListener(new SettingsButtons.Listener() {
-			@Override
-			public void onClick(boolean ok) {
-				buttonResult = ok;
-				latch.countDown();
-			}
-		});
 
 		container.add(rootPanel);
 		container.add(buttons.getRootPanel());
@@ -44,7 +34,12 @@ public class SettingsPanel implements Presenter {
 		frame.setContentPane(container);
 	}
 
-	@Override
+    @Override
+    public void setButtonListener(SettingsButtons.Listener listener) {
+        buttons.setButtonListener(listener);
+    }
+
+    @Override
 	public String[] knownKeys() {
 		return new String[] {
 				"client.nickname",
@@ -54,23 +49,18 @@ public class SettingsPanel implements Presenter {
 	}
 
 	@Override
-	public boolean waitForOk() {
-		try {
-			latch.await();
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
-		}
-		frame.setVisible(false);
-		return buttonResult;
-	}
-
-	@Override
 	public void show() {
 		frame.pack();
 		frame.setVisible(true);
 	}
 
-	@Override
+    @Override
+    public void close() {
+        frame.setVisible(false);
+        frame.dispose();
+    }
+
+    @Override
 	public String getServerAddressHost() {
 		return serverAddressHostField.getText();
 	}
@@ -121,9 +111,9 @@ public class SettingsPanel implements Presenter {
 		frame.pack();
 	}
 
-    public static class Factory implements Presenter.Factory {
+    public static class Factory implements SettingsView.Factory {
         @Override
-        public Presenter create() {
+        public SettingsView create() {
             return new SettingsPanel();
         }
     }
