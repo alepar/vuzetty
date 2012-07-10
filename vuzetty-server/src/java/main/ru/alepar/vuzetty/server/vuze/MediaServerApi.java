@@ -1,4 +1,4 @@
-package ru.alepar.vuzetty.server.api;
+package ru.alepar.vuzetty.server.vuze;
 
 import org.gudy.azureus2.plugins.download.Download;
 import ru.alepar.vuzetty.api.FileInfo;

@@ -1,4 +1,4 @@
-package ru.alepar.vuzetty.server.api;
+package ru.alepar.vuzetty.server.vuze;
 
 import ru.alepar.vuzetty.api.Category;
 import ru.alepar.vuzetty.api.DownloadStats;

@@ -146,9 +146,9 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
         stats.hash = new Hash("cafebabe");
         stats.name = "Movies";
 		stats.fileInfos = new HashSet<FileInfo>() {{
-			add(new FileInfo("Movie A", 1024l*1024*700, "http://some url/for/movie_a.avi"));
-			add(new FileInfo("Movie B", 1024l*1024*1400, "http://some url/for/movie_b.avi"));
-			add(new FileInfo("Movie C", 1024l*1024*2100, "http://some url/for/movie_c.avi"));
+			add(new FileInfo("Movie A", 1024l*1024*700, "http://some url/for/movie_a.avi", FileType.VIDEO));
+			add(new FileInfo("Movie B", 1024l*1024*1400, "http://some url/for/movie_b.avi", FileType.VIDEO));
+			add(new FileInfo("Movie C", 1024l*1024*2100, "http://some url/for/movie_c.avi", FileType.VIDEO));
 		}};
 
 		panel.updateStats(stats);

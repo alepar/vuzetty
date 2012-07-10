@@ -8,9 +8,10 @@ import org.gudy.azureus2.plugins.torrent.TorrentManager;
 import org.gudy.azureus2.plugins.utils.Utilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.alepar.vuzetty.server.api.MediaServerApi;
-import ru.alepar.vuzetty.server.api.VuzeMediaServerApi;
-import ru.alepar.vuzetty.server.api.VuzeTorrentApi;
+import ru.alepar.vuzetty.server.filetype.ExtensionBasedFileTypeRecognizer;
+import ru.alepar.vuzetty.server.vuze.MediaServerApi;
+import ru.alepar.vuzetty.server.vuze.VuzeMediaServerApi;
+import ru.alepar.vuzetty.server.vuze.VuzeTorrentApi;
 
 import java.net.InetSocketAddress;
 
@@ -28,7 +29,7 @@ public class VuzettyPlugin implements Plugin {
         final TorrentManager torrentManager = pluginInterface.getTorrentManager();
         final DownloadManager downloadManager = pluginInterface.getDownloadManager();
         final Utilities utilities = pluginInterface.getUtilities();
-        final MediaServerApi mediaServer = new VuzeMediaServerApi(pluginInterface.getPluginManager());
+        final MediaServerApi mediaServer = new VuzeMediaServerApi(pluginInterface.getPluginManager(), new ExtensionBasedFileTypeRecognizer());
 
         log.info("binding vuzetty to " + bindAddress);
         new VuzettyServer(bindAddress, new VuzeTorrentApi(torrentManager, downloadManager, utilities, mediaServer));

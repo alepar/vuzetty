@@ -3,7 +3,7 @@ package ru.alepar.vuzetty.integration;
 import ru.alepar.vuzetty.api.Category;
 import ru.alepar.vuzetty.api.DownloadStats;
 import ru.alepar.vuzetty.api.Hash;
-import ru.alepar.vuzetty.server.api.TorrentApi;
+import ru.alepar.vuzetty.server.vuze.TorrentApi;
 
 import java.util.Collection;
 

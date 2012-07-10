@@ -8,7 +8,7 @@ import ru.alepar.vuzetty.api.Category;
 import ru.alepar.vuzetty.api.ClientRemote;
 import ru.alepar.vuzetty.api.Hash;
 import ru.alepar.vuzetty.api.ServerRemote;
-import ru.alepar.vuzetty.server.api.TorrentApi;
+import ru.alepar.vuzetty.server.vuze.TorrentApi;
 
 import java.net.InetSocketAddress;
 import java.util.LinkedList;

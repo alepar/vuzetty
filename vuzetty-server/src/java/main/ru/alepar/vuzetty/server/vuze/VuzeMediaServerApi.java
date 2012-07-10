@@ -1,4 +1,4 @@
-package ru.alepar.vuzetty.server.api;
+package ru.alepar.vuzetty.server.vuze;
 
 import org.gudy.azureus2.plugins.PluginInterface;
 import org.gudy.azureus2.plugins.PluginManager;
@@ -7,6 +7,7 @@ import org.gudy.azureus2.plugins.download.Download;
 import org.gudy.azureus2.plugins.ipc.IPCException;
 import org.gudy.azureus2.plugins.ipc.IPCInterface;
 import ru.alepar.vuzetty.api.FileInfo;
+import ru.alepar.vuzetty.server.filetype.FileTypeRecognizer;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,11 +15,14 @@ import java.util.Collection;
 public class VuzeMediaServerApi implements MediaServerApi {
 
     private final PluginManager pluginManager;
+    private final FileTypeRecognizer fileTypeRecognizer;
 
     private volatile IPCInterface mediaIpc;
 
-    public VuzeMediaServerApi(PluginManager pluginManager) {
+
+    public VuzeMediaServerApi(PluginManager pluginManager, FileTypeRecognizer fileTypeRecognizer) {
         this.pluginManager = pluginManager;
+        this.fileTypeRecognizer = fileTypeRecognizer;
     }
 
     @Override
@@ -28,8 +32,8 @@ public class VuzeMediaServerApi implements MediaServerApi {
             result.add(new FileInfo(
                     fileInfo.getFile().getName(),
                     fileInfo.getLength(),
-                    getContentURL(fileInfo)
-            ));
+                    getContentURL(fileInfo),
+                    fileTypeRecognizer.recognize(fileInfo.getFile())));
         }
         return result;
     }

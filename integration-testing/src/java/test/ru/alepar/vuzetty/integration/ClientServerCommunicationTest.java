@@ -10,7 +10,7 @@ import ru.alepar.vuzetty.api.DownloadStats;
 import ru.alepar.vuzetty.client.remote.StatsListener;
 import ru.alepar.vuzetty.client.remote.VuzettyClient;
 import ru.alepar.vuzetty.server.VuzettyServer;
-import ru.alepar.vuzetty.server.api.TorrentApi;
+import ru.alepar.vuzetty.server.vuze.TorrentApi;
 
 import java.net.InetSocketAddress;
 
