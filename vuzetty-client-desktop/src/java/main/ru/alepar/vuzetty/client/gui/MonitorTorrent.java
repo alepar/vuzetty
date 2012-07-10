@@ -73,10 +73,11 @@ public class MonitorTorrent implements VuzettyRemote {
     public void addTorrent(String argument) {
         log.info("adding torrent={}", argument);
         try {
+            final Category category = new Category(config.getNickname());
             if (isLocalFile(argument)) {
-                client.addTorrent(readFile(argument), new Category(config.getNickname()));
+                client.addTorrent(readFile(argument), category);
             } else {
-                client.addTorrent(argument, new Category(config.getNickname()));
+                client.addTorrent(argument, category);
             }
         } catch (IOException e) {
             log.error("failed to add torrent=" + argument, e);
