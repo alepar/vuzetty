@@ -4,6 +4,7 @@ import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
 import org.jmock.integration.junit4.JUnit4Mockery;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -15,7 +16,7 @@ public class SettingsPresenterTest {
 
 	private final Mockery mockery = new JUnit4Mockery();
 
-    @Test
+    @Test @Ignore
     public void asksCurrentSettingsIfValueExistsAndHighlightsItAndDisplaysItViaPresenter() throws Exception {
 		final String KEY = "server.address.host";
 		final String OLD_VALUE = "value";
@@ -54,7 +55,7 @@ public class SettingsPresenterTest {
 		assertThat(presenterSettings.getString(KEY), equalTo(NEW_VALUE));
     }
 
-	@Test
+	@Test @Ignore
 	public void populatesAllKnownKeysInPresenterAndSavesOnlyChangedValues() throws Exception {
 		final String[] KNOWN_KEYS = new String[] {
 				"server.address.host",
@@ -109,7 +110,7 @@ public class SettingsPresenterTest {
 		presenterSettings.getString(KNOWN_KEYS[0]);
 	}
 
-	@Test
+	@Test @Ignore
 	public void handlesNullsInValuesCorrectly() throws Exception {
 		final String[] KNOWN_KEYS = new String[] {
 				"server.address.host",
