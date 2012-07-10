@@ -19,6 +19,8 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import static javax.swing.SwingUtilities.invokeLater;
+
 public class MonitorTorrent implements VuzettyRemote {
 
     private static final String ICON_PATH = "ru/alepar/vuzetty/client/gui/ico/vuze.png";
@@ -55,9 +57,7 @@ public class MonitorTorrent implements VuzettyRemote {
             container.add(contentPane, BorderLayout.CENTER);
             container.add(new StatusBar().getRootPanel(), BorderLayout.SOUTH);
 
-			frame.setTitle(config.getNickname() + " @ " + formatAddress(client.getAddress()));
 			frame.setContentPane(container);
-			frame.setIconImage(Toolkit.getDefaultToolkit().getImage(MonitorTorrent.class.getClassLoader().getResource(ICON_PATH)));
 			frame.setSize(445, 0);
 			frame.setVisible(true);
 
@@ -66,7 +66,14 @@ public class MonitorTorrent implements VuzettyRemote {
 					System.exit(0);
 				}
 			});
-        } catch (Exception e) {
+
+			invokeLater(new Runnable() {
+				public void run() {
+					frame.setTitle(config.getNickname() + " @ " + formatAddress(client.getAddress()));
+					frame.setIconImage(Toolkit.getDefaultToolkit().getImage(MonitorTorrent.class.getClassLoader().getResource(ICON_PATH)));
+				}
+			});
+		} catch (Exception e) {
             throw new RuntimeException("something went completely bollocks", e);
         }
 
