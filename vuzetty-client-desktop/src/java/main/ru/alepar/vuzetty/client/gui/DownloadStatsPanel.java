@@ -23,7 +23,6 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 	private final NumberFormat format = new DecimalFormat(NUM_FORMAT);
 
     private final UrlRunner urlRunner;
-    private final ServerRemote remote;
 
     private DownloadStats lastStats;
 
@@ -34,9 +33,10 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 	private JLabel statusValue;
 	private JLabel torrentSizeValue;
 	private JButton playButton;
+    private JToolBar controlBar;
+    private JButton deleteButton;
 
-    public DownloadStatsPanel(ServerRemote remote, UrlRunner urlRunner) {
-        this.remote = remote;
+    public DownloadStatsPanel(final ServerRemote remote, final UrlRunner urlRunner) {
         playButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -47,6 +47,21 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 			}
 		});
         this.urlRunner = urlRunner;
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                final int choice = JOptionPane.showConfirmDialog(
+                        torrentPanel,
+                        "Are you sure you want to delete\n" + lastStats.name + "?",
+                        "Removal confirmation",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE
+                );
+                if (choice == JOptionPane.YES_OPTION) {
+                    remote.deleteTorrent(lastStats.hash);
+                }
+            }
+        });
     }
 
 	private JPopupMenu createMenu() {
@@ -74,22 +89,6 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
                 });
             }
         }
-		popup.addSeparator();
-		createMenuItem(popup, "remove from server", new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				final int choice = JOptionPane.showConfirmDialog(
-						torrentPanel,
-						"Are you sure you want to delete\n" + lastStats.name + "?",
-						"Removal confirmation",
-						JOptionPane.YES_NO_OPTION,
-						JOptionPane.QUESTION_MESSAGE
-				);
-				if (choice == JOptionPane.YES_OPTION) {
-					remote.deleteTorrent(lastStats.hash);
-				}
-			}
-		});
 
 		return popup;
 	}

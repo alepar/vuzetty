@@ -33,7 +33,7 @@
             <constraints/>
             <properties>
               <focusable value="false"/>
-              <icon value="ru/alepar/vuzetty/client/gui/settings.gif"/>
+              <icon value="ru/alepar/vuzetty/client/gui/ico/settings.gif"/>
               <text value=""/>
               <toolTipText value="Settings"/>
             </properties>

@@ -15,10 +15,10 @@
     <colspec value="fill:max(p;60px):noGrow"/>
     <colspec value="left:4dlu:noGrow"/>
     <colspec value="right:max(p;60px):noGrow"/>
-    <colspec value="left:4dlu:noGrow"/>
-    <colspec value="fill:max(p;10px):noGrow"/>
+    <colspec value="left:5dlu:noGrow"/>
+    <colspec value="fill:20px:noGrow"/>
     <constraints>
-      <xy x="20" y="16" width="381" height="93"/>
+      <xy x="20" y="16" width="549" height="223"/>
     </constraints>
     <properties/>
     <border type="none" title=" ">
@@ -105,25 +105,52 @@
       </component>
       <component id="9b07a" class="javax.swing.JProgressBar" binding="progressBar">
         <constraints>
-          <grid row="0" column="0" row-span="1" col-span="11" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="0" column="0" row-span="1" col-span="9" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
           <forms defaultalign-horz="false"/>
         </constraints>
         <properties/>
       </component>
-      <component id="1e785" class="javax.swing.JButton" binding="playButton">
+      <toolbar id="f0f1d" binding="controlBar">
         <constraints>
-          <grid row="2" column="10" row-span="3" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-          <forms defaultalign-vert="false"/>
+          <grid row="0" column="10" row-span="5" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="2" indent="0" use-parent-layout="false">
+            <preferred-size width="-1" height="20"/>
+          </grid>
+          <forms defaultalign-horz="false" defaultalign-vert="false"/>
         </constraints>
         <properties>
-          <borderPainted value="false"/>
-          <focusPainted value="false"/>
+          <floatable value="false"/>
           <focusable value="false"/>
-          <font/>
-          <preferredSize width="45" height="14"/>
-          <text value="&gt;"/>
+          <orientation value="1"/>
+          <rollover value="true"/>
         </properties>
-      </component>
+        <clientProperties>
+          <JToolBar.isRollover class="java.lang.Boolean" value="true"/>
+        </clientProperties>
+        <border type="none"/>
+        <children>
+          <component id="14ea1" class="javax.swing.JButton" binding="deleteButton">
+            <constraints/>
+            <properties>
+              <focusable value="false"/>
+              <icon value="ru/alepar/vuzetty/client/gui/ico/delete.gif"/>
+              <text value=""/>
+              <toolTipText value="remove from server"/>
+            </properties>
+          </component>
+          <component id="1e785" class="javax.swing.JButton" binding="playButton">
+            <constraints/>
+            <properties>
+              <borderPainted value="false"/>
+              <focusPainted value="false"/>
+              <focusable value="false"/>
+              <font/>
+              <icon value="ru/alepar/vuzetty/client/gui/ico/play.png"/>
+              <preferredSize width="45" height="14"/>
+              <text value=""/>
+            </properties>
+          </component>
+        </children>
+      </toolbar>
     </children>
   </grid>
 </form>
