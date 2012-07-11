@@ -3,6 +3,7 @@ package ru.alepar.vuzetty.client.gui;
 import ru.alepar.vuzetty.client.play.DummyUrlRunner;
 import ru.alepar.vuzetty.client.play.UrlRunner;
 import ru.alepar.vuzetty.common.api.*;
+import sun.awt.VerticalBagLayout;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,7 +34,6 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 	private JLabel statusValue;
 	private JLabel torrentSizeValue;
 	private JButton playButton;
-    private JToolBar controlBar;
     private JButton deleteButton;
 
     public DownloadStatsPanel(final ServerRemote remote, final UrlRunner urlRunner) {
@@ -80,7 +80,7 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
         sortedInfos.addAll(lastStats.fileInfos);
         for (final FileInfo info : sortedInfos) {
             if(info.type == FileType.VIDEO) {
-                final String label = String.format("play video %s %s - %s", extractFileExtension(info.name), formatSize(info.length), info.name);
+                final String label = String.format("video %s %s - %s", extractFileExtension(info.name), formatSize(info.length), info.name);
                 createMenuItem(popup, label, new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -115,6 +115,10 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 				downloadSpeedValue.setText(formatSize(stats.downloadSpeed) + "/s");
 				torrentSizeValue.setText(formatSize(stats.downloadSize));
 				etaValue.setText(formatTime(stats.estimatedSecsToCompletion));
+
+                boolean controlsEnabled = stats.status != DownloadState.ERROR;
+                playButton.setEnabled(controlsEnabled);
+                deleteButton.setEnabled(controlsEnabled);
 			}
 		});
 	}
@@ -157,9 +161,13 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 		final JFrame frame = new JFrame();
 
         final JPanel container = new JPanel(new BorderLayout());
+        final JPanel panels = new JPanel(new VerticalBagLayout());
 
-		final DownloadStatsPanel statsPanel = new DownloadStatsPanel(new DummyRemote(), new DummyUrlRunner());
-		final DownloadStats stats = new DownloadStats();
+		DownloadStatsPanel statsPanel;
+		DownloadStats stats;
+
+        statsPanel = new DownloadStatsPanel(new DummyRemote(), new DummyUrlRunner());
+        stats = new DownloadStats();
         stats.hash = new Hash("cafebabe");
         stats.name = "Movies";
 		stats.fileInfos = new HashSet<FileInfo>() {{
@@ -167,10 +175,30 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 			add(new FileInfo("2 Movie B.mvk", 1024l*1024*1400, "http://some url/for/movie_b.mkv", FileType.VIDEO));
 			add(new FileInfo("1 Movie C.vob", 1024l*1024*2100, "http://some url/for/movie_c.vob", FileType.VIDEO));
 		}};
-
 		statsPanel.updateStats(stats);
+        panels.add(statsPanel.getRootPanel());
 
-        container.add(statsPanel.getRootPanel(), BorderLayout.CENTER);
+        statsPanel = new DownloadStatsPanel(new DummyRemote(), new DummyUrlRunner());
+		stats = new DownloadStats();
+        stats.hash = new Hash("deadbeef");
+        stats.name = "BigBangTheory";
+		stats.fileInfos = new HashSet<FileInfo>() {{
+			add(new FileInfo("BigBang_s05e01.avi", 1024l*1024*500, "http://some url/for/BigBang_s05e01.avi", FileType.VIDEO));
+			add(new FileInfo("BigBang_s05e01.srt", 1024l*102, "http://some url/for/BigBang_s05e01.srt", FileType.UNKNOWN));
+		}};
+		statsPanel.updateStats(stats);
+        panels.add(statsPanel.getRootPanel());
+
+        statsPanel = new DownloadStatsPanel(new DummyRemote(), new DummyUrlRunner());
+		stats = new DownloadStats();
+        stats.hash = new Hash("d34df00d");
+        stats.name = "";
+        stats.statusString = "Not Found";
+        stats.status = DownloadState.ERROR;
+		statsPanel.updateStats(stats);
+        panels.add(statsPanel.getRootPanel());
+
+        container.add(panels, BorderLayout.CENTER);
         container.add(new StatusBar().getRootPanel(), BorderLayout.SOUTH);
 
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

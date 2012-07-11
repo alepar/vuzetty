@@ -110,7 +110,7 @@
         </constraints>
         <properties/>
       </component>
-      <toolbar id="f0f1d" binding="controlBar">
+      <toolbar id="f0f1d">
         <constraints>
           <grid row="0" column="10" row-span="5" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="2" indent="0" use-parent-layout="false">
             <preferred-size width="-1" height="20"/>
