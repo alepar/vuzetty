@@ -22,14 +22,13 @@ public class DownloadStats implements Serializable {
     public float availability;
     public double shareRatio;
     public long estimatedSecsToCompletion;
-    public String errorMessage;
     public Collection<FileInfo> fileInfos;
 
     @Override
     public String toString() {
         return "DownloadStats{" +
                 "hash='" + hash + '\'' +
-                "errorMessage='" + errorMessage + '\'' +
+                "statusString='" + statusString + '\'' +
                 '}';
     }
 }

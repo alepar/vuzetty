@@ -85,7 +85,8 @@ public class VuzeTorrentApi implements TorrentApi {
             } catch (Exception e) {
                 final DownloadStats stat = new DownloadStats();
                 stat.hash = hash;
-                stat.errorMessage = e.toString();
+                stat.status = DownloadState.ERROR;
+                stat.statusString = e.toString();
                 stats.add(stat);
             }
         }
