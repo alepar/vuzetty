@@ -116,6 +116,13 @@ public class MonitorTorrent implements VuzettyRemote {
                                     config.getServerAddress().getAddress().getHostAddress()
                             )
                     );
+                    panel.setDeleteListener(new DownloadStatsDisplayer.DeleteListener() {
+                        @Override
+                        public void onDelete() {
+                            contentPane.remove(panel.getRootPanel());
+                            contentPane.validate();
+                        }
+                    });
                     contentPane.add(panel.getRootPanel());
                     hashes.put(stat.hash, panel);
 					displayer = panel;

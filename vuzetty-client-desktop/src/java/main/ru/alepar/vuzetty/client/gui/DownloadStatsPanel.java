@@ -35,6 +35,7 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 	private JLabel torrentSizeValue;
 	private JButton playButton;
     private JButton deleteButton;
+    private DeleteListener listener;
 
     public DownloadStatsPanel(final ServerRemote remote, final UrlRunner urlRunner) {
         playButton.addActionListener(new ActionListener() {
@@ -59,9 +60,41 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
                 );
                 if (choice == JOptionPane.YES_OPTION) {
                     remote.deleteTorrent(lastStats.hash);
+                    if(listener != null) {
+                        listener.onDelete();
+                    }
                 }
             }
         });
+    }
+
+    @Override
+    public void updateStats(final DownloadStats stats) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                lastStats = stats;
+                torrentPanel.setBorder(BorderFactory.createTitledBorder(stats.name));
+                progressBar.setValue((int)stats.percentDone);
+                statusValue.setText(stats.statusString);
+                downloadSpeedValue.setText(formatSize(stats.downloadSpeed) + "/s");
+                torrentSizeValue.setText(formatSize(stats.downloadSize));
+                etaValue.setText(formatTime(stats.estimatedSecsToCompletion));
+
+                boolean controlsEnabled = stats.status != DownloadState.ERROR;
+                playButton.setEnabled(controlsEnabled);
+                deleteButton.setEnabled(controlsEnabled);
+            }
+        });
+    }
+
+    @Override
+    public void setDeleteListener(DeleteListener listener) {
+        this.listener = listener;
+    }
+
+    public JPanel getRootPanel() {
+        return torrentPanel;
     }
 
 	private JPopupMenu createMenu() {
@@ -97,30 +130,6 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 		final JMenuItem result = new JMenuItem(label);
 		result.addActionListener(action);
 		menu.add(result);
-	}
-
-	public JPanel getRootPanel() {
-		return torrentPanel;
-	}
-
-	@Override
-	public void updateStats(final DownloadStats stats) {
-        SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-                lastStats = stats;
-				torrentPanel.setBorder(BorderFactory.createTitledBorder(stats.name));
-				progressBar.setValue((int)stats.percentDone);
-				statusValue.setText(stats.statusString);
-				downloadSpeedValue.setText(formatSize(stats.downloadSpeed) + "/s");
-				torrentSizeValue.setText(formatSize(stats.downloadSize));
-				etaValue.setText(formatTime(stats.estimatedSecsToCompletion));
-
-                boolean controlsEnabled = stats.status != DownloadState.ERROR;
-                playButton.setEnabled(controlsEnabled);
-                deleteButton.setEnabled(controlsEnabled);
-			}
-		});
 	}
 
 	private String format(Long num) {
@@ -163,10 +172,9 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
         final JPanel container = new JPanel(new BorderLayout());
         final JPanel panels = new JPanel(new VerticalBagLayout());
 
-		DownloadStatsPanel statsPanel;
 		DownloadStats stats;
 
-        statsPanel = new DownloadStatsPanel(new DummyRemote(), new DummyUrlRunner());
+        final DownloadStatsPanel statsPanelOne = new DownloadStatsPanel(new DummyRemote(), new DummyUrlRunner());
         stats = new DownloadStats();
         stats.hash = new Hash("cafebabe");
         stats.name = "Movies";
@@ -175,10 +183,17 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 			add(new FileInfo("2 Movie B.mvk", 1024l*1024*1400, "http://some url/for/movie_b.mkv", FileType.VIDEO));
 			add(new FileInfo("1 Movie C.vob", 1024l*1024*2100, "http://some url/for/movie_c.vob", FileType.VIDEO));
 		}};
-		statsPanel.updateStats(stats);
-        panels.add(statsPanel.getRootPanel());
+        statsPanelOne.setDeleteListener(new DeleteListener() {
+            @Override
+            public void onDelete() {
+                panels.remove(statsPanelOne.getRootPanel());
+                panels.validate();
+            }
+        });
+        statsPanelOne.updateStats(stats);
+        panels.add(statsPanelOne.getRootPanel());
 
-        statsPanel = new DownloadStatsPanel(new DummyRemote(), new DummyUrlRunner());
+        final DownloadStatsPanel statsPanelTwo = new DownloadStatsPanel(new DummyRemote(), new DummyUrlRunner());
 		stats = new DownloadStats();
         stats.hash = new Hash("deadbeef");
         stats.name = "BigBangTheory";
@@ -186,17 +201,24 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 			add(new FileInfo("BigBang_s05e01.avi", 1024l*1024*500, "http://some url/for/BigBang_s05e01.avi", FileType.VIDEO));
 			add(new FileInfo("BigBang_s05e01.srt", 1024l*102, "http://some url/for/BigBang_s05e01.srt", FileType.UNKNOWN));
 		}};
-		statsPanel.updateStats(stats);
-        panels.add(statsPanel.getRootPanel());
+        statsPanelTwo.setDeleteListener(new DeleteListener() {
+            @Override
+            public void onDelete() {
+                panels.remove(statsPanelTwo.getRootPanel());
+                panels.validate();
+            }
+        });
+        statsPanelTwo.updateStats(stats);
+        panels.add(statsPanelTwo.getRootPanel());
 
-        statsPanel = new DownloadStatsPanel(new DummyRemote(), new DummyUrlRunner());
+        final DownloadStatsPanel statsPanelThree = new DownloadStatsPanel(new DummyRemote(), new DummyUrlRunner());
 		stats = new DownloadStats();
         stats.hash = new Hash("d34df00d");
         stats.name = "";
         stats.statusString = "Not Found";
         stats.status = DownloadState.ERROR;
-		statsPanel.updateStats(stats);
-        panels.add(statsPanel.getRootPanel());
+        statsPanelThree.updateStats(stats);
+        panels.add(statsPanelThree.getRootPanel());
 
         container.add(panels, BorderLayout.CENTER);
         container.add(new StatusBar().getRootPanel(), BorderLayout.SOUTH);
