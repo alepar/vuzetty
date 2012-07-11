@@ -112,8 +112,9 @@ public class MonitorTorrent implements VuzettyRemote {
                     panel.setDeleteListener(new DownloadStatsDisplayer.DeleteListener() {
                         @Override
                         public void onDelete() {
-                            contentPane.remove(panel.getRootPanel());
-                            contentPane.revalidate();
+							hashes.remove(stat.hash);
+							contentPane.remove(panel.getRootPanel());
+							contentPane.revalidate();
                             frame.repaint();
                         }
                     });
