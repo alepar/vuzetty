@@ -3,54 +3,20 @@ package ru.alepar.vuzetty.client.config;
 import ru.alepar.vuzetty.client.gui.SettingsButtons;
 
 import java.lang.reflect.Method;
-import java.util.concurrent.CountDownLatch;
 
-public class SettingsPresenter implements Settings {
+public class SettingsPresenter {
 
 	private final Settings currentSettings;
 	private final SettingsView.Factory factory;
 	private final SettingsSaver saver;
 
     private SettingsView view;
-    private boolean okPressed;
 
 	public SettingsPresenter(Settings currentSettings, SettingsView.Factory factory, SettingsSaver saver) {
 		this.currentSettings = currentSettings;
 		this.factory = factory;
 		this.saver = saver;
 	}
-
-    @Override
-    public String getString(String key) {
-        view = factory.create();
-        try {
-            highlightOnPresenter(key);
-            populatePresenter();
-            view.show();
-
-            final CountDownLatch latch = new CountDownLatch(1);
-            view.setButtonListener(new SettingsButtons.Listener() {
-                @Override
-                public void onClick(boolean ok) {
-                    okPressed = ok;
-                    latch.countDown();
-                }
-            });
-            latch.await();
-
-            if(okPressed) {
-                populateSaver();
-                return getFromPresenter(key);
-            } else {
-                return currentSettings.getString(key);
-            }
-        } catch(InterruptedException e) {
-            throw new RuntimeException("interrupted while waiting for user input", e);
-        } finally {
-            view.close();
-            view = null;
-        }
-    }
 
     public void show() {
         view = factory.create();

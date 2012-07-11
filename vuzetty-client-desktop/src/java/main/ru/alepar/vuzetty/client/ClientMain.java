@@ -2,16 +2,13 @@ package ru.alepar.vuzetty.client;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.alepar.vuzetty.client.config.*;
+import ru.alepar.vuzetty.client.config.Configuration;
 import ru.alepar.vuzetty.client.gui.MonitorTorrent;
-import ru.alepar.vuzetty.client.gui.SettingsPanel;
 import ru.alepar.vuzetty.client.remote.VuzettyClient;
 import ru.alepar.vuzetty.client.remote.VuzettyRemote;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
-import java.util.prefs.Preferences;
 
 public class ClientMain {
 
@@ -21,7 +18,8 @@ public class ClientMain {
         args = cleanupJwsMess(args);
         Thread.setDefaultUncaughtExceptionHandler(new DefaultThreadExceptionHandler());
 
-		final Configuration config = makeConfiguration();
+        ConfigurationFactory.askForUserInputIfNeeded();
+		final Configuration config = ConfigurationFactory.makeConfiguration();
 
         log.debug("looking for existing monitor");
         final VuzettyDiscovery discovery = new VuzettyDiscovery();
@@ -51,31 +49,7 @@ public class ClientMain {
         }
     }
 
-	private static Configuration makeConfiguration() {
-		final Preferences preferences = Preferences.userNodeForPackage(ClientMain.class);
-
-		final PreferencesSettings userSettings = new PreferencesSettings(preferences);
-		final ResourceSettings builtinSettings = new ResourceSettings(ResourceBundle.getBundle("vuzetty-config"));
-
-		final Settings[] existingSettings = new Settings[] {
-				userSettings,
-				builtinSettings,
-		};
-
-		final Settings[] userAskingSettings = new Settings[] {
-				userSettings,
-				builtinSettings,
-				new SettingsPresenter(
-						new SettingsAggregator(existingSettings),
-						new SettingsPanel.Factory(),
-						new PreferencesSettingsSaver(preferences)
-				)
-		};
-
-		return new SettingsConfiguration(new SettingsAggregator(userAskingSettings));
-	}
-
-	private static String[] cleanupJwsMess(String[] args) {
+    private static String[] cleanupJwsMess(String[] args) {
         final List<String> newArgs = new ArrayList<String>(args.length);
         for (String arg : args) {
             if(!"-open".equals(arg)) {
