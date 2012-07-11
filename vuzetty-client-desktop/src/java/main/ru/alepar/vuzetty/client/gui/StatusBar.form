@@ -11,7 +11,7 @@
     <children>
       <toolbar id="fad29">
         <constraints>
-          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="4" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="-1" height="20"/>
           </grid>
           <forms defaultalign-horz="false"/>
@@ -26,9 +26,13 @@
         </clientProperties>
         <border type="none"/>
         <children>
-          <hspacer id="c0ac5">
+          <component id="6329d" class="javax.swing.JSeparator">
             <constraints/>
-          </hspacer>
+            <properties>
+              <orientation value="1"/>
+              <preferredSize width="2" height="0"/>
+            </properties>
+          </component>
           <component id="66c28" class="javax.swing.JButton" binding="settingsButton">
             <constraints/>
             <properties>
