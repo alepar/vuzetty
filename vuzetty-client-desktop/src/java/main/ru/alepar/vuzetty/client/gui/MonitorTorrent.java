@@ -34,13 +34,6 @@ public class MonitorTorrent implements VuzettyRemote {
     private final JFrame frame;
     private final JPanel contentPane;
 
-    static {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception ignored) {
-        }
-    }
-
     public MonitorTorrent(final Configuration config, final VuzettyClient client) {
         this.config = config;
         this.client = client;

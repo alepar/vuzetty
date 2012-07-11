@@ -21,8 +21,4 @@ public interface SettingsView {
 	void setClientNickname(String value);
 	void highlightClientNickname();
 
-    interface Factory {
-        SettingsView create();
-    }
-
 }

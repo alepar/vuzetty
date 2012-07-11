@@ -19,10 +19,6 @@ public class SettingsPanel implements SettingsView {
     private final SettingsButtons buttons;
 
     public SettingsPanel() {
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception ignored) {}
-
 		frame = new JFrame("Vuzetty settings");
 
         buttons = new SettingsButtons();
@@ -62,10 +58,10 @@ public class SettingsPanel implements SettingsView {
 
     @Override
 	public String getServerAddressHost() {
-		return serverAddressHostField.getText();
+		return trim(serverAddressHostField.getText());
 	}
 
-	@Override
+    @Override
 	public void setServerAddressHost(String value) {
 		serverAddressHostField.setText(value);
 	}
@@ -82,7 +78,7 @@ public class SettingsPanel implements SettingsView {
 
 	@Override
 	public String getServerAddressPort() {
-		return serverAddressPortField.getText();
+		return trim(serverAddressPortField.getText());
 	}
 
 	@Override
@@ -97,7 +93,7 @@ public class SettingsPanel implements SettingsView {
 
 	@Override
 	public String getClientNickname() {
-		return nicknameField.getText();
+		return trim(nicknameField.getText());
 	}
 
 	@Override
@@ -111,17 +107,20 @@ public class SettingsPanel implements SettingsView {
 		frame.pack();
 	}
 
-    public static class Factory implements SettingsView.Factory {
-        @Override
-        public SettingsView create() {
-            return new SettingsPanel();
+    private static String trim(String text) {
+        text = text.trim();
+        if(text.isEmpty()) {
+            text = null;
         }
+        return text;
     }
 
-	public static void main(String[] args) throws Exception {
-		final SettingsPanel panel = new SettingsPanel();
+    public static void main(String[] args) throws Exception {
+        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        final SettingsPanel panel = new SettingsPanel();
 
 		panel.show();
 		panel.highlightClientNickname();
 	}
+
 }

@@ -13,8 +13,12 @@ public class PreferencesSettingsSaver implements SettingsSaver {
 
 	@Override
 	public void set(String key, String value) {
-		preferences.put(key, value);
-		try {
+        if (value == null) {
+            preferences.remove(key);
+        } else {
+            preferences.put(key, value);
+        }
+        try {
 			preferences.flush();
 		} catch (BackingStoreException e) {
 			throw new RuntimeException("failed to save user settings", e);

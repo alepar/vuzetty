@@ -7,6 +7,7 @@ import ru.alepar.vuzetty.client.gui.MonitorTorrent;
 import ru.alepar.vuzetty.client.remote.VuzettyClient;
 import ru.alepar.vuzetty.client.remote.VuzettyRemote;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +16,7 @@ public class ClientMain {
     private static final Logger log = LoggerFactory.getLogger(ClientMain.class);
 
     public static void main(String[] args) throws Exception {
+        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         args = cleanupJwsMess(args);
         Thread.setDefaultUncaughtExceptionHandler(new DefaultThreadExceptionHandler());
 

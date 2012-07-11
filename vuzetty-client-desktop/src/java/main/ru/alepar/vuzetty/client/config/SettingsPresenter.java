@@ -3,24 +3,27 @@ package ru.alepar.vuzetty.client.config;
 import ru.alepar.vuzetty.client.gui.SettingsButtons;
 
 import java.lang.reflect.Method;
+import java.util.Set;
 
 public class SettingsPresenter {
 
-	private final Settings currentSettings;
-	private final SettingsView.Factory factory;
+    private final Settings prefilledSettings;
+    private final Settings persistedSettings;
+	private final SettingsView view;
 	private final SettingsSaver saver;
 
-    private SettingsView view;
+    private CloseListener closeListener;
 
-	public SettingsPresenter(Settings currentSettings, SettingsView.Factory factory, SettingsSaver saver) {
-		this.currentSettings = currentSettings;
-		this.factory = factory;
+
+    public SettingsPresenter(Settings prefilledSettings, Settings persistedSettings, SettingsView view, SettingsSaver saver) {
+        this.prefilledSettings = prefilledSettings;
+        this.persistedSettings = persistedSettings;
+		this.view = view;
 		this.saver = saver;
 	}
 
     public void show() {
-        view = factory.create();
-        populatePresenter();
+        populateView();
         view.show();
 
         view.setButtonListener(new SettingsButtons.Listener() {
@@ -30,32 +33,44 @@ public class SettingsPresenter {
                 if(ok) {
                     populateSaver();
                 }
+                if(closeListener != null) {
+                    closeListener.onClose();
+                }
             }
         });
     }
 
-	private void populateSaver() {
+    public void setCloseListener(CloseListener listener) {
+        this.closeListener = listener;
+    }
+
+    public void highlightKeys(Set<String> keys) {
+        for (String key : keys) {
+            highlightOnView(key);
+        }
+    }
+
+    private void populateSaver() {
 		for (String key : view.knownKeys()) {
-			final String oldValue = currentSettings.getString(key);
-			final String newValue = getFromPresenter(key);
+			final String oldValue = persistedSettings.getString(key);
+			final String newValue = getFromView(key);
 
 			if (oldValue == null || newValue == null || !newValue.equals(oldValue)) {
 				if (oldValue != null || newValue != null) {
 					saver.set(key, newValue);
 				}
 			}
-
 		}
 	}
 
-	private void populatePresenter() {
+	private void populateView() {
 		for (String key : view.knownKeys()) {
-			final String value = currentSettings.getString(key);
-			setOnPresenter(key, value);
+			final String value = prefilledSettings.getString(key);
+			setOnView(key, value);
 		}
 	}
 
-	private String getFromPresenter(String key) {
+	private String getFromView(String key) {
 		final String methodName = "get" + makeMethodNameFrom(key);
 		try {
 			final Method method = view.getClass().getDeclaredMethod(methodName);
@@ -66,7 +81,7 @@ public class SettingsPresenter {
 		}
 	}
 
-	private void highlightOnPresenter(String key) {
+	private void highlightOnView(String key) {
 		final String methodName = "highlight" + makeMethodNameFrom(key);
 		try {
 			final Method method = view.getClass().getDeclaredMethod(methodName);
@@ -76,7 +91,7 @@ public class SettingsPresenter {
 		}
 	}
 
-	private void setOnPresenter(String key, String value) {
+	private void setOnView(String key, String value) {
 		final String methodName = "set" + makeMethodNameFrom(key);
 		try {
 			final Method method = view.getClass().getDeclaredMethod(methodName, String.class);
@@ -98,4 +113,7 @@ public class SettingsPresenter {
 		return sb.toString();
 	}
 
+    public interface CloseListener {
+        void onClose();
+    }
 }
