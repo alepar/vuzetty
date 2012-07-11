@@ -51,18 +51,20 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                final int choice = JOptionPane.showConfirmDialog(
-                        torrentPanel,
-                        "Are you sure you want to delete\n" + lastStats.name + "?",
-                        "Removal confirmation",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE
-                );
-                if (choice == JOptionPane.YES_OPTION) {
-                    remote.deleteTorrent(lastStats.hash);
-                    if(listener != null) {
-                        listener.onDelete();
+                if (lastStats.status != DownloadState.ERROR) {
+                    final int choice = JOptionPane.showConfirmDialog(
+                            torrentPanel,
+                            "Are you sure you want to delete\n" + lastStats.name + "?",
+                            "Removal confirmation",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE
+                    );
+                    if (choice == JOptionPane.YES_OPTION) {
+                        remote.deleteTorrent(lastStats.hash);
+                        fireDelete();
                     }
+                } else {
+                    fireDelete();
                 }
             }
         });
@@ -83,7 +85,6 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 
                 boolean controlsEnabled = stats.status != DownloadState.ERROR;
                 playButton.setEnabled(controlsEnabled);
-                deleteButton.setEnabled(controlsEnabled);
             }
         });
     }
@@ -95,6 +96,12 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 
     public JPanel getRootPanel() {
         return torrentPanel;
+    }
+
+    private void fireDelete() {
+        if(listener != null) {
+            listener.onDelete();
+        }
     }
 
 	private JPopupMenu createMenu() {
@@ -187,7 +194,8 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
             @Override
             public void onDelete() {
                 panels.remove(statsPanelOne.getRootPanel());
-                panels.validate();
+                panels.revalidate();
+                frame.repaint();
             }
         });
         statsPanelOne.updateStats(stats);
@@ -205,7 +213,8 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
             @Override
             public void onDelete() {
                 panels.remove(statsPanelTwo.getRootPanel());
-                panels.validate();
+                panels.revalidate();
+                frame.repaint();
             }
         });
         statsPanelTwo.updateStats(stats);
@@ -217,6 +226,14 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
         stats.name = "";
         stats.statusString = "Not Found";
         stats.status = DownloadState.ERROR;
+        statsPanelThree.setDeleteListener(new DeleteListener() {
+            @Override
+            public void onDelete() {
+                panels.remove(statsPanelThree.getRootPanel());
+                panels.revalidate();
+                frame.repaint();
+            }
+        });
         statsPanelThree.updateStats(stats);
         panels.add(statsPanelThree.getRootPanel());
 

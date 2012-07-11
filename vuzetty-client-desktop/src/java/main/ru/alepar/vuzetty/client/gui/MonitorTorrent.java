@@ -120,7 +120,8 @@ public class MonitorTorrent implements VuzettyRemote {
                         @Override
                         public void onDelete() {
                             contentPane.remove(panel.getRootPanel());
-                            contentPane.validate();
+                            contentPane.revalidate();
+                            frame.repaint();
                         }
                     });
                     contentPane.add(panel.getRootPanel());
