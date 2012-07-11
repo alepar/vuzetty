@@ -1,6 +1,6 @@
 package ru.alepar.vuzetty.client.gui;
 
-import ru.alepar.vuzetty.client.ConfigurationFactory;
+import ru.alepar.vuzetty.client.config.ConfigurationFactory;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

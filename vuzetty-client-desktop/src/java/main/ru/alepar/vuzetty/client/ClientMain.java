@@ -3,6 +3,7 @@ package ru.alepar.vuzetty.client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.alepar.vuzetty.client.config.Configuration;
+import ru.alepar.vuzetty.client.config.ConfigurationFactory;
 import ru.alepar.vuzetty.client.gui.MonitorTorrent;
 import ru.alepar.vuzetty.client.remote.VuzettyClient;
 import ru.alepar.vuzetty.client.remote.VuzettyRemote;

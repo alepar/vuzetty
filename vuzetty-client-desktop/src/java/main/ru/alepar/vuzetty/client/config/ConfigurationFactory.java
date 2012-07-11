@@ -1,6 +1,6 @@
-package ru.alepar.vuzetty.client;
+package ru.alepar.vuzetty.client.config;
 
-import ru.alepar.vuzetty.client.config.*;
+import ru.alepar.vuzetty.client.ClientMain;
 import ru.alepar.vuzetty.client.gui.SettingsPanel;
 
 import java.util.Arrays;
@@ -13,14 +13,16 @@ import java.util.prefs.Preferences;
 public class ConfigurationFactory {
 
     public static final Set<String> MANDATORY_SETTINGS = new HashSet<String>(Arrays.asList(
-            "client.nickname"
+            "client.nickname",
+            "server.address.host",
+            "server.address.port"
     ));
 
-    static Configuration makeConfiguration() {
+    public static Configuration makeConfiguration() {
         return new SettingsConfiguration(makeCurrentSettings());
     }
 
-    static void askForUserInputIfNeeded() {
+    public static void askForUserInputIfNeeded() {
         final Set<String> missingSettings = missingSettings();
         if(!missingSettings.isEmpty()) {
             final SettingsPresenter presenter = createPresenter();
@@ -41,6 +43,20 @@ public class ConfigurationFactory {
         }
     }
 
+	public static SettingsPresenter createPresenter() {
+		final Settings persistedSettings = makeCurrentSettings();
+		final Settings prefilledSettings = new SettingsAggregator(new Settings[] {
+				persistedSettings,
+				new GeneratedSettings()
+		});
+		return new SettingsPresenter(
+				prefilledSettings,
+				persistedSettings,
+				new SettingsPanel(),
+				new PreferencesSettingsSaver(makePreferences())
+		);
+	}
+
     private static Set<String> missingSettings() {
         final Set<String> missing = new HashSet<String>();
         final Settings settings = makeCurrentSettings();
@@ -51,20 +67,6 @@ public class ConfigurationFactory {
         }
 
         return missing;
-    }
-
-    public static SettingsPresenter createPresenter() {
-        final Settings persistedSettings = makeCurrentSettings();
-        final Settings prefilledSettings = new SettingsAggregator(new Settings[] {
-                persistedSettings,
-                new GeneratedSettings()
-        });
-        return new SettingsPresenter(
-                prefilledSettings,
-                persistedSettings,
-                new SettingsPanel(),
-                new PreferencesSettingsSaver(makePreferences())
-        );
     }
 
     private static Settings makeCurrentSettings() {
