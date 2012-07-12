@@ -11,6 +11,7 @@ import ru.alepar.vuzetty.client.remote.VuzettyRemote;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ClientMain {
@@ -19,6 +20,7 @@ public class ClientMain {
 
     public static void main(String[] args) throws Exception {
         args = cleanupJwsMess(args);
+        log.debug("args = {}", Arrays.toString(args));
 
         prepStuff();
         final Configuration config = prepConfig();
@@ -39,9 +41,11 @@ public class ClientMain {
                 shouldExit = true;
             }
 
-            log.debug("submitting torrent to vuze...");
-            vuzetty.addTorrent(args[0]);
-            log.debug("...ok");
+            if (args[0] != null && !args[0].trim().isEmpty()) {
+                log.debug("submitting torrent to vuze...");
+                vuzetty.addTorrent(args[0]);
+                log.debug("...ok");
+            }
 
             if(shouldExit) {
                 System.exit(0);
