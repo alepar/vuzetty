@@ -1,7 +1,7 @@
 <configuration debug="true">
 
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>${user.home}/vuzetty-client.log</file>
+        <file>${user.home}/.vuzetty/vuzetty-client.log</file>
 
         <encoder>
             <pattern>%d{yyyy/MM/dd HH:mm:ss.SSS} [%thread{10}] %-5level %logger{20} - %msg%n</pattern>
@@ -21,7 +21,7 @@
     <root level="debug">
         <appender-ref ref="STDOUT"/>
     </root>
-    <root level="warn">
+    <root level="debug">
         <appender-ref ref="FILE"/>
     </root>
 
