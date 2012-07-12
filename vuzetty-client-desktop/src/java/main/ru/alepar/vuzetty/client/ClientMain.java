@@ -41,7 +41,7 @@ public class ClientMain {
                 shouldExit = true;
             }
 
-            if (args[0] != null && !args[0].trim().isEmpty()) {
+            if (args.length > 0 && args[0] != null && !args[0].trim().isEmpty()) {
                 log.debug("submitting torrent to vuze...");
                 vuzetty.addTorrent(args[0]);
                 log.debug("...ok");
