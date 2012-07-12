@@ -1,5 +1,6 @@
 package ru.alepar.vuzetty.client.gui;
 
+import ru.alepar.vuzetty.client.config.SettingsConfiguration;
 import ru.alepar.vuzetty.client.config.SettingsView;
 import sun.awt.VerticalBagLayout;
 
@@ -14,8 +15,10 @@ public class SettingsPanel implements SettingsView {
 	private JTextField serverAddressHostField;
 	private JTextField serverAddressPortField;
 	private JLabel serverAddressLabel;
+    private JCheckBox magnetLinksCheckBox;
+    private JCheckBox torrentFilesCheckbox;
 
-	private JFrame frame;
+    private JFrame frame;
     private final SettingsButtons buttons;
 
     public SettingsPanel() {
@@ -41,6 +44,8 @@ public class SettingsPanel implements SettingsView {
 				"client.nickname",
 				"server.address.host",
 				"server.address.port",
+				"association.magnetlink",
+				"association.torrentfile",
 		};
 	}
 
@@ -107,6 +112,34 @@ public class SettingsPanel implements SettingsView {
 		frame.pack();
 	}
 
+    @Override
+    public String getAssociationMagnetlink() {
+        if(magnetLinksCheckBox.isSelected()) {
+            return SettingsConfiguration.TRUE;
+        } else {
+            return SettingsConfiguration.FALSE;
+        }
+    }
+
+    @Override
+    public void setAssociationMagnetlink(String value) {
+        magnetLinksCheckBox.setSelected(SettingsConfiguration.TRUE.equals(value));
+    }
+
+    @Override
+    public String getAssociationTorrentfile() {
+        if(torrentFilesCheckbox.isSelected()) {
+            return SettingsConfiguration.TRUE;
+        } else {
+            return SettingsConfiguration.FALSE;
+        }
+    }
+
+    @Override
+    public void setAssociationTorrentfile(String value) {
+        torrentFilesCheckbox.setSelected(SettingsConfiguration.TRUE.equals(value));
+    }
+
     private static String trim(String text) {
         text = text.trim();
         if(text.isEmpty()) {
@@ -114,13 +147,5 @@ public class SettingsPanel implements SettingsView {
         }
         return text;
     }
-
-    public static void main(String[] args) throws Exception {
-        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        final SettingsPanel panel = new SettingsPanel();
-
-		panel.show();
-		panel.highlightClientNickname();
-	}
 
 }

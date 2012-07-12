@@ -7,4 +7,8 @@ public interface Configuration {
     InetSocketAddress getServerAddress();
 
     String getNickname();
+
+    boolean associateWithMagnetLinks();
+
+    boolean associateWithTorrentFiles();
 }

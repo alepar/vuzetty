@@ -2,6 +2,7 @@ package ru.alepar.vuzetty.client.config;
 
 import ru.alepar.vuzetty.client.gui.SettingsButtons;
 
+@SuppressWarnings("UnusedDeclaration") // set/get/highlight methods below are used by Presenter via reflection
 public interface SettingsView {
 
 	String[] knownKeys();
@@ -20,5 +21,11 @@ public interface SettingsView {
 	String getClientNickname();
 	void setClientNickname(String value);
 	void highlightClientNickname();
+
+    String getAssociationMagnetlink();
+    void setAssociationMagnetlink(String value);
+
+    String getAssociationTorrentfile();
+    void setAssociationTorrentfile(String value);
 
 }

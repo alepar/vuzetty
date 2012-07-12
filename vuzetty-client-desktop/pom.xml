@@ -61,6 +61,7 @@
                 <includes>
                     <include>logback.xml</include>
                     <include>vuzetty-config.properties</include>
+                    <include>ru/alepar/vuzetty/client/association/desktop.template</include>
                     <include>ru/alepar/vuzetty/client/gui/ico/delete.gif</include>
                     <include>ru/alepar/vuzetty/client/gui/ico/play.png</include>
                     <include>ru/alepar/vuzetty/client/gui/ico/settings.gif</include>

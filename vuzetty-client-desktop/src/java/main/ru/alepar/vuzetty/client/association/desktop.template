@@ -1,0 +1,10 @@
+
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Type=Application
+Exec="%JAVAWS%" %EXT_ARGS% %OPEN_ARG% ""%U"" http://vuzetty.alepar.ru/jnlp/vuzetty.jnlp
+Name=vuzetty
+Comment=
+NoDisplay=true
+MimeType=x-scheme-handler/magnet;application/x-bittorrent;

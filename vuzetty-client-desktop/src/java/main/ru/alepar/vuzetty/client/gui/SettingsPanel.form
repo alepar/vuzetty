@@ -1,80 +1,120 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ru.alepar.vuzetty.client.gui.SettingsPanel">
   <grid id="27dc6" binding="rootPanel" layout-manager="FormLayout">
-    <rowspec value="center:d:noGrow"/>
+    <rowspec value="center:max(d;4px):noGrow"/>
     <rowspec value="top:4dlu:noGrow"/>
     <rowspec value="center:max(d;4px):noGrow"/>
     <colspec value="fill:p:noGrow"/>
-    <colspec value="left:4dlu:noGrow"/>
-    <colspec value="fill:max(p;100px):grow(2.0)"/>
-    <colspec value="left:4dlu:noGrow"/>
-    <colspec value="fill:max(p;50px):grow"/>
     <constraints>
-      <xy x="20" y="20" width="262" height="94"/>
+      <xy x="20" y="20" width="284" height="182"/>
     </constraints>
     <properties/>
-    <border type="etched" title="Connection Settings"/>
+    <border type="none"/>
     <children>
-      <component id="3f373" class="javax.swing.JLabel" binding="nicknameLabel">
+      <grid id="135d5" layout-manager="FormLayout">
+        <rowspec value="center:max(d;4px):noGrow"/>
+        <rowspec value="top:4dlu:noGrow"/>
+        <rowspec value="center:max(d;4px):noGrow"/>
+        <colspec value="fill:77px:noGrow"/>
+        <colspec value="left:4dlu:noGrow"/>
+        <colspec value="fill:max(p;100px):grow(2.0)"/>
+        <colspec value="fill:d:grow"/>
+        <colspec value="left:4dlu:noGrow"/>
+        <colspec value="fill:50px:grow"/>
         <constraints>
-          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
           <forms/>
         </constraints>
-        <properties>
-          <text value="Nickname"/>
-        </properties>
-      </component>
-      <component id="94bc7" class="javax.swing.JTextField" binding="nicknameField">
+        <properties/>
+        <border type="etched" title="Connection Settings"/>
+        <children>
+          <component id="3f373" class="javax.swing.JLabel" binding="nicknameLabel">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <forms/>
+            </constraints>
+            <properties>
+              <text value="Nickname"/>
+            </properties>
+          </component>
+          <component id="a91b1" class="javax.swing.JLabel" binding="serverAddressLabel">
+            <constraints>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <forms/>
+            </constraints>
+            <properties>
+              <text value="Server address"/>
+            </properties>
+          </component>
+          <component id="94bc7" class="javax.swing.JTextField" binding="nicknameField">
+            <constraints>
+              <grid row="0" column="2" row-span="1" col-span="4" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+              <forms defaultalign-horz="false"/>
+            </constraints>
+            <properties>
+              <toolTipText value="Your nickname is used to distinguish your downloads from others. You might want to use the same nickname on all your computers."/>
+            </properties>
+          </component>
+          <component id="b6c72" class="javax.swing.JTextField" binding="serverAddressHostField">
+            <constraints>
+              <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+              <forms defaultalign-horz="false"/>
+            </constraints>
+            <properties>
+              <toolTipText value="Server hostname \ IP address"/>
+            </properties>
+          </component>
+          <component id="31599" class="javax.swing.JTextField" binding="serverAddressPortField">
+            <constraints>
+              <grid row="2" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+              <forms defaultalign-horz="false"/>
+            </constraints>
+            <properties>
+              <toolTipText value="Server port"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <grid id="aa90b" layout-manager="FormLayout">
+        <rowspec value="center:d:grow"/>
+        <rowspec value="top:4dlu:noGrow"/>
+        <rowspec value="center:max(d;4px):noGrow"/>
+        <rowspec value="top:4dlu:noGrow"/>
+        <rowspec value="center:max(d;4px):noGrow"/>
+        <colspec value="fill:d:grow"/>
         <constraints>
-          <grid row="0" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="-1"/>
-          </grid>
-          <forms defaultalign-horz="false"/>
-        </constraints>
-        <properties>
-          <toolTipText value="Your nickname is used to distinguish your downloads from others. You might want to use the same nickname on all your computers."/>
-        </properties>
-        <clientProperties>
-          <caretAspectRatio class="java.lang.Float" value="0.04"/>
-        </clientProperties>
-      </component>
-      <component id="a91b1" class="javax.swing.JLabel" binding="serverAddressLabel">
-        <constraints>
-          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
           <forms/>
         </constraints>
-        <properties>
-          <text value="Server address"/>
-        </properties>
-      </component>
-      <component id="b6c72" class="javax.swing.JTextField" binding="serverAddressHostField">
-        <constraints>
-          <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="-1"/>
-          </grid>
-          <forms defaultalign-horz="false"/>
-        </constraints>
-        <properties>
-          <toolTipText value="Server hostname \ IP address"/>
-        </properties>
-        <clientProperties>
-          <caretAspectRatio class="java.lang.Float" value="0.04"/>
-        </clientProperties>
-      </component>
-      <component id="31599" class="javax.swing.JTextField" binding="serverAddressPortField">
-        <constraints>
-          <grid row="2" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="-1"/>
-          </grid>
-          <forms defaultalign-horz="false"/>
-        </constraints>
-        <properties>
-          <toolTipText value="Server port"/>
-        </properties>
-        <clientProperties>
-          <caretAspectRatio class="java.lang.Float" value="0.04"/>
-        </clientProperties>
-      </component>
+        <properties/>
+        <border type="etched" title="Associations"/>
+        <children>
+          <component id="afe7e" class="javax.swing.JCheckBox" binding="torrentFilesCheckbox">
+            <constraints>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <forms/>
+            </constraints>
+            <properties>
+              <text value="Torrent Files"/>
+            </properties>
+          </component>
+          <component id="fb5fa" class="javax.swing.JCheckBox" binding="magnetLinksCheckBox" default-binding="true">
+            <constraints>
+              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <forms/>
+            </constraints>
+            <properties>
+              <text value="Magnet Links"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
     </children>
   </grid>
 </form>

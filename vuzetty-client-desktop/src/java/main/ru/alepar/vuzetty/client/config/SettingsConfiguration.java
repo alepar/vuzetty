@@ -4,9 +4,12 @@ import java.net.InetSocketAddress;
 
 public class SettingsConfiguration implements Configuration {
 
-	private final Settings settings;
+    public static final String TRUE = "true";
+    public static final String FALSE = "false";
 
-	public SettingsConfiguration(Settings settings) {
+    private final Settings settings;
+
+    public SettingsConfiguration(Settings settings) {
 		this.settings = settings;
 	}
 
@@ -22,4 +25,14 @@ public class SettingsConfiguration implements Configuration {
 	public String getNickname() {
 		return settings.getString("client.nickname");
 	}
+
+    @Override
+    public boolean associateWithMagnetLinks() {
+        return TRUE.equals(settings.getString("association.magnetlink"));
+    }
+
+    @Override
+    public boolean associateWithTorrentFiles() {
+        return TRUE.equals(settings.getString("association.torrentfile"));
+    }
 }
