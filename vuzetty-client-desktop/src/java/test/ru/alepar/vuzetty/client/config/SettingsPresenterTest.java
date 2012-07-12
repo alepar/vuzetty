@@ -4,17 +4,17 @@ import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
 import org.jmock.integration.junit4.JUnit4Mockery;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import ru.alepar.vuzetty.client.gui.SettingsButtons;
 
 @RunWith(JMock.class)
 public class SettingsPresenterTest {
 
 	private final Mockery mockery = new JUnit4Mockery();
 
-    @Test @Ignore
-    public void asksCurrentSettingsIfValueExistsAndHighlightsItAndDisplaysItViaPresenter() throws Exception {
+    @Test
+    public void populatesViewWithCurrentSettingsAndDisplaysItViaPresenterAndSavesIt() throws Exception {
 		final String KEY = "server.address.host";
 		final String OLD_VALUE = "value";
 		final String NEW_VALUE = "new value";
@@ -30,10 +30,10 @@ public class SettingsPresenterTest {
 			allowing(view).knownKeys();
 				will(returnValue(new String[] {KEY}));
 
-			one(view).highlightServerAddressHost();
 			one(view).setServerAddressHost(OLD_VALUE);
-
+			one(view).setButtonListener(with(any(SettingsButtons.Listener.class)));
 			one(view).show();
+			one(view).close();
 
 			allowing(view).getServerAddressHost();
 				will(returnValue(NEW_VALUE));
@@ -41,12 +41,13 @@ public class SettingsPresenterTest {
 			one(saver).set(KEY, NEW_VALUE);
 		}});
 
-        final SettingsPresenter presenterSettings = new SettingsPresenter(null, currentSettings, view, saver);
-//		assertThat(presenterSettings.getString(KEY), equalTo(NEW_VALUE));
+        final SettingsPresenter presenterSettings = new SettingsPresenter(currentSettings, currentSettings, view, saver);
+		presenterSettings.show();
+		presenterSettings.onViewClosed(true);
     }
 
-	@Test @Ignore
-	public void populatesAllKnownKeysInPresenterAndSavesOnlyChangedValues() throws Exception {
+	@Test
+	public void populatesViewWithAllKnownKeysAndSavesOnlyChangedValues() throws Exception {
 		final String[] KNOWN_KEYS = new String[] {
 				"server.address.host",
 				"server.address.port",
@@ -71,12 +72,13 @@ public class SettingsPresenterTest {
 			allowing(currentSettings).getString(KNOWN_KEYS[2]);
 				will(returnValue(OLD_VALUE));
 
-			one(view).highlightServerAddressHost();
 			one(view).setServerAddressHost(OLD_VALUE);
 			one(view).setServerAddressPort(OLD_VALUE);
 			one(view).setClientNickname(OLD_VALUE);
 
+			one(view).setButtonListener(with(any(SettingsButtons.Listener.class)));
 			one(view).show();
+			one(view).close();
 
 			allowing(view).getServerAddressHost();
 				will(returnValue(NEW_VALUE));
@@ -89,11 +91,12 @@ public class SettingsPresenterTest {
 			one(saver).set(KNOWN_KEYS[2], NEW_VALUE);
 		}});
 
-        final SettingsPresenter presenterSettings = new SettingsPresenter(null, currentSettings, view, saver);
-//		presenterSettings.getString(KNOWN_KEYS[0]);
+        final SettingsPresenter presenterSettings = new SettingsPresenter(currentSettings, currentSettings, view, saver);
+		presenterSettings.show();
+		presenterSettings.onViewClosed(true);
 	}
 
-	@Test @Ignore
+	@Test
 	public void handlesNullsInValuesCorrectly() throws Exception {
 		final String[] KNOWN_KEYS = new String[] {
 				"server.address.host",
@@ -118,12 +121,13 @@ public class SettingsPresenterTest {
 			allowing(currentSettings).getString(KNOWN_KEYS[2]);
 				will(returnValue(NOT_NULL));
 
-			one(view).highlightServerAddressHost();
 			one(view).setServerAddressHost(null);
 			one(view).setServerAddressPort(null);
 			one(view).setClientNickname(NOT_NULL);
 
+			one(view).setButtonListener(with(any(SettingsButtons.Listener.class)));
 			one(view).show();
+			one(view).close();
 
 			allowing(view).getServerAddressHost();
 				will(returnValue(NOT_NULL));
@@ -136,8 +140,9 @@ public class SettingsPresenterTest {
 			one(saver).set(KNOWN_KEYS[2], null);
 		}});
 
-        final SettingsPresenter presenterSettings = new SettingsPresenter(null, currentSettings, view, saver);
-//		presenterSettings.getString(KNOWN_KEYS[0]);
+        final SettingsPresenter presenterSettings = new SettingsPresenter(currentSettings, currentSettings, view, saver);
+		presenterSettings.show();
+		presenterSettings.onViewClosed(true);
 	}
 
 }

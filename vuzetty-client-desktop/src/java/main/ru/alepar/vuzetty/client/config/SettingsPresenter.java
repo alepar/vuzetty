@@ -29,18 +29,22 @@ public class SettingsPresenter {
         view.setButtonListener(new SettingsButtons.Listener() {
             @Override
             public void onClick(boolean ok) {
-                view.close();
-                if(ok) {
-                    populateSaver();
-                }
-                if(closeListener != null) {
-                    closeListener.onClose();
-                }
+				onViewClosed(ok);
             }
         });
     }
 
-    public void setCloseListener(CloseListener listener) {
+	void onViewClosed(boolean ok) {
+		view.close();
+		if(ok) {
+			populateSaver();
+		}
+		if(closeListener != null) {
+			closeListener.onClose();
+		}
+	}
+
+	public void setCloseListener(CloseListener listener) {
         this.closeListener = listener;
     }
 
