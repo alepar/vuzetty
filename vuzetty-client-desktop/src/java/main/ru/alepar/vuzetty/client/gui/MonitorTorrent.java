@@ -88,6 +88,16 @@ public class MonitorTorrent implements VuzettyRemote {
         }
     }
 
+    private void toFront() {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                frame.toFront();
+                frame.repaint();
+            }
+        });
+    }
+
     private static String formatAddress(String address) {
         return address.replaceFirst("([^/:]+).*", "$1");
     }
@@ -121,6 +131,8 @@ public class MonitorTorrent implements VuzettyRemote {
                     contentPane.add(panel.getRootPanel());
                     hashes.put(stat.hash, panel);
 					displayer = panel;
+
+                    toFront();
                 }
 
                 displayer.updateStats(stat);
@@ -134,7 +146,7 @@ public class MonitorTorrent implements VuzettyRemote {
 
     private class StatPoller implements Runnable {
 
-        @Override
+        @Override @SuppressWarnings("InfiniteLoopStatement")
         public void run() {
             try {
                 while (true) {
