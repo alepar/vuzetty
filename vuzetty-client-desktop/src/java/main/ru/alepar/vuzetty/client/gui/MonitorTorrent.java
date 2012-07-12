@@ -120,7 +120,7 @@ public class MonitorTorrent implements VuzettyRemote {
 							contentPane.remove(panel.getRootPanel());
 							contentPane.revalidate();
                             frame.repaint();
-							frame.pack();
+							packFrameHeight();
                         }
                     });
                     contentPane.add(panel.getRootPanel());
@@ -133,13 +133,17 @@ public class MonitorTorrent implements VuzettyRemote {
                 displayer.updateStats(stat);
             }
 
-            if (frame.getHeight() != frame.getPreferredSize().getHeight()) {
-                frame.setSize(frame.getWidth(), (int) frame.getPreferredSize().getHeight());
-            }
-        }
+			packFrameHeight();
+		}
     }
 
-    private class StatPoller implements Runnable {
+	private void packFrameHeight() {
+		if (frame.getHeight() != frame.getPreferredSize().getHeight()) {
+			frame.setSize(frame.getWidth(), (int) frame.getPreferredSize().getHeight());
+		}
+	}
+
+	private class StatPoller implements Runnable {
 
         @Override @SuppressWarnings("InfiniteLoopStatement")
         public void run() {
