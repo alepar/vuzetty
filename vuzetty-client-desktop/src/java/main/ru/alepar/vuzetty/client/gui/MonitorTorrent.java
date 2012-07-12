@@ -126,6 +126,7 @@ public class MonitorTorrent implements VuzettyRemote {
 							contentPane.remove(panel.getRootPanel());
 							contentPane.revalidate();
                             frame.repaint();
+							frame.pack();
                         }
                     });
                     contentPane.add(panel.getRootPanel());
