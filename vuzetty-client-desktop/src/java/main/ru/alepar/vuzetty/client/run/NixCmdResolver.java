@@ -1,6 +1,13 @@
 package ru.alepar.vuzetty.client.run;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.File;
+
 public class NixCmdResolver implements CmdResolver {
+
+	private final Logger log = LoggerFactory.getLogger(NixCmdResolver.class);
 
     private final CmdRunner cmdRunner;
 
@@ -16,9 +23,12 @@ public class NixCmdResolver implements CmdResolver {
                 "--skip-alias",
                 "--skip-functions"
         });
-        if(cmdRunner.waitForExit() != 0) {
-            throw new RuntimeException("failed to resolve " + cmd + ": " + cmdRunner.stderr());
-        }
-        return cmdRunner.stdout();
+        cmdRunner.waitForExit();
+		final String resolved = cmdRunner.stdout().trim();
+		log.debug("resolved {} to {}", cmd, resolved);
+		if(resolved == null || resolved.isEmpty() || !new File(resolved).canExecute()) {
+			throw new RuntimeException("failed to resolve " + cmd);
+		}
+		return resolved;
     }
 }

@@ -95,6 +95,7 @@ public class XdgMimeAssociator implements Associator {
                 DESKTOP_FILE_NAME,
                 mime
         });
+		cmdRunner.waitForExit();
     }
 
 }
