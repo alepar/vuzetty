@@ -73,6 +73,7 @@ public class VuzettyServer {
         @Override
         public void deleteTorrent(Hash hash) {
             api.deleteTorrent(hash);
+			hashes.remove(hash);
         }
     }
 
