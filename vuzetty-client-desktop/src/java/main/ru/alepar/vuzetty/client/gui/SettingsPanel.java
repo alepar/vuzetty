@@ -6,6 +6,8 @@ import sun.awt.VerticalBagLayout;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class SettingsPanel implements SettingsView {
 
@@ -17,6 +19,9 @@ public class SettingsPanel implements SettingsView {
 	private JLabel serverAddressLabel;
     private JCheckBox magnetLinksCheckBox;
     private JCheckBox torrentFilesCheckbox;
+    private JLabel playerVideoLabel;
+    private JTextField playerVideoField;
+    private JButton playerVideoChooseButton;
 
     private JFrame frame;
     private final SettingsButtons buttons;
@@ -31,7 +36,17 @@ public class SettingsPanel implements SettingsView {
 		container.add(buttons.getRootPanel());
 
 		frame.setContentPane(container);
-	}
+        playerVideoChooseButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                final JFileChooser fc = new JFileChooser();
+                int returnVal = fc.showOpenDialog(frame);
+                if(returnVal == JFileChooser.APPROVE_OPTION) {
+                    playerVideoField.setText(fc.getSelectedFile().getAbsolutePath());
+                }
+            }
+        });
+    }
 
     @Override
     public void setButtonListener(SettingsButtons.Listener listener) {
@@ -46,6 +61,7 @@ public class SettingsPanel implements SettingsView {
 				"server.address.port",
 				"association.magnetlink",
 				"association.torrentfile",
+				"player.video",
 		};
 	}
 
@@ -138,6 +154,21 @@ public class SettingsPanel implements SettingsView {
     @Override
     public void setAssociationTorrentfile(String value) {
         torrentFilesCheckbox.setSelected(SettingsConfiguration.TRUE.equals(value));
+    }
+
+    @Override
+    public String getPlayerVideo() {
+        return playerVideoField.getText();
+    }
+
+    @Override
+    public void setPlayerVideo(String value) {
+        playerVideoField.setText(value);
+    }
+
+    @Override
+    public void highlightPlayerVideo() {
+        highlight(playerVideoLabel);
     }
 
     private static String trim(String text) {

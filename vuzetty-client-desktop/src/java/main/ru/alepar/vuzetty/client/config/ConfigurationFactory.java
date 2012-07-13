@@ -15,7 +15,8 @@ public class ConfigurationFactory {
     public static final Set<String> MANDATORY_SETTINGS = new HashSet<String>(Arrays.asList(
             "client.nickname",
             "server.address.host",
-            "server.address.port"
+            "server.address.port",
+            "player.video"
     ));
 
     public static Configuration makeConfiguration() {

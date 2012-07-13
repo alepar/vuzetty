@@ -11,4 +11,6 @@ public interface Configuration {
     boolean associateWithMagnetLinks();
 
     boolean associateWithTorrentFiles();
+
+    String getPlayerVideo();
 }

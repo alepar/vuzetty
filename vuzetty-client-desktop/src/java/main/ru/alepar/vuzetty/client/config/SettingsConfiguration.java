@@ -35,4 +35,9 @@ public class SettingsConfiguration implements Configuration {
     public boolean associateWithTorrentFiles() {
         return TRUE.equals(settings.getString("association.torrentfile"));
     }
+
+    @Override
+    public String getPlayerVideo() {
+        return settings.getString("player.video");
+    }
 }

@@ -28,4 +28,8 @@ public interface SettingsView {
     String getAssociationTorrentfile();
     void setAssociationTorrentfile(String value);
 
+    String getPlayerVideo();
+    void setPlayerVideo(String value);
+    void highlightPlayerVideo();
+
 }

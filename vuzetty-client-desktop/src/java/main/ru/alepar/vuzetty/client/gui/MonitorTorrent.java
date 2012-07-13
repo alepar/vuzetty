@@ -3,9 +3,12 @@ package ru.alepar.vuzetty.client.gui;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.alepar.vuzetty.client.config.Configuration;
+import ru.alepar.vuzetty.client.play.AddHostUrlRunner;
+import ru.alepar.vuzetty.client.play.PlayerUrlRunner;
 import ru.alepar.vuzetty.client.play.UrlRunner;
 import ru.alepar.vuzetty.client.remote.VuzettyClient;
 import ru.alepar.vuzetty.client.remote.VuzettyRemote;
+import ru.alepar.vuzetty.client.run.RuntimeCmdRunner;
 import ru.alepar.vuzetty.common.api.Category;
 import ru.alepar.vuzetty.common.api.DownloadStats;
 import ru.alepar.vuzetty.common.api.Hash;
@@ -46,10 +49,10 @@ public class MonitorTorrent implements VuzettyRemote {
 			frame.setIconImage(Toolkit.getDefaultToolkit().getImage(MonitorTorrent.class.getClassLoader().getResource(ICON_PATH)));
 
 			frame.addWindowListener(new WindowAdapter() {
-				public void windowClosing(WindowEvent e) {
-					System.exit(0);
-				}
-			});
+                public void windowClosing(WindowEvent e) {
+                    System.exit(0);
+                }
+            });
 
 			contentPane.setLayout(new VerticalBagLayout());
 
@@ -109,7 +112,11 @@ public class MonitorTorrent implements VuzettyRemote {
                 if(displayer == null) {
                     final DownloadStatsPanel panel = new DownloadStatsPanel(
                             client,
-                            UrlRunner.NativeFactory.create(
+                            new AddHostUrlRunner(
+                                    new PlayerUrlRunner(
+                                            new RuntimeCmdRunner(),
+                                            config.getPlayerVideo()
+                                    ),
                                     config.getServerAddress().getAddress().getHostAddress()
                             )
                     );
