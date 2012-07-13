@@ -7,7 +7,7 @@
 
     <groupId>ru.alepar.vuzetty</groupId>
     <artifactId>parent</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.3-SNAPSHOT</version>
 
     <packaging>pom</packaging>
     <name>vuzetty</name>
