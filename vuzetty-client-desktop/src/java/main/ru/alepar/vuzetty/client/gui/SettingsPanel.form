@@ -148,7 +148,9 @@
               </grid>
               <forms defaultalign-horz="false"/>
             </constraints>
-            <properties/>
+            <properties>
+              <toolTipText value="Here you can choose any player capable of playing http video streams. Personally for me, VLC is the best compromise."/>
+            </properties>
           </component>
           <component id="61728" class="javax.swing.JButton" binding="playerVideoChooseButton" default-binding="true">
             <constraints>
