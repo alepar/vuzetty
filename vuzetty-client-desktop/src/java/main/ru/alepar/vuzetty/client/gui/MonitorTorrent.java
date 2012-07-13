@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import ru.alepar.vuzetty.client.config.Configuration;
 import ru.alepar.vuzetty.client.play.AddHostUrlRunner;
 import ru.alepar.vuzetty.client.play.PlayerUrlRunner;
-import ru.alepar.vuzetty.client.play.UrlRunner;
 import ru.alepar.vuzetty.client.remote.VuzettyClient;
 import ru.alepar.vuzetty.client.remote.VuzettyRemote;
 import ru.alepar.vuzetty.client.run.RuntimeCmdRunner;
@@ -19,6 +18,7 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,8 +45,14 @@ public class MonitorTorrent implements VuzettyRemote {
         frame = new JFrame();
 
         try {
-			frame.setTitle(config.getNickname() + " @ " + formatAddress(client.getAddress()));
-			frame.setIconImage(Toolkit.getDefaultToolkit().getImage(MonitorTorrent.class.getClassLoader().getResource(ICON_PATH)));
+            final ClassLoader classLoader = MonitorTorrent.class.getClassLoader();
+            final URL iconUrl = classLoader.getResource(ICON_PATH);
+            final Image image = Toolkit.getDefaultToolkit().getImage(iconUrl);
+            log.debug("classloader = {}", classLoader);
+            log.debug("icon url = {}", iconUrl);
+            log.debug("icon image = {}", image);
+            frame.setIconImage(image);
+            frame.setTitle(config.getNickname() + " @ " + formatAddress(client.getAddress()));
 
 			frame.addWindowListener(new WindowAdapter() {
                 public void windowClosing(WindowEvent e) {
