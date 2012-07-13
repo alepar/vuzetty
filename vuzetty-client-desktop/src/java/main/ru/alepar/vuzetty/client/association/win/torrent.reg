@@ -1,0 +1,18 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\Software\Classes\.torrent]
+@="torrentfile"
+"Content Type"="application/x-bittorrent"
+
+[HKEY_CURRENT_USER\Software\Classes\torrentfile]
+@="Torrent file"
+
+[HKEY_CURRENT_USER\Software\Classes\torrentfile\DefaultIcon]
+
+[HKEY_CURRENT_USER\Software\Classes\torrentfile\shell]
+
+[HKEY_CURRENT_USER\Software\Classes\torrentfile\shell\open]
+
+[HKEY_CURRENT_USER\Software\Classes\torrentfile\shell\open\command]
+@="\"%JAVAWS%\" %EXT_ARGS% %OPEN_ARG% \"%1\" http://vuzetty.alepar.ru/jnlp/vuzetty.jnlp"
+

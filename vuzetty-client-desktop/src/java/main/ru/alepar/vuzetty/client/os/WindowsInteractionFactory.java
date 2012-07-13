@@ -1,30 +1,26 @@
 package ru.alepar.vuzetty.client.os;
 
 import ru.alepar.vuzetty.client.association.Associator;
-import ru.alepar.vuzetty.client.association.WindowsAssociator;
+import ru.alepar.vuzetty.client.association.win.WindowsAssociator;
 import ru.alepar.vuzetty.client.run.CmdResolver;
 import ru.alepar.vuzetty.client.run.CmdRunner;
+import ru.alepar.vuzetty.client.run.RuntimeCmdRunner;
 
 class WindowsInteractionFactory extends CommonInteractionFactory {
 
     @Override
     public Associator getAssociator() {
-        return new WindowsAssociator();
+        return new WindowsAssociator(getJavaInstallation(), getCmdRunner());
     }
 
     @Override
     public CmdRunner getCmdRunner() {
-        throw new RuntimeException("parfenal, implement me!");
+        return new RuntimeCmdRunner();
     }
 
     @Override
     public CmdResolver getCmdResolver() {
-        throw new RuntimeException("parfenal, implement me!");
-    }
-
-    @Override
-    public JavaInstallation getJavaInstallation() {
-        throw new RuntimeException("parfenal, implement me!");
+        throw new UnsupportedOperationException("we should not need this for win yet");
     }
 
 }

@@ -61,7 +61,9 @@
                 <includes>
                     <include>logback.xml</include>
                     <include>vuzetty-config.properties</include>
-                    <include>ru/alepar/vuzetty/client/association/desktop.template</include>
+                    <include>ru/alepar/vuzetty/client/association/nix/desktop.template</include>
+                    <include>ru/alepar/vuzetty/client/association/win/magnet.reg</include>
+                    <include>ru/alepar/vuzetty/client/association/win/torrent.reg</include>
                     <include>ru/alepar/vuzetty/client/gui/ico/delete.gif</include>
                     <include>ru/alepar/vuzetty/client/gui/ico/play.png</include>
                     <include>ru/alepar/vuzetty/client/gui/ico/settings.gif</include>
@@ -69,6 +71,15 @@
                 </includes>
             </resource>
         </resources>
+
+        <testResources>
+            <testResource>
+                <directory>src/java/test</directory>
+                <includes>
+                    <include>ru/alepar/vuzetty/client/association/TemplateTest.template</include>
+                </includes>
+            </testResource>
+        </testResources>
 
         <plugins>
             <!-- intellij uidesigner forms compiler -->

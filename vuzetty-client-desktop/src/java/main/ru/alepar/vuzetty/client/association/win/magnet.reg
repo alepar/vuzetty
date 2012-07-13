@@ -1,0 +1,15 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\Software\Classes\magnet]
+@="URL:Magnet torrent link"
+"URL Protocol"=""
+
+[HKEY_CURRENT_USER\Software\Classes\magnet\DefaultIcon]
+
+[HKEY_CURRENT_USER\Software\Classes\magnet\shell]
+
+[HKEY_CURRENT_USER\Software\Classes\magnet\shell\open]
+
+[HKEY_CURRENT_USER\Software\Classes\magnet\shell\open\command]
+@="\"%JAVAWS%\" %EXT_ARGS% %OPEN_ARG% \"%1\" http://vuzetty.alepar.ru/jnlp/vuzetty.jnlp"
+

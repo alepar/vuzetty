@@ -9,8 +9,14 @@ public abstract class CommonInteractionFactory implements OsInteractionFactory {
 
     private static final Logger log = LoggerFactory.getLogger(CommonInteractionFactory.class);
 
+    private final JavaInstallation javaInstallation = createJavaInstallation();
+
     @Override
     public JavaInstallation getJavaInstallation() {
+        return javaInstallation;
+    }
+
+    private static JavaInstallation createJavaInstallation() {
         final File javaHome = new File(System.getProperty("java.home"));
         log.debug("java.home = {}", javaHome.getAbsolutePath());
         final VmType vmType = recognizeVm();
