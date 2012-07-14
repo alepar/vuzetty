@@ -49,6 +49,8 @@ public class XdgMimeAssociator implements Associator {
             fileCreated = true;
             try {
                 final File desktopPath = new File(OsUtilities.getUserHome(), DESKTOP_FILE_PATH);
+				//noinspection ResultOfMethodCallIgnored
+				desktopPath.mkdirs();  //best effort
                 final File desktopFile = new File(desktopPath, DESKTOP_FILE_NAME);
 
                 final Template template = new Template(TEMPLATE_PATH);
