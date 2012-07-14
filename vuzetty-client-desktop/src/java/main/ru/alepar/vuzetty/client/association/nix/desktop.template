@@ -3,8 +3,11 @@
 Encoding=UTF-8
 Version=1.0
 Type=Application
-Exec="%JAVAWS%" %EXT_ARGS% %OPEN_ARG% ""%U"" http://vuzetty.alepar.ru/jnlp/vuzetty.jnlp
 Name=vuzetty
-Comment=
-NoDisplay=true
+Exec="%JAVAWS%" %EXT_ARGS% %OPEN_ARG% ""%U"" http://vuzetty.alepar.ru/jnlp/vuzetty.jnlp
+Icon=%USERHOME%/.local/share/icons/vuze.png
+Comment=Stream torrents right to your video player
+Categories=Network;
+Terminal=false
+StartupNotify=true
 MimeType=x-scheme-handler/magnet;application/x-bittorrent;

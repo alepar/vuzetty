@@ -22,9 +22,10 @@ public class ClientMain {
         args = cleanupJwsMess(args);
         log.debug("args = {}", Arrays.toString(args));
 
-        prepStuff();
-        final Configuration config = prepConfig();
-        prepAssociations(config);
+		final OsInteractionFactory osInteractionFactory = OsInteractionFactory.Native.create();
+		prepStuff();
+		final Configuration config = prepConfig();
+		prepAssociations(config, osInteractionFactory);
 
         log.debug("looking for existing monitor");
         final VuzettyDiscovery discovery = new VuzettyDiscovery();
@@ -56,13 +57,12 @@ public class ClientMain {
         }
     }
 
-    private static void prepAssociations(Configuration config) {
-        final OsInteractionFactory interactionFactory = OsInteractionFactory.Native.create();
-        if (config.associateWithMagnetLinks()) {
-            interactionFactory.getAssociator().associateWithMagnetLinks();
+    private static void prepAssociations(Configuration config, OsInteractionFactory osInteractionFactory) {
+		if (config.associateWithMagnetLinks()) {
+            osInteractionFactory.getAssociator().associateWithMagnetLinks();
         }
         if (config.associateWithTorrentFiles()) {
-            interactionFactory.getAssociator().associateWithTorrentFiles();
+            osInteractionFactory.getAssociator().associateWithTorrentFiles();
         }
     }
 

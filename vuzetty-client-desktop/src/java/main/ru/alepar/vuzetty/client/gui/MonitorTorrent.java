@@ -24,7 +24,7 @@ import java.util.Map;
 
 public class MonitorTorrent implements VuzettyRemote {
 
-    private static final String ICON_PATH = "ru/alepar/vuzetty/client/gui/ico/vuze.png";
+    public static final String ICON_PATH = "ru/alepar/vuzetty/client/gui/ico/vuze.png";
 
     private final Logger log = LoggerFactory.getLogger(MonitorTorrent.class);
     private final Map<Hash, DownloadStatsDisplayer> hashes = new HashMap<Hash, DownloadStatsDisplayer>();
@@ -49,8 +49,6 @@ public class MonitorTorrent implements VuzettyRemote {
             final URL iconUrl = classLoader.getResource(ICON_PATH);
             final Image image = Toolkit.getDefaultToolkit().getImage(iconUrl);
             log.debug("classloader = {}", classLoader);
-            log.debug("icon url = {}", iconUrl);
-            log.debug("icon image = {}", image);
             frame.setIconImage(image);
             frame.setTitle(config.getNickname() + " @ " + formatAddress(client.getAddress()));
 

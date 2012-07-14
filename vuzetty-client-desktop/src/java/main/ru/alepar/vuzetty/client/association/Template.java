@@ -1,6 +1,7 @@
 package ru.alepar.vuzetty.client.association;
 
 import ru.alepar.vuzetty.client.os.JavaInstallation;
+import ru.alepar.vuzetty.client.os.OsUtilities;
 
 import java.io.*;
 import java.util.regex.Matcher;
@@ -60,5 +61,6 @@ public class Template {
         set("JAVAWS", javaInstallation.getJavawsBinaryPath().replaceAll("\\\\", "\\\\\\\\"));
         set("EXT_ARGS", javaInstallation.getJavawsExtArguments());
         set("OPEN_ARG", javaInstallation.getJavawsOpenArgument());
+		set("USERHOME", OsUtilities.getUserHome());
     }
 }
