@@ -5,7 +5,6 @@ import ru.alepar.vuzetty.client.association.Template;
 import ru.alepar.vuzetty.client.gui.MonitorTorrent;
 import ru.alepar.vuzetty.client.os.JavaInstallation;
 import ru.alepar.vuzetty.client.os.OsUtilities;
-import ru.alepar.vuzetty.client.run.CmdResolver;
 import ru.alepar.vuzetty.client.run.CmdRunner;
 
 import java.io.*;
@@ -18,20 +17,18 @@ public class XdgMimeAssociator implements Associator {
 	public static final String ICON_FILE_PATH = ".local/share/icons";
 	public static final String ICON_FILE_NAME = "vuze.png";
 
-    public static final String XDGMIME_COMMAND = "xdg-mime";
+    public static final String XDGMIME_COMMAND = "/usr/bin/xdg-mime";
 
     public static final String MIMETYPE_TORRENT = "application/x-bittorrent";
     public static final String MIMETYPE_MAGNET = "x-scheme-handler/magnet";
 
 	private final JavaInstallation javaInstallation;
-    private final CmdResolver cmdResolver;
     private final CmdRunner cmdRunner;
 
     private boolean fileCreated;
 
-    public XdgMimeAssociator(JavaInstallation javaInstallation, CmdResolver cmdResolver, CmdRunner cmdRunner) {
+    public XdgMimeAssociator(JavaInstallation javaInstallation, CmdRunner cmdRunner) {
         this.javaInstallation = javaInstallation;
-        this.cmdResolver = cmdResolver;
         this.cmdRunner = cmdRunner;
     }
 
@@ -97,9 +94,8 @@ public class XdgMimeAssociator implements Associator {
 	}
 
 	private void associateWith(String mime) {
-        final String xdgMimeCmd = cmdResolver.resolve(XDGMIME_COMMAND);
         cmdRunner.exec(new String[]{
-                xdgMimeCmd,
+				XDGMIME_COMMAND,
                 "default",
                 DESKTOP_FILE_NAME,
                 mime

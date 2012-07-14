@@ -11,7 +11,7 @@ class NixInteractionFactory extends CommonInteractionFactory {
 
     @Override
     public Associator getAssociator() {
-        return new XdgMimeAssociator(getJavaInstallation(), getCmdResolver(), getCmdRunner());
+        return new XdgMimeAssociator(getJavaInstallation(), getCmdRunner());
     }
 
     @Override
