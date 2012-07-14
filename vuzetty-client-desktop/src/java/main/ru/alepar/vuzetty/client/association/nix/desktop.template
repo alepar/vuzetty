@@ -10,4 +10,5 @@ Comment=Stream torrents right to your video player
 Categories=Network;
 Terminal=false
 StartupNotify=true
+StartupWMClass=ru-alepar-vuzetty_client
 MimeType=x-scheme-handler/magnet;application/x-bittorrent;

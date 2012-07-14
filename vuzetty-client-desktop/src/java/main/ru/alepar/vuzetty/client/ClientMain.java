@@ -10,6 +10,8 @@ import ru.alepar.vuzetty.client.remote.VuzettyClient;
 import ru.alepar.vuzetty.client.remote.VuzettyRemote;
 
 import javax.swing.*;
+import java.awt.*;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,6 +21,7 @@ public class ClientMain {
     private static final Logger log = LoggerFactory.getLogger(ClientMain.class);
 
     public static void main(String[] args) throws Exception {
+		fixWmClass();
         args = cleanupJwsMess(args);
         log.debug("args = {}", Arrays.toString(args));
 
@@ -57,7 +60,18 @@ public class ClientMain {
         }
     }
 
-    private static void prepAssociations(Configuration config, OsInteractionFactory osInteractionFactory) {
+	private static void fixWmClass() {
+		try {
+			Toolkit xToolkit = Toolkit.getDefaultToolkit();
+			Field awtAppClassNameField = xToolkit.getClass().getDeclaredField("awtAppClassName");
+			awtAppClassNameField.setAccessible(true);
+			awtAppClassNameField.set(xToolkit, "ru-alepar-vuzetty_client");
+		} catch (Exception e) {
+			log.warn("failed to fix WM_CLASS", e);
+		}
+	}
+
+	private static void prepAssociations(Configuration config, OsInteractionFactory osInteractionFactory) {
 		if (config.associateWithMagnetLinks()) {
             osInteractionFactory.getAssociator().associateWithMagnetLinks();
         }
