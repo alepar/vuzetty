@@ -21,7 +21,7 @@ import static ru.alepar.vuzetty.integration.Support.sleep;
 @RunWith(JMock.class)
 public class ClientServerCommunicationTest {
 
-    private static final InetSocketAddress LISTEN_ADDRESS = new InetSocketAddress("localhost", 31337);
+    private static final InetSocketAddress LISTEN_ADDRESS = new InetSocketAddress("localhost", 32337);
 
     private static final byte[] TORRENT_ONE = new byte[]{0x03, 0x13, 0x37};
     private static final byte[] TORRENT_TWO = new byte[]{0x03, 0x13, 0x38};
