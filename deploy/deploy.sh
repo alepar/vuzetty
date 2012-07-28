@@ -5,6 +5,7 @@ DEPLOY_HOME=/home/torrent/deploy
 JNLP_DIR=/home/torrent/vuzetty.alepar.ru/jnlp
 AZUREUS_DIR=/home/torrent/azureus
 
+KEYSTORE_PATH=$DEPLOY_HOME/key.store
 M2_HOME=$DEPLOY_HOME/maven3
 PATH=$M2_HOME/bin:$PATH
 WORK_DIR=$DEPLOY_HOME/work
@@ -45,7 +46,7 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "Packaging vuzetty"
-cd $WORK_DIR && mvn clean > /dev/null && mvn package -pl vuzetty-client-desktop,vuzetty-server -am > $LOG_DIR/mvn.log
+cd $WORK_DIR && mvn clean > /dev/null && mvn package -pl vuzetty-client-desktop,vuzetty-server -am -P production > $LOG_DIR/mvn.log
 if [ $? -ne 0 ]; then
   echo "Failed to mvn package"
   exit;

@@ -128,7 +128,7 @@
                     </jnlp>
 
                     <sign>
-                        <keystore>key.store</keystore>
+                        <keystore>${keystore.path}</keystore>
                         <keypass>somekeypass</keypass>
                         <!-- we need to override passwords easily from the command line. ${keypass} -->
                         <storepass>somestorepass</storepass>
@@ -161,5 +161,23 @@
         </plugins>
 
     </build>
+
+    <profiles>
+        <profile>
+            <id>development</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <keystore.path>key.store</keystore.path>
+            </properties>
+        </profile>
+        <profile>
+            <id>production</id>
+            <properties>
+                <keystore.path>${env.KEYSTORE_PATH}</keystore.path>
+            </properties>
+        </profile>
+    </profiles>
 
 </project>
