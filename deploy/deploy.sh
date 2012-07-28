@@ -46,6 +46,7 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "Packaging vuzetty"
+export KEYSTORE_PATH
 cd $WORK_DIR && mvn clean > /dev/null && mvn package -pl vuzetty-client-desktop,vuzetty-server -am -P production > $LOG_DIR/mvn.log
 if [ $? -ne 0 ]; then
   echo "Failed to mvn package"
