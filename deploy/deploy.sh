@@ -30,7 +30,7 @@ if [ ! -d $WORK_DIR ]; then
   fi
 else
   echo "Updating $GIT_URL"
-  cd $WORK_DIR && git pull > $LOG_DIR/git_pull.log 2>&1
+  cd $WORK_DIR && git checkout master > $LOG_DIR/git_checkout.log 2>&1 && git pull > $LOG_DIR/git_pull.log 2>&1
 
   if [ $? -ne 0 ]; then
     echo "Failed to git pull"
