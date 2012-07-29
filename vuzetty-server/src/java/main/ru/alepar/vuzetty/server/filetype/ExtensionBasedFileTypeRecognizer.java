@@ -14,7 +14,7 @@ public class ExtensionBasedFileTypeRecognizer implements FileTypeRecognizer {
     private Set<String> VIDEO_EXTENSIONS = new HashSet<String>(Arrays.asList(
             "avi",
             "mkv",
-            "bdmv",
+            "m2ts",
             "vob",
             "ts",
             "mov",
