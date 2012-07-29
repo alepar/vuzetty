@@ -68,7 +68,7 @@ else
 fi
 
 echo "Deploying vuzetty-server"
-rm -rf $AZUREUS_DIR/plugins/vuzetty-server && cp -R $WORK_DIR/vuzetty-server/target/workdir/plugins/vuzetty $AZUREUS_DIR/plugins
+rm -rf $AZUREUS_DIR/plugins/vuzetty && cp -R $WORK_DIR/vuzetty-server/target/workdir/plugins/vuzetty $AZUREUS_DIR/plugins
 
 echo "Starting azureus"
 sh -c $AZUREUS_DIR/azureus
