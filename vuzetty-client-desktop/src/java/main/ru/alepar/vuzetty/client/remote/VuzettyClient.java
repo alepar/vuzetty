@@ -44,6 +44,7 @@ public class VuzettyClient implements Client {
     @Override
     public void deleteTorrent(Hash hash) {
         api.deleteTorrent(hash);
+        subscribedHashes.remove(hash);
     }
 
     @Override

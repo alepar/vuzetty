@@ -80,15 +80,24 @@ public class VuzeTorrentApi implements TorrentApi {
     public DownloadStats[] getStats(Collection<Hash> hashes) {
         final List<DownloadStats> stats = new ArrayList<DownloadStats>(hashes.size());
         for (Hash hash : hashes) {
+            DownloadStats stat;
             try {
-                stats.add(extractStats(downloadManager.getDownload(hash.bytes())));
+                final Download download = downloadManager.getDownload(hash.bytes());
+                if(download != null) {
+                    stat = extractStats(download);
+                } else {
+                    stat = new DownloadStats();
+                    stat.hash = hash;
+                    stat.status = DownloadState.ERROR;
+                    stat.statusString = "Not present";
+                }
             } catch (Exception e) {
-                final DownloadStats stat = new DownloadStats();
+                stat = new DownloadStats();
                 stat.hash = hash;
                 stat.status = DownloadState.ERROR;
                 stat.statusString = e.toString();
-                stats.add(stat);
             }
+            stats.add(stat);
         }
         return stats.toArray(new DownloadStats[stats.size()]);
     }
