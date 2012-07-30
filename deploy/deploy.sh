@@ -16,6 +16,11 @@ if [ -z $1 ]; then
   exit;
 fi
 
+echo "Keystore password: "
+stty -echo
+read keystore_password
+stty echo
+
 echo "Cleaning up logs $LOG_DIR"
 rm -rf $LOG_DIR
 mkdir -p $LOG_DIR
@@ -47,8 +52,11 @@ fi
 
 echo "Packaging vuzetty"
 export KEYSTORE_PATH
+export KEYSTORE_PASSWORD=$keystore_password
 cd $WORK_DIR && mvn clean > /dev/null && mvn package -pl vuzetty-client-desktop,vuzetty-server -am -P production > $LOG_DIR/mvn.log
-if [ $? -ne 0 ]; then
+exit_code=$?
+export KEYSTORE_PASSWORD=""
+if [ $exit_code -ne 0 ]; then
   echo "Failed to mvn package"
   exit;
 fi

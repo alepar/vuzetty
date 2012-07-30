@@ -129,9 +129,8 @@
 
                     <sign>
                         <keystore>${keystore.path}</keystore>
-                        <keypass>somekeypass</keypass>
-                        <!-- we need to override passwords easily from the command line. ${keypass} -->
-                        <storepass>somestorepass</storepass>
+                        <keypass>${keystore.password}</keypass>
+                        <storepass>G894yJbGXqcyj9Un</storepass>
                         <storetype>jks</storetype>
                         <alias>vuzetty-jnlp</alias>
 
@@ -170,12 +169,14 @@
             </activation>
             <properties>
                 <keystore.path>key.store</keystore.path>
+                <keystore.password>key.password</keystore.password>
             </properties>
         </profile>
         <profile>
             <id>production</id>
             <properties>
                 <keystore.path>${env.KEYSTORE_PATH}</keystore.path>
+                <keystore.password>${env.KEYSTORE_PASSWORD}</keystore.password>
             </properties>
         </profile>
     </profiles>
