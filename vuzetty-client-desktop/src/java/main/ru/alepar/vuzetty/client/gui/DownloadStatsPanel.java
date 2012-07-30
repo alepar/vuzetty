@@ -2,6 +2,7 @@ package ru.alepar.vuzetty.client.gui;
 
 import ru.alepar.vuzetty.client.play.DummyUrlRunner;
 import ru.alepar.vuzetty.client.play.UrlRunner;
+import ru.alepar.vuzetty.client.remote.Client;
 import ru.alepar.vuzetty.common.api.*;
 import sun.awt.VerticalBagLayout;
 
@@ -37,7 +38,7 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
     private JButton deleteButton;
     private DeleteListener listener;
 
-    public DownloadStatsPanel(final ServerRemote remote, final UrlRunner urlRunner) {
+    public DownloadStatsPanel(final Client client, final UrlRunner urlRunner) {
         playButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -60,7 +61,7 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
                             JOptionPane.QUESTION_MESSAGE
                     );
                     if (choice == JOptionPane.YES_OPTION) {
-                        remote.deleteTorrent(lastStats.hash);
+                        client.deleteTorrent(lastStats.hash);
                         fireDelete();
                     }
                 } else {
@@ -181,7 +182,7 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 
 		DownloadStats stats;
 
-        final DownloadStatsPanel statsPanelOne = new DownloadStatsPanel(new DummyRemote(), new DummyUrlRunner());
+        final DownloadStatsPanel statsPanelOne = new DownloadStatsPanel(new DummyClient(), new DummyUrlRunner());
         stats = new DownloadStats();
         stats.hash = new Hash("cafebabe");
         stats.name = "Movies";
@@ -201,7 +202,7 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
         statsPanelOne.updateStats(stats);
         panels.add(statsPanelOne.getRootPanel());
 
-        final DownloadStatsPanel statsPanelTwo = new DownloadStatsPanel(new DummyRemote(), new DummyUrlRunner());
+        final DownloadStatsPanel statsPanelTwo = new DownloadStatsPanel(new DummyClient(), new DummyUrlRunner());
 		stats = new DownloadStats();
         stats.hash = new Hash("deadbeef");
         stats.name = "BigBangTheory";
@@ -220,7 +221,7 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
         statsPanelTwo.updateStats(stats);
         panels.add(statsPanelTwo.getRootPanel());
 
-        final DownloadStatsPanel statsPanelThree = new DownloadStatsPanel(new DummyRemote(), new DummyUrlRunner());
+        final DownloadStatsPanel statsPanelThree = new DownloadStatsPanel(new DummyClient(), new DummyUrlRunner());
 		stats = new DownloadStats();
         stats.hash = new Hash("d34df00d");
         stats.name = "";
@@ -246,25 +247,25 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 		frame.setVisible(true);
 	}
 
-    private static class DummyRemote implements ServerRemote {
+    private static class DummyClient implements Client {
         @Override
-        public void addTorrent(byte[] torrent, Category category) {
+        public void addTorrent(byte[] torrent) {
             System.out.println("ServerRemote#addTorrent(" + Arrays.toString(torrent)+")");
         }
 
         @Override
-        public void addTorrent(String url, Category category) {
+        public void addTorrent(String url) {
             System.out.println("ServerRemote#addTorrent(" + url+")");
-        }
-
-        @Override
-        public void pollForStats() {
-            System.out.println("ServerRemote#pollForStats()");
         }
 
         @Override
         public void deleteTorrent(Hash hash) {
             System.out.println("ServerRemote#deleteTorrent(" + hash +")");
+        }
+
+        @Override
+        public void pollForStats() {
+            System.out.println("ServerRemote#pollForStats()");
         }
     }
 }

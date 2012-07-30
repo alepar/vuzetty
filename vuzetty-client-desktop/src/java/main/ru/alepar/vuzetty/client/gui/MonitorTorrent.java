@@ -8,7 +8,6 @@ import ru.alepar.vuzetty.client.play.PlayerUrlRunner;
 import ru.alepar.vuzetty.client.remote.VuzettyClient;
 import ru.alepar.vuzetty.client.remote.VuzettyRemote;
 import ru.alepar.vuzetty.client.run.RuntimeCmdRunner;
-import ru.alepar.vuzetty.common.api.Category;
 import ru.alepar.vuzetty.common.api.DownloadStats;
 import ru.alepar.vuzetty.common.api.Hash;
 import sun.awt.VerticalBagLayout;
@@ -71,18 +70,16 @@ public class MonitorTorrent implements VuzettyRemote {
             throw new RuntimeException("something went completely bollocks", e);
         }
 
-        new Thread(new StatPoller()).start();
     }
 
     @Override
     public void addTorrent(String argument) {
         log.info("adding torrent={}", argument);
         try {
-            final Category category = new Category(config.getNickname());
             if (isLocalFile(argument)) {
-                client.addTorrent(readFile(argument), category);
+                client.addTorrent(readFile(argument));
             } else {
-                client.addTorrent(argument, category);
+                client.addTorrent(argument);
             }
         } catch (IOException e) {
             log.error("failed to add torrent=" + argument, e);
@@ -153,20 +150,6 @@ public class MonitorTorrent implements VuzettyRemote {
 			frame.setSize(frame.getWidth(), (int) frame.getPreferredSize().getHeight());
 		}
 	}
-
-	private class StatPoller implements Runnable {
-
-        @Override @SuppressWarnings("InfiniteLoopStatement")
-        public void run() {
-            try {
-                while (true) {
-                    client.pollForStats();
-                    Thread.sleep(1000L);
-                }
-            } catch (InterruptedException ignored) {
-            }
-        }
-    }
 
     private static byte[] readFile(String arg) throws IOException {
         final InputStream is = new FileInputStream(new File(arg));

@@ -8,11 +8,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import ru.alepar.vuzetty.client.remote.StatsListener;
 import ru.alepar.vuzetty.client.remote.VuzettyClient;
+import ru.alepar.vuzetty.common.api.Category;
 import ru.alepar.vuzetty.common.api.DownloadStats;
+import ru.alepar.vuzetty.common.api.Hash;
 import ru.alepar.vuzetty.server.VuzettyServer;
 import ru.alepar.vuzetty.server.vuze.TorrentApi;
 
 import java.net.InetSocketAddress;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -26,6 +30,9 @@ public class ClientServerCommunicationTest {
     private static final byte[] TORRENT_ONE = new byte[]{0x03, 0x13, 0x37};
     private static final byte[] TORRENT_TWO = new byte[]{0x03, 0x13, 0x38};
 
+    private static final String NICK_ONE = "NicknameForOne";
+    private static final String NICK_TWO = "NicknameForTwo";
+
     private final Mockery mockery = new JUnit4Mockery();
 
     @Test
@@ -33,14 +40,14 @@ public class ClientServerCommunicationTest {
         final TorrentApi api = mockery.mock(TorrentApi.class);
 
         mockery.checking(new Expectations() {{
-            one(api).addTorrent(TORRENT_ONE, null);
+            one(api).addTorrent(TORRENT_ONE, new Category(NICK_ONE));
         }});
 
         final VuzettyServer server = new VuzettyServer(LISTEN_ADDRESS, api);
-        final VuzettyClient client = new VuzettyClient(LISTEN_ADDRESS);
+        final VuzettyClient client = new VuzettyClient(LISTEN_ADDRESS, NICK_ONE);
 
         try {
-            client.addTorrent(TORRENT_ONE, null);
+            client.addTorrent(TORRENT_ONE);
             sleep();
         } finally {
             client.shutdown();
@@ -49,33 +56,115 @@ public class ClientServerCommunicationTest {
     }
 
     @Test
-    public void whenClientPollsForDataItReceivesBackDataForAlltorentsItHasAdded() throws Exception {
+    public void whenClientAddsTorrentItReceivesTorrentAddedEvent() throws Exception {
         final TorrentApi api = new MockTorrentApi();
-        final SavingListener listener = new SavingListener();
+        final TorrentListener torrentListener = new TorrentListener();
 
         final VuzettyServer server = new VuzettyServer(LISTEN_ADDRESS, api);
-        final VuzettyClient client = new VuzettyClient(LISTEN_ADDRESS);
+        final VuzettyClient client = new VuzettyClient(LISTEN_ADDRESS, NICK_ONE);
 
-        client.setStatsListener(listener);
+        client.setTorrentListener(torrentListener);
 
         try {
-            client.addTorrent(TORRENT_ONE, null);
-            client.addTorrent(TORRENT_TWO, null);
-            client.pollForStats();
+            client.addTorrent(TORRENT_ONE);
+            client.addTorrent(TORRENT_TWO);
             sleep();
 
-            assertThat(listener.updatedStats.length, equalTo(2));
+            assertThat(torrentListener.hashesAdded.size(), equalTo(2));
         } finally {
             client.shutdown();
             server.shutdown();
         }
     }
 
-    private static class SavingListener implements StatsListener {
+    @Test
+    public void whenAnotherClientWithTheSameNicknameAddsTorrentFirstClientReceivesTorrentAddedEventToo() throws Exception {
+        final TorrentApi api = new MockTorrentApi();
+        final TorrentListener torrentListener = new TorrentListener();
+
+        final VuzettyServer server = new VuzettyServer(LISTEN_ADDRESS, api);
+        final VuzettyClient clientOne = new VuzettyClient(LISTEN_ADDRESS, NICK_ONE);
+        final VuzettyClient clientTwo = new VuzettyClient(LISTEN_ADDRESS, NICK_ONE);
+
+        clientTwo.setTorrentListener(torrentListener);
+
+        try {
+            clientOne.addTorrent(TORRENT_ONE);
+            clientOne.addTorrent(TORRENT_TWO);
+            sleep();
+
+            assertThat(torrentListener.hashesAdded.size(), equalTo(2));
+        } finally {
+            clientOne.shutdown();
+            clientTwo.shutdown();
+            server.shutdown();
+        }
+    }
+
+    @Test
+    public void clientsWithDifferentNicksDoNotReceiveTorrentChangeEventsFromEachOther() throws Exception {
+        final TorrentApi api = new MockTorrentApi();
+        final TorrentListener torrentListenerOne = new TorrentListener();
+        final TorrentListener torrentListenerTwo = new TorrentListener();
+
+        final VuzettyServer server = new VuzettyServer(LISTEN_ADDRESS, api);
+        final VuzettyClient clientOne = new VuzettyClient(LISTEN_ADDRESS, NICK_ONE);
+        final VuzettyClient clientTwo = new VuzettyClient(LISTEN_ADDRESS, NICK_TWO);
+
+        clientOne.setTorrentListener(torrentListenerOne);
+        clientTwo.setTorrentListener(torrentListenerTwo);
+
+        try {
+            clientOne.addTorrent(TORRENT_ONE);
+            clientTwo.addTorrent(TORRENT_TWO);
+            sleep();
+
+            assertThat(torrentListenerOne.hashesAdded.size(), equalTo(1));
+            assertThat(torrentListenerTwo.hashesAdded.size(), equalTo(1));
+        } finally {
+            clientOne.shutdown();
+            clientTwo.shutdown();
+            server.shutdown();
+        }
+    }
+
+    @Test
+    public void whenClientPollsForTorrentItReceivesInfoForTorrentsAdded() throws Exception {
+        final TorrentApi api = new MockTorrentApi();
+        final SavingStatsListener statsListener = new SavingStatsListener();
+
+        final VuzettyServer server = new VuzettyServer(LISTEN_ADDRESS, api);
+        final VuzettyClient client = new VuzettyClient(LISTEN_ADDRESS, NICK_ONE);
+
+        client.setStatsListener(statsListener);
+
+        try {
+            client.addTorrent(TORRENT_ONE);
+            client.addTorrent(TORRENT_TWO);
+            sleep();
+            client.pollForStats();
+            sleep();
+
+            assertThat(statsListener.updatedStats.length, equalTo(2));
+        } finally {
+            client.shutdown();
+            server.shutdown();
+        }
+    }
+
+    private static class SavingStatsListener implements StatsListener {
         private DownloadStats[] updatedStats = new DownloadStats[0];
         @Override
         public void onStatsUpdate(DownloadStats[] updatedStats) {
             this.updatedStats = updatedStats;
+        }
+    }
+
+    private static class TorrentListener implements ru.alepar.vuzetty.common.listener.TorrentListener {
+        private final Set<Hash> hashesAdded = new HashSet<Hash>();
+        @Override
+        public void onTorrentAdded(Hash hash) {
+            hashesAdded.add(hash);
         }
     }
 }
