@@ -16,7 +16,7 @@ if [ -z $1 ]; then
   exit;
 fi
 
-echo "Keystore password: "
+echo -n "Keystore password: "
 stty -echo
 read keystore_password
 stty echo
@@ -67,6 +67,7 @@ if [ ! -z "$keysign_error" ]; then
   echo "Failed to sign jars. Wrong password?"
   exit;
 fi
+sed -i "s/$keystore_password/<keypass>/" $LOG_DIR/mvn.log
 
 echo "Deploying jnlp"
 rm -rf $JNLP_DIR && mkdir -p $JNLP_DIR && cp $WORK_DIR/vuzetty-client-desktop/target/jnlp/* $JNLP_DIR && chmod -R a+rX $JNLP_DIR
