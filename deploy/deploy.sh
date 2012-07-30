@@ -21,6 +21,7 @@ stty -echo
 read keystore_password
 stty echo
 
+echo "\n"
 echo "Cleaning up logs $LOG_DIR"
 rm -rf $LOG_DIR
 mkdir -p $LOG_DIR
