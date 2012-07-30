@@ -54,10 +54,17 @@ echo "Packaging vuzetty"
 export KEYSTORE_PATH
 export KEYSTORE_PASSWORD=$keystore_password
 cd $WORK_DIR && mvn clean > /dev/null && mvn package -pl vuzetty-client-desktop,vuzetty-server -am -P production > $LOG_DIR/mvn.log
+
 exit_code=$?
 export KEYSTORE_PASSWORD=""
 if [ $exit_code -ne 0 ]; then
   echo "Failed to mvn package"
+  exit;
+fi
+
+keysign_error=`grep "jarsigner: key associated with vuzetty-jnlp not a private key" $LOG_DIR/mvn.log`
+if [ ! -z "$keysign_error" ]; then
+  echo "Failed to sign jars. Wrong password?"
   exit;
 fi
 
