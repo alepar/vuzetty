@@ -77,7 +77,9 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
             @Override
             public void run() {
                 lastStats = stats;
-                torrentPanel.setBorder(BorderFactory.createTitledBorder(stats.name));
+                if (stats.name != null && !stats.name.isEmpty()) {
+                    torrentPanel.setBorder(BorderFactory.createTitledBorder(stats.name));
+                }
                 progressBar.setValue((int)stats.percentDone);
                 statusValue.setText(stats.statusString);
                 downloadSpeedValue.setText(formatSize(stats.downloadSpeed) + "/s");
