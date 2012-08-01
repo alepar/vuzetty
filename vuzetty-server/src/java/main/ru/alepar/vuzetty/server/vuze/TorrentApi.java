@@ -12,4 +12,6 @@ public interface TorrentApi {
     Hash addTorrent(String url, Category category);
     DownloadStats[] getStats(Collection<Hash> hashes);
     void deleteTorrent(Hash hash);
+    Collection<Hash> getHashesFor(Category category);
+
 }

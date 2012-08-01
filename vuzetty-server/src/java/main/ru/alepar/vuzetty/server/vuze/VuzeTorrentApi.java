@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 public class VuzeTorrentApi implements TorrentApi {
@@ -154,6 +155,17 @@ public class VuzeTorrentApi implements TorrentApi {
         stat.fileInfos = mediaServer.getContentUrls(download);
 
         return stat;
+    }
+
+    @Override
+    public Collection<Hash> getHashesFor(Category category) {
+        final Collection<Hash> hashes = new HashSet<Hash>();
+        for (Download download : downloadManager.getDownloads()) {
+            if(category.name.equals(download.getAttribute(categoryAttr))) {
+                hashes.add(new Hash(download.getTorrent().getHash()));
+            }
+        }
+        return hashes;
     }
 
     private static DownloadState translate(int state) {

@@ -6,6 +6,7 @@ import ru.alepar.vuzetty.common.api.Hash;
 import ru.alepar.vuzetty.server.vuze.TorrentApi;
 
 import java.util.Collection;
+import java.util.Collections;
 
 public class MockTorrentApi implements TorrentApi {
 
@@ -34,5 +35,10 @@ public class MockTorrentApi implements TorrentApi {
     @Override
     public void deleteTorrent(Hash hash) {
         // do nothing
+    }
+
+    @Override
+    public Collection<Hash> getHashesFor(Category category) {
+        return Collections.emptySet();
     }
 }

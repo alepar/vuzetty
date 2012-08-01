@@ -3,13 +3,16 @@ package ru.alepar.vuzetty.client.gui;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.alepar.vuzetty.client.config.Configuration;
+import ru.alepar.vuzetty.client.config.ConfigurationFactory;
+import ru.alepar.vuzetty.client.config.SettingsSaver;
 import ru.alepar.vuzetty.client.play.AddHostUrlRunner;
 import ru.alepar.vuzetty.client.play.PlayerUrlRunner;
-import ru.alepar.vuzetty.client.remote.VuzettyClient;
+import ru.alepar.vuzetty.client.remote.Client;
 import ru.alepar.vuzetty.client.remote.VuzettyRemote;
 import ru.alepar.vuzetty.client.run.RuntimeCmdRunner;
 import ru.alepar.vuzetty.common.api.DownloadStats;
 import ru.alepar.vuzetty.common.api.Hash;
+import ru.alepar.vuzetty.common.api.TorrentInfo;
 import sun.awt.VerticalBagLayout;
 
 import javax.swing.*;
@@ -26,15 +29,15 @@ public class MonitorTorrent implements VuzettyRemote {
     public static final String ICON_PATH = "ru/alepar/vuzetty/client/gui/ico/vuze.png";
 
     private final Logger log = LoggerFactory.getLogger(MonitorTorrent.class);
-    private final Map<Hash, DownloadStatsDisplayer> hashes = new HashMap<Hash, DownloadStatsDisplayer>();
+    private final Map<Hash, DownloadStatsPanel> hashes = new HashMap<Hash, DownloadStatsPanel>();
 
     private final Configuration config;
-    private final VuzettyClient client;
+    private final Client client;
 
     private final JFrame frame;
     private final JPanel contentPane;
 
-    public MonitorTorrent(final Configuration config, final VuzettyClient client) {
+    public MonitorTorrent(final Configuration config, final Client client) {
         this.config = config;
         this.client = client;
 
@@ -42,6 +45,22 @@ public class MonitorTorrent implements VuzettyRemote {
 
         contentPane = new JPanel();
         frame = new JFrame();
+
+        final SettingsSaver settingsSaver = ConfigurationFactory.makeSettingsSaver();
+        final StatusBar.OwnTorrentsClickListener ownTorrentsClickListener = new StatusBar.OwnTorrentsClickListener() {
+            @Override
+            public void onClick(boolean pressed) {
+                settingsSaver.set("owntorrents.show", Boolean.toString(pressed));
+                client.setPollOldTorrents(pressed);
+                if(!pressed) {
+                    for(TorrentInfo info : client.getOwnTorrents()) {
+                        if(info.old) {
+                            removeHashFromGui(info.hash);
+                        }
+                    }
+                }
+            }
+        };
 
         try {
             final ClassLoader classLoader = MonitorTorrent.class.getClassLoader();
@@ -61,7 +80,7 @@ public class MonitorTorrent implements VuzettyRemote {
 
             final JPanel container = new JPanel(new BorderLayout());
             container.add(contentPane, BorderLayout.CENTER);
-            container.add(new StatusBar().getRootPanel(), BorderLayout.SOUTH);
+            container.add(new StatusBar(config.showOwnTorrentsByDefault(), ownTorrentsClickListener).getRootPanel(), BorderLayout.SOUTH);
 
 			frame.setContentPane(container);
 			frame.setSize(445, 0);
@@ -124,11 +143,7 @@ public class MonitorTorrent implements VuzettyRemote {
                     panel.setDeleteListener(new DownloadStatsDisplayer.DeleteListener() {
                         @Override
                         public void onDelete() {
-							hashes.remove(stat.hash);
-							contentPane.remove(panel.getRootPanel());
-							contentPane.revalidate();
-                            frame.repaint();
-							packFrameHeight();
+                            removeHashFromGui(stat.hash);
                         }
                     });
                     contentPane.add(panel.getRootPanel());
@@ -145,7 +160,15 @@ public class MonitorTorrent implements VuzettyRemote {
 		}
     }
 
-	private void packFrameHeight() {
+    private void removeHashFromGui(Hash hash) {
+        final DownloadStatsPanel panel = hashes.remove(hash);
+        contentPane.remove(panel.getRootPanel());
+        contentPane.revalidate();
+        frame.repaint();
+        packFrameHeight();
+    }
+
+    private void packFrameHeight() {
 		if (frame.getHeight() != frame.getPreferredSize().getHeight()) {
 			frame.setSize(frame.getWidth(), (int) frame.getPreferredSize().getHeight());
 		}

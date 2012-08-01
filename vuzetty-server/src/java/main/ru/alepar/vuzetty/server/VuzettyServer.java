@@ -4,10 +4,7 @@ import ru.alepar.rpc.api.ImplementationFactory;
 import ru.alepar.rpc.api.NettyRpcServerBuilder;
 import ru.alepar.rpc.api.Remote;
 import ru.alepar.rpc.api.RpcServer;
-import ru.alepar.vuzetty.common.api.Category;
-import ru.alepar.vuzetty.common.api.ClientRemote;
-import ru.alepar.vuzetty.common.api.Hash;
-import ru.alepar.vuzetty.common.api.ServerRemote;
+import ru.alepar.vuzetty.common.api.*;
 import ru.alepar.vuzetty.common.listener.TorrentListener;
 import ru.alepar.vuzetty.server.eventbus.CategoryRespectingTorrentEventBus;
 import ru.alepar.vuzetty.server.eventbus.TorrentEventBus;
@@ -62,13 +59,13 @@ public class VuzettyServer {
         @Override
         public void addTorrent(byte[] torrent, Category category) {
             final Hash hash = api.addTorrent(torrent, category);
-            torrentBus.fireTorrentAdded(hash, category);
+            torrentBus.fireTorrentAdded(new TorrentInfo(false, hash), category);
         }
 
         @Override
         public void addTorrent(String url, Category category) {
             final Hash hash = api.addTorrent(url, category);
-            torrentBus.fireTorrentAdded(hash, category);
+            torrentBus.fireTorrentAdded(new TorrentInfo(false, hash), category);
         }
 
         @Override
@@ -83,10 +80,14 @@ public class VuzettyServer {
 
         @Override
         public void subscribe(Category category) {
+            for (Hash hash : api.getHashesFor(category)) {
+                clientRemote.onTorrentAdded(new TorrentInfo(true, hash));
+            }
+
             torrentBus.addListener(category, new TorrentListener() {
                 @Override
-                public void onTorrentAdded(Hash hash) {
-                    clientRemote.onTorrentAdded(hash);
+                public void onTorrentAdded(TorrentInfo info) {
+                    clientRemote.onTorrentAdded(info);
                 }
             });
         }

@@ -54,9 +54,13 @@ public class ConfigurationFactory {
 				prefilledSettings,
 				persistedSettings,
 				new SettingsPanel(),
-				new PreferencesSettingsSaver(makePreferences())
+                makeSettingsSaver()
 		);
 	}
+
+    public static SettingsSaver makeSettingsSaver() {
+        return new PreferencesSettingsSaver(makePreferences());
+    }
 
     private static Set<String> missingSettings() {
         final Set<String> missing = new HashSet<String>();

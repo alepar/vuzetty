@@ -10,11 +10,12 @@ import ru.alepar.vuzetty.client.remote.StatsListener;
 import ru.alepar.vuzetty.client.remote.VuzettyClient;
 import ru.alepar.vuzetty.common.api.Category;
 import ru.alepar.vuzetty.common.api.DownloadStats;
-import ru.alepar.vuzetty.common.api.Hash;
+import ru.alepar.vuzetty.common.api.TorrentInfo;
 import ru.alepar.vuzetty.server.VuzettyServer;
 import ru.alepar.vuzetty.server.vuze.TorrentApi;
 
 import java.net.InetSocketAddress;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,10 +38,13 @@ public class ClientServerCommunicationTest {
 
     @Test
     public void whenClientSubmitsTorrentServerReceivesItAndPassesItToVuze() throws Exception {
+        final Category category = new Category(NICK_ONE);
         final TorrentApi api = mockery.mock(TorrentApi.class);
 
         mockery.checking(new Expectations() {{
-            one(api).addTorrent(TORRENT_ONE, new Category(NICK_ONE));
+            allowing(api).getHashesFor(category);
+                will(returnValue(Collections.emptySet()));
+            one(api).addTorrent(TORRENT_ONE, category);
         }});
 
         final VuzettyServer server = new VuzettyServer(LISTEN_ADDRESS, api);
@@ -161,10 +165,10 @@ public class ClientServerCommunicationTest {
     }
 
     private static class TorrentListener implements ru.alepar.vuzetty.common.listener.TorrentListener {
-        private final Set<Hash> hashesAdded = new HashSet<Hash>();
+        private final Set<TorrentInfo> hashesAdded = new HashSet<TorrentInfo>();
         @Override
-        public void onTorrentAdded(Hash hash) {
-            hashesAdded.add(hash);
+        public void onTorrentAdded(TorrentInfo info) {
+            hashesAdded.add(info);
         }
     }
 }

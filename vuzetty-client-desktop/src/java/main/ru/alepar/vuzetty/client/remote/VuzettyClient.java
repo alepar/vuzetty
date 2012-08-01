@@ -5,8 +5,10 @@ import ru.alepar.rpc.api.RpcClient;
 import ru.alepar.vuzetty.common.api.*;
 
 import java.net.InetSocketAddress;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Set;
+import java.util.Map;
 
 public class VuzettyClient implements Client {
 
@@ -14,10 +16,13 @@ public class VuzettyClient implements Client {
     private final ServerRemote api;
     private final Category category;
 
-    private final Set<Hash> subscribedHashes = new HashSet<Hash>();
+    private final Map<Hash, TorrentInfo> ownTorrents = new HashMap<Hash, TorrentInfo>();
 
     private StatsListener statsListener = new DummyStatsListener();
     private ru.alepar.vuzetty.common.listener.TorrentListener torrentListener = new TorrentListener();
+
+    private volatile boolean pollOldTorrents;
+
 
     public VuzettyClient(InetSocketAddress bindAddress, String nickname) {
         category = new Category(nickname);
@@ -44,16 +49,33 @@ public class VuzettyClient implements Client {
     @Override
     public void deleteTorrent(Hash hash) {
         api.deleteTorrent(hash);
-        subscribedHashes.remove(hash);
+        ownTorrents.remove(hash);
     }
 
     @Override
     public void pollForStats() {
-        if (!subscribedHashes.isEmpty()) {
-            api.pollForStats(subscribedHashes.toArray(new Hash[subscribedHashes.size()]));
+        Collection<TorrentInfo> infos;
+        if(pollOldTorrents) {
+            infos = ownTorrents.values();
+        } else {
+            infos = new HashSet<TorrentInfo>();
+            for (TorrentInfo info : ownTorrents.values()) {
+                if(!info.old) {
+                    infos.add(info);
+                }
+            }
+        }
+        if (!infos.isEmpty()) {
+            final Hash[] hashes = new Hash[infos.size()];
+            int i=0;
+            for (TorrentInfo info : infos) {
+                hashes[i++] = info.hash;
+            }
+            api.pollForStats(hashes);
         }
     }
 
+    @Override
     public void setStatsListener(StatsListener listener) {
         this.statsListener = listener;
     }
@@ -62,12 +84,24 @@ public class VuzettyClient implements Client {
         this.torrentListener = torrentListener;
     }
 
-    public void shutdown() {
-        rpc.shutdown();
-    }
-
+    @Override
     public String getAddress() {
         return rpc.getRemote().getRemoteAddress();
+    }
+
+    @Override
+    public TorrentInfo[] getOwnTorrents() {
+        final Collection<TorrentInfo> infos = ownTorrents.values();
+        return infos.toArray(new TorrentInfo[infos.size()]);
+    }
+
+    @Override
+    public void setPollOldTorrents(boolean poll) {
+        pollOldTorrents = poll;
+    }
+
+    public void shutdown() {
+        rpc.shutdown();
     }
 
     public class RemoteImpl implements ClientRemote {
@@ -77,8 +111,8 @@ public class VuzettyClient implements Client {
         }
 
         @Override
-        public void onTorrentAdded(Hash hash) {
-            torrentListener.onTorrentAdded(hash);
+        public void onTorrentAdded(TorrentInfo info) {
+            torrentListener.onTorrentAdded(info);
         }
     }
 
@@ -91,8 +125,8 @@ public class VuzettyClient implements Client {
 
     private class TorrentListener implements ru.alepar.vuzetty.common.listener.TorrentListener {
         @Override
-        public void onTorrentAdded(Hash hash) {
-            subscribedHashes.add(hash);
+        public void onTorrentAdded(TorrentInfo info) {
+            ownTorrents.put(info.hash, info);
         }
     }
 

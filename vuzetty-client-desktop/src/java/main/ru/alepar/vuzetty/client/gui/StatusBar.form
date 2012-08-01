@@ -26,6 +26,17 @@
         </clientProperties>
         <border type="none"/>
         <children>
+          <component id="7f453" class="javax.swing.JButton" binding="ownTorrentsButton">
+            <constraints/>
+            <properties>
+              <focusable value="false"/>
+              <icon value="ru/alepar/vuzetty/client/gui/ico/man.png"/>
+              <rolloverEnabled value="false"/>
+              <selected value="false"/>
+              <text value=""/>
+              <toolTipText value="Show all my torrents"/>
+            </properties>
+          </component>
           <component id="6329d" class="javax.swing.JSeparator">
             <constraints/>
             <properties>

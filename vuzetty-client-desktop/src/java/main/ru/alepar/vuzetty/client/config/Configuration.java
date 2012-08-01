@@ -13,4 +13,6 @@ public interface Configuration {
     boolean associateWithTorrentFiles();
 
     String getPlayerVideo();
+
+    boolean showOwnTorrentsByDefault();
 }

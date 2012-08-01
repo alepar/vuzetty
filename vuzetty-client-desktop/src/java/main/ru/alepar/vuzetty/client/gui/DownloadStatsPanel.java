@@ -3,6 +3,7 @@ package ru.alepar.vuzetty.client.gui;
 import ru.alepar.vuzetty.client.play.DummyUrlRunner;
 import ru.alepar.vuzetty.client.play.UrlRunner;
 import ru.alepar.vuzetty.client.remote.Client;
+import ru.alepar.vuzetty.client.remote.StatsListener;
 import ru.alepar.vuzetty.common.api.*;
 import sun.awt.VerticalBagLayout;
 
@@ -241,7 +242,7 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
         panels.add(statsPanelThree.getRootPanel());
 
         container.add(panels, BorderLayout.CENTER);
-        container.add(new StatusBar().getRootPanel(), BorderLayout.SOUTH);
+        container.add(new StatusBar(false, null).getRootPanel(), BorderLayout.SOUTH);
 
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.setContentPane(container);
@@ -268,6 +269,26 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
         @Override
         public void pollForStats() {
             System.out.println("ServerRemote#pollForStats()");
+        }
+
+        @Override
+        public void setPollOldTorrents(boolean poll) {
+            throw new RuntimeException("parfenal, implement me!");
+        }
+
+        @Override
+        public String getAddress() {
+            throw new RuntimeException("parfenal, implement me!");
+        }
+
+        @Override
+        public TorrentInfo[] getOwnTorrents() {
+            throw new RuntimeException("parfenal, implement me!");
+        }
+
+        @Override
+        public void setStatsListener(StatsListener listener) {
+            throw new RuntimeException("parfenal, implement me!");
         }
     }
 }

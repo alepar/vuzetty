@@ -1,7 +1,7 @@
 package ru.alepar.vuzetty.server.eventbus;
 
 import ru.alepar.vuzetty.common.api.Category;
-import ru.alepar.vuzetty.common.api.Hash;
+import ru.alepar.vuzetty.common.api.TorrentInfo;
 import ru.alepar.vuzetty.common.listener.TorrentListener;
 
 import java.util.AbstractMap;
@@ -14,10 +14,10 @@ public class CategoryRespectingTorrentEventBus implements TorrentEventBus {
     private final List<Map.Entry<Category, TorrentListener>> listeners = new LinkedList<Map.Entry<Category, TorrentListener>>();
 
     @Override
-    public void fireTorrentAdded(Hash hash, Category category) {
+    public void fireTorrentAdded(TorrentInfo info, Category category) {
         for (Map.Entry<Category, TorrentListener> entry : listeners) {
             if(entry.getKey().equals(category)) {
-                entry.getValue().onTorrentAdded(hash);
+                entry.getValue().onTorrentAdded(info);
             }
         }
     }

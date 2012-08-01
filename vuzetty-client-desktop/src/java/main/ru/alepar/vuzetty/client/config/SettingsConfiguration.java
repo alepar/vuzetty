@@ -40,4 +40,9 @@ public class SettingsConfiguration implements Configuration {
     public String getPlayerVideo() {
         return settings.getString("player.video");
     }
+
+    @Override
+    public boolean showOwnTorrentsByDefault() {
+        return TRUE.equals(settings.getString("owntorrents.show"));
+    }
 }
