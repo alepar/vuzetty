@@ -14,7 +14,7 @@
 
     <modules>
         <module>vuzetty-common</module>
-        <module>vuzetty-client-android</module>
+        <!--<module>vuzetty-client-android</module>-->
         <module>vuzetty-client-common</module>
         <module>vuzetty-client-desktop</module>
         <module>vuzetty-server</module>
