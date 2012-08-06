@@ -6,9 +6,9 @@ import ru.alepar.vuzetty.common.api.*;
 
 import java.net.InetSocketAddress;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class VuzettyClient implements Client {
 
@@ -16,7 +16,7 @@ public class VuzettyClient implements Client {
     private final ServerRemote api;
     private final Category category;
 
-    private final Map<Hash, TorrentInfo> ownTorrents = new HashMap<Hash, TorrentInfo>();
+    private final Map<Hash, TorrentInfo> ownTorrents = new ConcurrentHashMap<Hash, TorrentInfo>();
 
     private StatsListener statsListener = new DummyStatsListener();
     private ru.alepar.vuzetty.common.listener.TorrentListener torrentListener = new TorrentListener();

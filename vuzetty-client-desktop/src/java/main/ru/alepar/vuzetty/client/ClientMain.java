@@ -6,6 +6,7 @@ import ru.alepar.vuzetty.client.config.Configuration;
 import ru.alepar.vuzetty.client.config.ConfigurationFactory;
 import ru.alepar.vuzetty.client.gui.MonitorTorrent;
 import ru.alepar.vuzetty.client.os.OsInteractionFactory;
+import ru.alepar.vuzetty.client.remote.Client;
 import ru.alepar.vuzetty.client.remote.VuzettyClient;
 import ru.alepar.vuzetty.client.remote.VuzettyRemote;
 
@@ -38,7 +39,9 @@ public class ClientMain {
             boolean shouldExit = false;
             if(vuzetty == null) {
                 log.debug("no vuzetty found, creating new one");
-                vuzetty = new MonitorTorrent(config, new VuzettyClient(config.getServerAddress(), config.getNickname()));
+				final Client client = new VuzettyClient(config.getServerAddress(), config.getNickname());
+				client.setPollOldTorrents(config.showOwnTorrentsByDefault());
+				vuzetty = new MonitorTorrent(config, client);
                 discovery.announce(vuzetty);
             } else {
                 log.debug("already running vuzetty found");

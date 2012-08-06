@@ -162,11 +162,13 @@ public class MonitorTorrent implements VuzettyRemote {
 
     private void removeHashFromGui(Hash hash) {
         final DownloadStatsPanel panel = hashes.remove(hash);
-        contentPane.remove(panel.getRootPanel());
-        contentPane.revalidate();
-        frame.repaint();
-        packFrameHeight();
-    }
+		if (panel != null) {
+			contentPane.remove(panel.getRootPanel());
+			contentPane.revalidate();
+			frame.repaint();
+			packFrameHeight();
+		}
+	}
 
     private void packFrameHeight() {
 		if (frame.getHeight() != frame.getPreferredSize().getHeight()) {
