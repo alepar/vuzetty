@@ -97,10 +97,18 @@ public class ClientMain {
         final List<String> newArgs = new ArrayList<String>(args.length);
         for (String arg : args) {
             if(!"-open".equals(arg)) {
-                newArgs.add(arg);
+                newArgs.add(cleanupArg(arg));
             }
         }
         return newArgs.toArray(new String[newArgs.size()]);
     }
+
+	private static String cleanupArg(String arg) {
+		if(arg.startsWith("_")) {
+			return arg.substring(1, arg.length());
+		} else {
+			return arg;
+		}
+	}
 
 }
