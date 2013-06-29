@@ -1,5 +1,6 @@
 package ru.alepar.vuzetty.client.gui;
 
+import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.alepar.vuzetty.client.config.Configuration;
@@ -10,6 +11,7 @@ import ru.alepar.vuzetty.client.play.PlayerUrlRunner;
 import ru.alepar.vuzetty.client.remote.Client;
 import ru.alepar.vuzetty.client.remote.VuzettyRemote;
 import ru.alepar.vuzetty.client.run.RuntimeCmdRunner;
+import ru.alepar.vuzetty.client.upnp.UpnpControl;
 import ru.alepar.vuzetty.common.api.DownloadStats;
 import ru.alepar.vuzetty.common.api.Hash;
 import ru.alepar.vuzetty.common.api.TorrentInfo;
@@ -21,15 +23,15 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Map;
 
 public class MonitorTorrent implements VuzettyRemote {
 
     public static final String ICON_PATH = "ru/alepar/vuzetty/client/gui/ico/vuze.png";
+    private static final Logger log = LoggerFactory.getLogger(MonitorTorrent.class);
 
-    private final Logger log = LoggerFactory.getLogger(MonitorTorrent.class);
-    private final Map<Hash, DownloadStatsPanel> hashes = new HashMap<Hash, DownloadStatsPanel>();
+    private final UpnpControl upnpControl = new UpnpControl();
+    private final Map<Hash, DownloadStatsPanel> hashes = Maps.newHashMap();
 
     private final Configuration config;
     private final Client client;
@@ -138,7 +140,8 @@ public class MonitorTorrent implements VuzettyRemote {
                                             config.getPlayerVideo()
                                     ),
                                     config.getServerAddress().getAddress().getHostAddress()
-                            )
+                            ),
+                            upnpControl
                     );
                     panel.setDeleteListener(new DownloadStatsDisplayer.DeleteListener() {
                         @Override

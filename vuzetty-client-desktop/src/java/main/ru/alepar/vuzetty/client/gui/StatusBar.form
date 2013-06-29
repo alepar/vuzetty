@@ -31,7 +31,7 @@
             <properties>
               <focusable value="false"/>
               <icon value="ru/alepar/vuzetty/client/gui/ico/man.png"/>
-              <rolloverEnabled value="false"/>
+              <rolloverEnabled value="true"/>
               <selected value="false"/>
               <text value=""/>
               <toolTipText value="Show all my torrents"/>

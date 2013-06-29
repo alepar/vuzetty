@@ -21,9 +21,28 @@
     <dependencies>
 
         <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>14.0.1</version>
+        </dependency>
+        <dependency>
             <groupId>ru.alepar.vuzetty</groupId>
             <artifactId>vuzetty-client-common</artifactId>
             <version>${project.version}</version>
+        </dependency>
+
+        <!-- upnp -->
+        <dependency>
+            <groupId>org.fourthline.cling</groupId>
+            <artifactId>cling-core</artifactId>
+            <version>2.0-alpha2</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.fourthline.cling</groupId>
+            <artifactId>cling-support</artifactId>
+            <version>2.0-alpha2</version>
+            <scope>compile</scope>
         </dependency>
 
         <!-- gui forms -->
@@ -56,29 +75,10 @@
         <testSourceDirectory>src/java/test</testSourceDirectory>
 
         <resources>
-            <resource>
-                <directory>src/java/main</directory>
-                <includes>
-                    <include>logback.xml</include>
-                    <include>vuzetty-config.properties</include>
-                    <include>ru/alepar/vuzetty/client/association/nix/desktop.template</include>
-                    <include>ru/alepar/vuzetty/client/association/win/magnet.reg</include>
-                    <include>ru/alepar/vuzetty/client/association/win/torrent.reg</include>
-                    <include>ru/alepar/vuzetty/client/gui/ico/delete.gif</include>
-                    <include>ru/alepar/vuzetty/client/gui/ico/play.png</include>
-                    <include>ru/alepar/vuzetty/client/gui/ico/settings.gif</include>
-                    <include>ru/alepar/vuzetty/client/gui/ico/vuze.png</include>
-                </includes>
-            </resource>
+            <resource><directory>resources/main</directory></resource>
         </resources>
-
         <testResources>
-            <testResource>
-                <directory>src/java/test</directory>
-                <includes>
-                    <include>ru/alepar/vuzetty/client/association/TemplateTest.template</include>
-                </includes>
-            </testResource>
+            <testResource><directory>resources/test</directory></testResource>
         </testResources>
 
         <plugins>
