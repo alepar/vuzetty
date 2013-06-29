@@ -29,6 +29,7 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 	private final NumberFormat format = new DecimalFormat(NUM_FORMAT);
 
     private final UrlRunner urlRunner;
+    private final String hostAddress;
     private final UpnpControl upnpControl;
 
     private DownloadStats lastStats;
@@ -43,9 +44,10 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
     private JButton deleteButton;
     private DeleteListener listener;
 
-    public DownloadStatsPanel(final Client client, final UrlRunner urlRunner, UpnpControl upnpControl) {
+    public DownloadStatsPanel(final Client client, final UrlRunner urlRunner, UpnpControl upnpControl, String hostAddress) {
         this.upnpControl = upnpControl;
         this.urlRunner = urlRunner;
+        this.hostAddress = hostAddress;
         playButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -143,6 +145,7 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 	}
 
     private void playUrl(String url) {
+        url = "http://" + hostAddress + url;
         UrlRunner runner = urlRunner;
         if (!upnpControl.getPlayers().isEmpty()) {
             final List<Object> players = Lists.newArrayList();
@@ -212,14 +215,15 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 
 		DownloadStats stats;
 
-        final DownloadStatsPanel statsPanelOne = new DownloadStatsPanel(new DummyClient(), new DummyUrlRunner(), upnpControl);
+        final String host = "azureus.alepar.ru";
+        final DownloadStatsPanel statsPanelOne = new DownloadStatsPanel(new DummyClient(), new DummyUrlRunner(), upnpControl, host);
         stats = new DownloadStats();
         stats.hash = new Hash("cafebabe");
         stats.name = "Movies";
 		stats.fileInfos = new HashSet<FileInfo>() {{
-			add(new FileInfo("3 Movie A.avi", 1024l*1024*700, "http://some url/for/movie_a.avi", FileType.VIDEO));
-			add(new FileInfo("2 Movie B.mvk", 1024l*1024*1400, "http://some url/for/movie_b.mkv", FileType.VIDEO));
-			add(new FileInfo("1 Movie C.vob", 1024l*1024*2100, "http://some url/for/movie_c.vob", FileType.VIDEO));
+			add(new FileInfo("3 Movie A.avi", 1024l*1024*700, ":45707/Content/944D2E1C1443008DDFA34A89AEC282393AC8D883-0.mkv", FileType.VIDEO));
+			add(new FileInfo("2 Movie B.mvk", 1024l*1024*1400, "http://somehost/for/movie_b.mkv", FileType.VIDEO));
+			add(new FileInfo("1 Movie C.vob", 1024l*1024*2100, "http://somehost/for/movie_c.vob", FileType.VIDEO));
 		}};
         statsPanelOne.setDeleteListener(new DeleteListener() {
             @Override
@@ -232,13 +236,13 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
         statsPanelOne.updateStats(stats);
         panels.add(statsPanelOne.getRootPanel());
 
-        final DownloadStatsPanel statsPanelTwo = new DownloadStatsPanel(new DummyClient(), new DummyUrlRunner(), upnpControl);
+        final DownloadStatsPanel statsPanelTwo = new DownloadStatsPanel(new DummyClient(), new DummyUrlRunner(), upnpControl, host);
 		stats = new DownloadStats();
         stats.hash = new Hash("deadbeef");
         stats.name = "BigBangTheory";
 		stats.fileInfos = new HashSet<FileInfo>() {{
-			add(new FileInfo("BigBang_s05e01.avi", 1024l*1024*500, "http://some url/for/BigBang_s05e01.avi", FileType.VIDEO));
-			add(new FileInfo("BigBang_s05e01.srt", 1024l*102, "http://some url/for/BigBang_s05e01.srt", FileType.UNKNOWN));
+			add(new FileInfo("BigBang_s05e01.avi", 1024l*1024*500, "http://somehost/for/BigBang_s05e01.avi", FileType.VIDEO));
+			add(new FileInfo("BigBang_s05e01.srt", 1024l*102, "http://somehost/for/BigBang_s05e01.srt", FileType.UNKNOWN));
 		}};
         statsPanelTwo.setDeleteListener(new DeleteListener() {
             @Override
@@ -251,7 +255,7 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
         statsPanelTwo.updateStats(stats);
         panels.add(statsPanelTwo.getRootPanel());
 
-        final DownloadStatsPanel statsPanelThree = new DownloadStatsPanel(new DummyClient(), new DummyUrlRunner(), upnpControl);
+        final DownloadStatsPanel statsPanelThree = new DownloadStatsPanel(new DummyClient(), new DummyUrlRunner(), upnpControl, host);
 		stats = new DownloadStats();
         stats.hash = new Hash("d34df00d");
         stats.name = "";

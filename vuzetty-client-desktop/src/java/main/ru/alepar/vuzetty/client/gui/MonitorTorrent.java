@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import ru.alepar.vuzetty.client.config.Configuration;
 import ru.alepar.vuzetty.client.config.ConfigurationFactory;
 import ru.alepar.vuzetty.client.config.SettingsSaver;
-import ru.alepar.vuzetty.client.play.AddHostUrlRunner;
 import ru.alepar.vuzetty.client.play.PlayerUrlRunner;
 import ru.alepar.vuzetty.client.remote.Client;
 import ru.alepar.vuzetty.client.remote.VuzettyRemote;
@@ -134,14 +133,12 @@ public class MonitorTorrent implements VuzettyRemote {
                 if(displayer == null) {
                     final DownloadStatsPanel panel = new DownloadStatsPanel(
                             client,
-                            new AddHostUrlRunner(
-                                    new PlayerUrlRunner(
-                                            new RuntimeCmdRunner(),
-                                            config.getPlayerVideo()
-                                    ),
-                                    config.getServerAddress().getAddress().getHostAddress()
+                            new PlayerUrlRunner(
+                                    new RuntimeCmdRunner(),
+                                    config.getPlayerVideo()
                             ),
-                            upnpControl
+                            upnpControl,
+                            config.getServerAddress().getAddress().getHostAddress()
                     );
                     panel.setDeleteListener(new DownloadStatsDisplayer.DeleteListener() {
                         @Override
