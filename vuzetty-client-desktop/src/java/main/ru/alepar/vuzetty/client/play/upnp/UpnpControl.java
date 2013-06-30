@@ -1,4 +1,4 @@
-package ru.alepar.vuzetty.client.upnp;
+package ru.alepar.vuzetty.client.play.upnp;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -23,7 +23,7 @@ import java.util.Set;
 public class UpnpControl {
 
     public interface PlayerListener {
-        void onPlayers(Collection<UpnpPlayer> players);
+        void onPlayers(Collection<UpnpUrlPlayer> players);
     }
 
     private static final Logger log = LoggerFactory.getLogger(UpnpControl.class);
@@ -31,7 +31,7 @@ public class UpnpControl {
     private final UpnpService upnpService = new UpnpServiceImpl();
     private final ServiceId serviceId = new UDAServiceId("AVTransport");
 
-    private final Map<Device, UpnpPlayer> players = Maps.newConcurrentMap();
+    private final Map<Device, UpnpUrlPlayer> players = Maps.newConcurrentMap();
     private final Set<PlayerListener> listeners = Sets.newCopyOnWriteArraySet();
 
     public UpnpControl() {
@@ -45,7 +45,7 @@ public class UpnpControl {
          }
     }
 
-    public Collection<UpnpPlayer> getPlayers() {
+    public Collection<UpnpUrlPlayer> getPlayers() {
         return Collections.unmodifiableCollection(this.players.values());
     }
 
@@ -58,7 +58,7 @@ public class UpnpControl {
     }
 
     private void onPlayers() {
-        final Collection<UpnpPlayer> players = getPlayers();
+        final Collection<UpnpUrlPlayer> players = getPlayers();
         for (PlayerListener listener : listeners) {
             try {
                 listener.onPlayers(players);
@@ -73,7 +73,7 @@ public class UpnpControl {
         public void remoteDeviceAdded(Registry registry, RemoteDevice device) {
             final Service avTransport;
             if ((avTransport = device.findService(serviceId)) != null) {
-                final UpnpPlayer player = new UpnpPlayer(upnpService, device, avTransport);
+                final UpnpUrlPlayer player = new UpnpUrlPlayer(upnpService, device, avTransport);
                 players.put(device, player);
                 log.debug("new player found: {}", player);
                 onPlayers();
@@ -82,7 +82,7 @@ public class UpnpControl {
 
         @Override
         public void remoteDeviceRemoved(Registry registry, RemoteDevice device) {
-            final UpnpPlayer player = players.remove(device);
+            final UpnpUrlPlayer player = players.remove(device);
             if (player != null) {
                 log.debug("player removed: {}", player);
             }

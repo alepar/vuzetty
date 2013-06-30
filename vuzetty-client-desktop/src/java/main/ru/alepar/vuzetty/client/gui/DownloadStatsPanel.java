@@ -1,11 +1,9 @@
 package ru.alepar.vuzetty.client.gui;
 
-import com.google.common.collect.Lists;
-import ru.alepar.vuzetty.client.play.DummyUrlRunner;
-import ru.alepar.vuzetty.client.play.UrlRunner;
+import ru.alepar.vuzetty.client.play.DummyPlayerManager;
+import ru.alepar.vuzetty.client.play.PlayerManager;
 import ru.alepar.vuzetty.client.remote.Client;
 import ru.alepar.vuzetty.client.remote.StatsListener;
-import ru.alepar.vuzetty.client.upnp.UpnpControl;
 import ru.alepar.vuzetty.common.api.*;
 import sun.awt.VerticalBagLayout;
 
@@ -16,7 +14,6 @@ import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.*;
-import java.util.List;
 
 import static ru.alepar.vuzetty.common.util.FileNameUtil.extractFileExtension;
 
@@ -28,9 +25,7 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 
 	private final NumberFormat format = new DecimalFormat(NUM_FORMAT);
 
-    private final UrlRunner urlRunner;
-    private final String hostAddress;
-    private final UpnpControl upnpControl;
+    private final PlayerManager playerManager;
 
     private DownloadStats lastStats;
 
@@ -44,10 +39,8 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
     private JButton deleteButton;
     private DeleteListener listener;
 
-    public DownloadStatsPanel(final Client client, final UrlRunner urlRunner, UpnpControl upnpControl, String hostAddress) {
-        this.upnpControl = upnpControl;
-        this.urlRunner = urlRunner;
-        this.hostAddress = hostAddress;
+    public DownloadStatsPanel(final Client client, PlayerManager playerManager) {
+        this.playerManager = playerManager;
         playButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -135,7 +128,7 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
                 createMenuItem(popup, label, new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        playUrl(info.url);
+                        playerManager.play(info.url);
                     }
                 });
             }
@@ -143,28 +136,6 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 
 		return popup;
 	}
-
-    private void playUrl(String url) {
-        url = "http://" + hostAddress + url;
-        UrlRunner runner = urlRunner;
-        if (!upnpControl.getPlayers().isEmpty()) {
-            final List<Object> players = Lists.newArrayList();
-            players.add(urlRunner);
-            players.addAll(upnpControl.getPlayers());
-            final Object[] possibilities = players.toArray(new Object[players.size()]);
-            final UrlRunner response = (UrlRunner) JOptionPane.showInputDialog(
-                                torrentPanel,
-                                "Choose player: ", "Customized Dialog",
-                                JOptionPane.QUESTION_MESSAGE, null, possibilities,
-                                urlRunner);
-
-            //If a string was returned, say so.
-            if (response != null) {
-                runner = response;
-            }
-        }
-        runner.run(url);
-    }
 
     private static void createMenuItem(JPopupMenu menu, String label, ActionListener action) {
 		final JMenuItem result = new JMenuItem(label);
@@ -207,7 +178,6 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 
 	public static void main(String[] args) throws Exception {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        final UpnpControl upnpControl = new UpnpControl();
 		final JFrame frame = new JFrame();
 
         final JPanel container = new JPanel(new BorderLayout());
@@ -215,8 +185,8 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 
 		DownloadStats stats;
 
-        final String host = "azureus.alepar.ru";
-        final DownloadStatsPanel statsPanelOne = new DownloadStatsPanel(new DummyClient(), new DummyUrlRunner(), upnpControl, host);
+        final DummyPlayerManager playerManager = new DummyPlayerManager();
+        final DownloadStatsPanel statsPanelOne = new DownloadStatsPanel(new DummyClient(), playerManager);
         stats = new DownloadStats();
         stats.hash = new Hash("cafebabe");
         stats.name = "Movies";
@@ -236,7 +206,7 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
         statsPanelOne.updateStats(stats);
         panels.add(statsPanelOne.getRootPanel());
 
-        final DownloadStatsPanel statsPanelTwo = new DownloadStatsPanel(new DummyClient(), new DummyUrlRunner(), upnpControl, host);
+        final DownloadStatsPanel statsPanelTwo = new DownloadStatsPanel(new DummyClient(), playerManager);
 		stats = new DownloadStats();
         stats.hash = new Hash("deadbeef");
         stats.name = "BigBangTheory";
@@ -255,7 +225,7 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
         statsPanelTwo.updateStats(stats);
         panels.add(statsPanelTwo.getRootPanel());
 
-        final DownloadStatsPanel statsPanelThree = new DownloadStatsPanel(new DummyClient(), new DummyUrlRunner(), upnpControl, host);
+        final DownloadStatsPanel statsPanelThree = new DownloadStatsPanel(new DummyClient(), playerManager);
 		stats = new DownloadStats();
         stats.hash = new Hash("d34df00d");
         stats.name = "";

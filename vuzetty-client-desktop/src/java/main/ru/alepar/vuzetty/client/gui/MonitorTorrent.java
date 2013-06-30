@@ -6,11 +6,11 @@ import org.slf4j.LoggerFactory;
 import ru.alepar.vuzetty.client.config.Configuration;
 import ru.alepar.vuzetty.client.config.ConfigurationFactory;
 import ru.alepar.vuzetty.client.config.SettingsSaver;
-import ru.alepar.vuzetty.client.play.PlayerUrlRunner;
+import ru.alepar.vuzetty.client.play.OptionPlayerManager;
+import ru.alepar.vuzetty.client.play.PlayerManager;
+import ru.alepar.vuzetty.client.play.upnp.UpnpControl;
 import ru.alepar.vuzetty.client.remote.Client;
 import ru.alepar.vuzetty.client.remote.VuzettyRemote;
-import ru.alepar.vuzetty.client.run.RuntimeCmdRunner;
-import ru.alepar.vuzetty.client.upnp.UpnpControl;
 import ru.alepar.vuzetty.common.api.DownloadStats;
 import ru.alepar.vuzetty.common.api.Hash;
 import ru.alepar.vuzetty.common.api.TorrentInfo;
@@ -29,23 +29,22 @@ public class MonitorTorrent implements VuzettyRemote {
     public static final String ICON_PATH = "ru/alepar/vuzetty/client/gui/ico/vuze.png";
     private static final Logger log = LoggerFactory.getLogger(MonitorTorrent.class);
 
-    private final UpnpControl upnpControl = new UpnpControl();
+    private final PlayerManager playerManager;
     private final Map<Hash, DownloadStatsPanel> hashes = Maps.newHashMap();
 
-    private final Configuration config;
     private final Client client;
 
     private final JFrame frame;
     private final JPanel contentPane;
 
     public MonitorTorrent(final Configuration config, final Client client) {
-        this.config = config;
         this.client = client;
 
         client.setStatsListener(new StatsListener());
 
         contentPane = new JPanel();
         frame = new JFrame();
+        playerManager = new OptionPlayerManager(config, new UpnpControl(), frame);
 
         final SettingsSaver settingsSaver = ConfigurationFactory.makeSettingsSaver();
         final StatusBar.OwnTorrentsClickListener ownTorrentsClickListener = new StatusBar.OwnTorrentsClickListener() {
@@ -89,7 +88,6 @@ public class MonitorTorrent implements VuzettyRemote {
 		} catch (Exception e) {
             throw new RuntimeException("something went completely bollocks", e);
         }
-
     }
 
     @Override
@@ -133,12 +131,7 @@ public class MonitorTorrent implements VuzettyRemote {
                 if(displayer == null) {
                     final DownloadStatsPanel panel = new DownloadStatsPanel(
                             client,
-                            new PlayerUrlRunner(
-                                    new RuntimeCmdRunner(),
-                                    config.getPlayerVideo()
-                            ),
-                            upnpControl,
-                            config.getServerAddress().getAddress().getHostAddress()
+                            playerManager
                     );
                     panel.setDeleteListener(new DownloadStatsDisplayer.DeleteListener() {
                         @Override
