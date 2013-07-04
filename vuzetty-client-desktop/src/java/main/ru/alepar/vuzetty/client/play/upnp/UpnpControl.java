@@ -28,7 +28,7 @@ public class UpnpControl {
 
     private static final Logger log = LoggerFactory.getLogger(UpnpControl.class);
 
-    private final UpnpService upnpService = new UpnpServiceImpl();
+    private final UpnpService upnpService = new UpnpServiceImpl(new ApacheUpnpServiceConfiguration());
     private final ServiceId serviceId = new UDAServiceId("AVTransport");
 
     private final Map<Device, UpnpUrlPlayer> players = Maps.newConcurrentMap();

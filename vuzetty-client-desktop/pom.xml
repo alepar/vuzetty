@@ -34,15 +34,14 @@
         <!-- upnp -->
         <dependency>
             <groupId>org.fourthline.cling</groupId>
-            <artifactId>cling-core</artifactId>
+            <artifactId>cling-support</artifactId>
             <version>2.0-alpha2</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.fourthline.cling</groupId>
-            <artifactId>cling-support</artifactId>
-            <version>2.0-alpha2</version>
-            <scope>compile</scope>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.2.4</version>
         </dependency>
 
         <!-- gui forms -->
