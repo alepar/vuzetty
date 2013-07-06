@@ -31,7 +31,6 @@
             <groupId>org.fourthline.cling</groupId>
             <artifactId>cling-support</artifactId>
             <version>2.0-alpha2</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -44,15 +43,6 @@
             <groupId>com.intellij</groupId>
             <artifactId>forms_rt</artifactId>
             <version>7.0.3</version>
-        </dependency>
-
-        <!-- jmx -->
-        <dependency>
-            <groupId>com.sun</groupId>
-            <artifactId>tools</artifactId>
-            <version>1.5</version>
-            <scope>system</scope>
-            <systemPath>${java.home}/../lib/tools.jar</systemPath>
         </dependency>
 
         <!-- logging -->
