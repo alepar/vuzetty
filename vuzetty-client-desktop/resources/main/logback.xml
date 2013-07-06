@@ -1,5 +1,10 @@
 <configuration debug="true">
 
+    <!-- propagate logback config to JUL -->
+    <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+        <resetJUL>true</resetJUL>
+    </contextListener>
+
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
         <file>${user.home}/.vuzetty/vuzetty-client.log</file>
 
@@ -14,15 +19,14 @@
         </encoder>
     </appender>
 
-    <logger name="ch.qos" level="WARN"/>
-    <logger name="org.fourthline" level="INFO"/>
     <logger name="ru.alepar.rpc" level="INFO"/>
+    <logger name="org.fourthline.cling.transport.spi.StreamClient" level="DEBUG"/>
     <logger name="ru.alepar.vuzetty" level="DEBUG"/>
 
-    <root level="debug">
+    <root level="WARN">
         <appender-ref ref="STDOUT"/>
     </root>
-    <root level="debug">
+    <root level="WARN">
         <appender-ref ref="FILE"/>
     </root>
 

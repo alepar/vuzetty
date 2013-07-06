@@ -17,8 +17,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.LogManager;
 
 public class ClientMain {
 
@@ -68,9 +66,10 @@ public class ClientMain {
     }
 
     private static void rerouteJavaUtilLoggingToSlf4j() {
-        LogManager.getLogManager().reset();
-        java.util.logging.Logger.getLogger("global").setLevel(Level.FINEST);
+        SLF4JBridgeHandler.removeHandlersForRootLogger();
         SLF4JBridgeHandler.install();
+
+        java.util.logging.Logger.getLogger("org.fourthline.cling.transport.impl.apache.HelloWorld").fine("hey!");
     }
 
     private static void fixWmClass() {
