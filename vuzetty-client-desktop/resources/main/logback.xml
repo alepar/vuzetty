@@ -20,7 +20,8 @@
     </appender>
 
     <logger name="ru.alepar.rpc" level="INFO"/>
-    <logger name="org.fourthline.cling.transport.spi.StreamClient" level="DEBUG"/>
+    <logger name="org.fourthline.cling" level="INFO"/>
+
     <logger name="ru.alepar.vuzetty" level="DEBUG"/>
 
     <root level="WARN">
