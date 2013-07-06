@@ -15,46 +15,59 @@ public class OptionPlayerManager implements PlayerManager {
     private final Configuration config;
     private final Component component;
 
-    private UrlPlayer lastPlayer;
+    private volatile String lastPlayer;
 
     public OptionPlayerManager(Configuration config, UpnpControl upnpControl, Component component) {
         this.config = config;
         this.upnpControl = upnpControl;
         this.component = component;
-
-        lastPlayer = createLocalPlayer();
     }
 
     @Override
     public void play(String url) {
         url = "http://" + config.getServerAddress().getAddress().getHostAddress() + url;
 
-        if (lastPlayer instanceof LocalUrlPlayer) {
-            lastPlayer = createLocalPlayer();
-        }
+        final List<UrlPlayer> players = Lists.newArrayList();
+        players.add(createLocalPlayer());
 
         if (!upnpControl.getPlayers().isEmpty()) {
-            final List<Object> players = Lists.newArrayList();
-            players.add(lastPlayer);
             players.addAll(upnpControl.getPlayers());
+        }
+
+        final UrlPlayer playerToUse;
+        if (players.size() == 1) {
+            playerToUse = players.get(0);
+        } else {
             final Object[] possibilities = players.toArray(new Object[players.size()]);
             final UrlPlayer response = (UrlPlayer) JOptionPane.showInputDialog(
                     component,
                     "", "Choose player",
                     JOptionPane.QUESTION_MESSAGE, null, possibilities,
-                    lastPlayer);
+                    findMatchingPlayer(players, lastPlayer));
 
             if (response != null) {
-                lastPlayer = response;
+                playerToUse = response;
             } else {
                 return;
             }
+
         }
 
-        lastPlayer.play(url);
+        playerToUse.play(url);
+        lastPlayer = playerToUse.toString();
     }
 
-    public UrlPlayer createLocalPlayer() {
+    private static UrlPlayer findMatchingPlayer(Iterable<UrlPlayer> players, String playerName) {
+        for (UrlPlayer player : players) {
+            if (player.toString().equals(playerName)) {
+                return player;
+            }
+        }
+
+        return null;
+    }
+
+    private UrlPlayer createLocalPlayer() {
         return new LocalUrlPlayer(new RuntimeCmdRunner(), config.getPlayerVideo());
     }
 }
