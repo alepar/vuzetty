@@ -15,6 +15,7 @@
     </appender>
 
     <logger name="ch.qos" level="WARN"/>
+    <logger name="org.fourthline" level="INFO"/>
     <logger name="ru.alepar.rpc" level="INFO"/>
     <logger name="ru.alepar.vuzetty" level="DEBUG"/>
 

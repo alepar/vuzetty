@@ -2,6 +2,7 @@ package ru.alepar.vuzetty.client;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.bridge.SLF4JBridgeHandler;
 import ru.alepar.vuzetty.client.config.Configuration;
 import ru.alepar.vuzetty.client.config.ConfigurationFactory;
 import ru.alepar.vuzetty.client.gui.MonitorTorrent;
@@ -16,6 +17,8 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
 
 public class ClientMain {
 
@@ -23,6 +26,7 @@ public class ClientMain {
 
     public static void main(String[] args) throws Exception {
 		fixWmClass();
+        rerouteJavaUtilLoggingToSlf4j();
         args = cleanupJwsMess(args);
         log.debug("args = {}", Arrays.toString(args));
 
@@ -63,7 +67,13 @@ public class ClientMain {
         }
     }
 
-	private static void fixWmClass() {
+    private static void rerouteJavaUtilLoggingToSlf4j() {
+        LogManager.getLogManager().reset();
+        java.util.logging.Logger.getLogger("global").setLevel(Level.FINEST);
+        SLF4JBridgeHandler.install();
+    }
+
+    private static void fixWmClass() {
 		try {
 			Toolkit xToolkit = Toolkit.getDefaultToolkit();
 			Field awtAppClassNameField = xToolkit.getClass().getDeclaredField("awtAppClassName");
