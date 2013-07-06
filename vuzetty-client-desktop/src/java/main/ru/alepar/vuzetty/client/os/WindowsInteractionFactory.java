@@ -23,4 +23,8 @@ class WindowsInteractionFactory extends CommonInteractionFactory {
         throw new UnsupportedOperationException("we should not need this for win yet");
     }
 
+    @Override
+    public void fixWmClass() {
+        // ignored, nothing to be done on windows
+    }
 }

@@ -12,8 +12,6 @@ import ru.alepar.vuzetty.client.remote.VuzettyClient;
 import ru.alepar.vuzetty.client.remote.VuzettyRemote;
 
 import javax.swing.*;
-import java.awt.*;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,13 +21,13 @@ public class ClientMain {
     private static final Logger log = LoggerFactory.getLogger(ClientMain.class);
 
     public static void main(String[] args) throws Exception {
-		fixWmClass();
         rerouteJavaUtilLoggingToSlf4j();
+        setUIAndExceptionHandler();
         args = cleanupJwsMess(args);
         log.debug("args = {}", Arrays.toString(args));
 
 		final OsInteractionFactory osInteractionFactory = OsInteractionFactory.Native.create();
-		prepStuff();
+        osInteractionFactory.fixWmClass();
 		final Configuration config = prepConfig();
 		prepAssociations(config, osInteractionFactory);
 
@@ -68,20 +66,7 @@ public class ClientMain {
     private static void rerouteJavaUtilLoggingToSlf4j() {
         SLF4JBridgeHandler.removeHandlersForRootLogger();
         SLF4JBridgeHandler.install();
-
-        java.util.logging.Logger.getLogger("org.fourthline.cling.transport.impl.apache.HelloWorld").fine("hey!");
     }
-
-    private static void fixWmClass() {
-		try {
-			Toolkit xToolkit = Toolkit.getDefaultToolkit();
-			Field awtAppClassNameField = xToolkit.getClass().getDeclaredField("awtAppClassName");
-			awtAppClassNameField.setAccessible(true);
-			awtAppClassNameField.set(xToolkit, "ru-alepar-vuzetty_client");
-		} catch (Exception e) {
-			log.warn("failed to fix WM_CLASS", e);
-		}
-	}
 
 	private static void prepAssociations(Configuration config, OsInteractionFactory osInteractionFactory) {
 		if (config.associateWithMagnetLinks()) {
@@ -97,7 +82,7 @@ public class ClientMain {
         return ConfigurationFactory.makeConfiguration();
     }
 
-    private static void prepStuff() throws Exception {
+    private static void setUIAndExceptionHandler() throws Exception {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         Thread.setDefaultUncaughtExceptionHandler(new DefaultThreadExceptionHandler());
     }

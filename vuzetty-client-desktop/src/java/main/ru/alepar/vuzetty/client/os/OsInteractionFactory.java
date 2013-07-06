@@ -13,6 +13,8 @@ public interface OsInteractionFactory {
     CmdResolver getCmdResolver();
     JavaInstallation getJavaInstallation();
 
+    void fixWmClass();
+
     public class Native {
 
         private static final Logger log = LoggerFactory.getLogger(OsInteractionFactory.Native.class);
