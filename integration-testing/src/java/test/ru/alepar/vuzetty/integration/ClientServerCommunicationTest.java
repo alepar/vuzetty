@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertThat;
 import static ru.alepar.vuzetty.integration.Support.sleep;
 
@@ -93,11 +94,12 @@ public class ClientServerCommunicationTest {
         clientTwo.setTorrentListener(torrentListener);
 
         try {
+            sleep();
             clientOne.addTorrent(TORRENT_ONE);
             clientOne.addTorrent(TORRENT_TWO);
             sleep();
 
-            assertThat(torrentListener.hashesAdded.size(), equalTo(2));
+            assertThat(torrentListener.hashesAdded, hasSize(2));
         } finally {
             clientOne.shutdown();
             clientTwo.shutdown();
