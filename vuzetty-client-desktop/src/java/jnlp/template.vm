@@ -29,6 +29,6 @@
     <j2se version="$j2seVersion"/>
      $dependencies
   </resources>
-  <update check="background" policy="always"/>
+  <update check="always" policy="always"/>
   <application-desc main-class="$mainClass"/>
 </jnlp>
