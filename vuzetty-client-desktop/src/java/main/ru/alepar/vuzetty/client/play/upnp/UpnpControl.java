@@ -85,6 +85,7 @@ public class UpnpControl {
             final UpnpUrlPlayer player = players.remove(device);
             if (player != null) {
                 log.debug("player removed: {}", player);
+                onPlayers();
             }
         }
     }

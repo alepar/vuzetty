@@ -11,6 +11,7 @@ public class StatusBar {
     private JPanel rootPanel;
     private JButton settingsButton;
     private JButton ownTorrentsButton;
+    private JLabel upnpCountLabel;
 
     private final OwnTorrentsClickListener ownTorrentsClickListener;
 
@@ -43,6 +44,10 @@ public class StatusBar {
 
     public JPanel getRootPanel() {
         return rootPanel;
+    }
+
+    public void setUpnpCount(int count) {
+        upnpCountLabel.setText("" + count);
     }
 
     public interface OwnTorrentsClickListener {

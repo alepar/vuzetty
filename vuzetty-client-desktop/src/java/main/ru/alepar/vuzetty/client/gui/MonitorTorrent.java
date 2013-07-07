@@ -9,6 +9,7 @@ import ru.alepar.vuzetty.client.config.SettingsSaver;
 import ru.alepar.vuzetty.client.play.OptionPlayerManager;
 import ru.alepar.vuzetty.client.play.PlayerManager;
 import ru.alepar.vuzetty.client.play.upnp.UpnpControl;
+import ru.alepar.vuzetty.client.play.upnp.UpnpUrlPlayer;
 import ru.alepar.vuzetty.client.remote.Client;
 import ru.alepar.vuzetty.client.remote.VuzettyRemote;
 import ru.alepar.vuzetty.common.api.DownloadStats;
@@ -22,6 +23,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
 import java.net.URL;
+import java.util.Collection;
 import java.util.Map;
 
 public class MonitorTorrent implements VuzettyRemote {
@@ -42,9 +44,11 @@ public class MonitorTorrent implements VuzettyRemote {
 
         client.setStatsListener(new StatsListener());
 
+        final UpnpControl upnpControl = new UpnpControl();
+
         contentPane = new JPanel();
         frame = new JFrame();
-        playerManager = new OptionPlayerManager(config, new UpnpControl(), frame);
+        playerManager = new OptionPlayerManager(config, upnpControl, frame);
 
         final SettingsSaver settingsSaver = ConfigurationFactory.makeSettingsSaver();
         final StatusBar.OwnTorrentsClickListener ownTorrentsClickListener = new StatusBar.OwnTorrentsClickListener() {
@@ -80,7 +84,16 @@ public class MonitorTorrent implements VuzettyRemote {
 
             final JPanel container = new JPanel(new BorderLayout());
             container.add(contentPane, BorderLayout.CENTER);
-            container.add(new StatusBar(config.showOwnTorrentsByDefault(), ownTorrentsClickListener).getRootPanel(), BorderLayout.SOUTH);
+
+            final StatusBar statusBar = new StatusBar(config.showOwnTorrentsByDefault(), ownTorrentsClickListener);
+            container.add(statusBar.getRootPanel(), BorderLayout.SOUTH);
+
+            upnpControl.subscribe(new UpnpControl.PlayerListener() {
+                @Override
+                public void onPlayers(Collection<UpnpUrlPlayer> players) {
+                    statusBar.setUpnpCount(players.size());
+                }
+            });
 
 			frame.setContentPane(container);
 			frame.setSize(445, 0);
