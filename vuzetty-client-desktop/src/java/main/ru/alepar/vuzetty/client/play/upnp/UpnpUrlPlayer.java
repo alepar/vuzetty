@@ -26,7 +26,7 @@ public class UpnpUrlPlayer implements UrlPlayer {
     }
 
     public String getHost() {
-        return device.getDetails().getPresentationURI().getHost();
+        return device.getIdentity().getDescriptorURL().getHost();
     }
 
     public String getName() {
