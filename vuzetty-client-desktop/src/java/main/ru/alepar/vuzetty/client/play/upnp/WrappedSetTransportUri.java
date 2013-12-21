@@ -3,6 +3,7 @@ package ru.alepar.vuzetty.client.play.upnp;
 import org.fourthline.cling.model.action.ActionInvocation;
 import org.fourthline.cling.model.message.UpnpResponse;
 import org.fourthline.cling.model.meta.Service;
+import org.fourthline.cling.model.types.UnsignedIntegerFourBytes;
 import org.fourthline.cling.support.avtransport.callback.SetAVTransportURI;
 
 public class WrappedSetTransportUri extends Wrapped {
@@ -11,7 +12,7 @@ public class WrappedSetTransportUri extends Wrapped {
 
     public WrappedSetTransportUri(Service avTransport, String url) {
         this.url = url;
-        action = new SetAVTransportURI(avTransport, url) {
+        action = new SetAVTransportURI(new UnsignedIntegerFourBytes("0"), avTransport, url) {
             @Override
             public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
                 onFailure(defaultMsg);

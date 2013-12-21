@@ -3,12 +3,13 @@ package ru.alepar.vuzetty.client.play.upnp;
 import org.fourthline.cling.model.action.ActionInvocation;
 import org.fourthline.cling.model.message.UpnpResponse;
 import org.fourthline.cling.model.meta.Service;
+import org.fourthline.cling.model.types.UnsignedIntegerFourBytes;
 import org.fourthline.cling.support.avtransport.callback.Play;
 
 public class WrappedPlay extends Wrapped {
 
     public WrappedPlay(Service avTransport) {
-        action = new Play(avTransport) {
+        action = new Play(new UnsignedIntegerFourBytes("0"), avTransport) {
             @Override
             public void success(ActionInvocation invocation) {
                 onSuccess();
