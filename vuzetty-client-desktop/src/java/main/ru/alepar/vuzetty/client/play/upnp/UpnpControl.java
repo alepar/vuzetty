@@ -10,6 +10,7 @@ import org.fourthline.cling.model.meta.RemoteDevice;
 import org.fourthline.cling.model.meta.Service;
 import org.fourthline.cling.model.types.ServiceId;
 import org.fourthline.cling.model.types.UDAServiceId;
+import org.fourthline.cling.model.types.UnsignedIntegerFourBytes;
 import org.fourthline.cling.registry.DefaultRegistryListener;
 import org.fourthline.cling.registry.Registry;
 import org.slf4j.Logger;
@@ -27,6 +28,8 @@ public class UpnpControl {
     }
 
     private static final Logger log = LoggerFactory.getLogger(UpnpControl.class);
+
+    static final UnsignedIntegerFourBytes DEFAULT_INSTANCE_ID = new UnsignedIntegerFourBytes("0");
 
     private final UpnpService upnpService = new UpnpServiceImpl(new ApacheUpnpServiceConfiguration());
     private final ServiceId serviceId = new UDAServiceId("AVTransport");
@@ -53,6 +56,7 @@ public class UpnpControl {
         listeners.add(listener);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void unsubscribe(PlayerListener listener) {
         listeners.remove(listener);
     }
