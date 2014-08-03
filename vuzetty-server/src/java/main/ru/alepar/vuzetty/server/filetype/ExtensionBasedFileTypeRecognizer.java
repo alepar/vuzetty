@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import static ru.alepar.vuzetty.common.util.FileNameUtil.extractFileExtension;
+import static ru.alepar.vuzetty.common.util.FileNameUtil.*;
 
 public class ExtensionBasedFileTypeRecognizer implements FileTypeRecognizer {
 
@@ -18,7 +18,8 @@ public class ExtensionBasedFileTypeRecognizer implements FileTypeRecognizer {
             "vob",
             "ts",
             "mov",
-            "mp4"
+            "mp4",
+            "m4v"
     ));
 
     @Override

@@ -4,18 +4,40 @@ import ru.alepar.vuzetty.client.play.DummyPlayerManager;
 import ru.alepar.vuzetty.client.play.PlayerManager;
 import ru.alepar.vuzetty.client.remote.Client;
 import ru.alepar.vuzetty.client.remote.StatsListener;
-import ru.alepar.vuzetty.common.api.*;
-import sun.awt.VerticalBagLayout;
+import ru.alepar.vuzetty.common.api.DownloadState;
+import ru.alepar.vuzetty.common.api.DownloadStats;
+import ru.alepar.vuzetty.common.api.FileInfo;
+import ru.alepar.vuzetty.common.api.FileType;
+import ru.alepar.vuzetty.common.api.Hash;
+import ru.alepar.vuzetty.common.api.TorrentInfo;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JProgressBar;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.WindowConstants;
+import java.awt.BorderLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
-import static ru.alepar.vuzetty.common.util.FileNameUtil.extractFileExtension;
+import static ru.alepar.vuzetty.common.util.FileNameUtil.*;
 
 public class DownloadStatsPanel implements DownloadStatsDisplayer {
 
@@ -181,7 +203,8 @@ public class DownloadStatsPanel implements DownloadStatsDisplayer {
 		final JFrame frame = new JFrame();
 
         final JPanel container = new JPanel(new BorderLayout());
-        final JPanel panels = new JPanel(new VerticalBagLayout());
+        final JPanel panels = new JPanel();
+        panels.setLayout(new BoxLayout(panels, BoxLayout.Y_AXIS));
 
 		DownloadStats stats;
 

@@ -15,13 +15,21 @@ import ru.alepar.vuzetty.client.remote.VuzettyRemote;
 import ru.alepar.vuzetty.common.api.DownloadStats;
 import ru.alepar.vuzetty.common.api.Hash;
 import ru.alepar.vuzetty.common.api.TorrentInfo;
-import sun.awt.VerticalBagLayout;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.BoxLayout;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import java.awt.BorderLayout;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Map;
@@ -80,7 +88,7 @@ public class MonitorTorrent implements VuzettyRemote {
                 }
             });
 
-			contentPane.setLayout(new VerticalBagLayout());
+			contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
 
             final JPanel container = new JPanel(new BorderLayout());
             container.add(contentPane, BorderLayout.CENTER);

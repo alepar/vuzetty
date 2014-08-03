@@ -2,10 +2,17 @@ package ru.alepar.vuzetty.client.gui;
 
 import ru.alepar.vuzetty.client.config.SettingsConfiguration;
 import ru.alepar.vuzetty.client.config.SettingsView;
-import sun.awt.VerticalBagLayout;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -30,7 +37,8 @@ public class SettingsPanel implements SettingsView {
 		frame = new JFrame("Vuzetty settings");
 
         buttons = new SettingsButtons();
-		final JPanel container = new JPanel(new VerticalBagLayout());
+		final JPanel container = new JPanel();
+        container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
 
 		container.add(rootPanel);
 		container.add(buttons.getRootPanel());
